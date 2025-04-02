@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
-import home from "../../../public/home.jpeg";
+import home from "../../assets/home.jpeg";
 
 export default function HomePage() {
   return (
