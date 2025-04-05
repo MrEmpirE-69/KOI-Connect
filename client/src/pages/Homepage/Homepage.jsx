@@ -44,8 +44,8 @@ export default function HomePage() {
                 Designed with students in mind, KOI Connect fosters meaningful
                 interactions through dedicated spaces for courses, community
                 engagement, and news updates. Stay informed, participate in
-                discussions, and grow together with your peers and faculty —
-                all in one intuitive platform.
+                discussions, and grow together with your peers and faculty — all
+                in one intuitive platform.
               </span>
             </p>
           </div>
