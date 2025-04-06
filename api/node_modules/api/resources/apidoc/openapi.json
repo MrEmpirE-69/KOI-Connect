@@ -1,0 +1,121 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "KCMIT API",
+    "version": "1.0.0",
+    "description": "API documentation for KCMIT services."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api"
+    }
+  ],
+  "paths": {
+    "/user/create": {
+      "post": {
+        "summary": "Create a new user",
+        "description": "This endpoint allows you to create a new user.",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fullName": {
+                    "type": "string",
+                    "example": "Kiran Khanal"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "kiran.khanal@cosmotechintl.com"
+                  },
+                  "mobileNumber": {
+                    "type": "string",
+                    "example": "9810203040"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Tinkune, Kathmandu"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Bad request if required fields are missing"
+          },
+          "409": {
+            "description": "Conflict if email and mobileNumber fields already exist"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/notice/create": {
+      "post": {
+        "summary": "Create a new notice",
+        "description": "This endpoint allows you to create a new notice.",
+        "tags": ["Notices"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Notice Title"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "example": "Description of the notice"
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2024-01-01"
+                  }
+                },
+                "required": ["title", "desc", "date"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Notice created successfully"
+          },
+          "400": {
+            "description": "Bad request if required fields are missing"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
