@@ -8,6 +8,8 @@ import StudentDashboard from "./pages/StudentPage/StudentDashboard"
 import AsDashboard from "./pages/AsPage/AsDashboard";
 
 import AdminStudent from "./pages/AdminDashboard/AdminStudent";
+import ClientDashboard from "./pages/ClientPage/ClientDashboard";
+import ClientProjectReview from "./pages/ClientPage/ClientProjectReview";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/student-dashboard" element={<StudentDashboard />} />
           <Route path="/as-dashboard" element={<AsDashboard />} />
           <Route path="/student-list" element={<AdminStudent />} />
+          <Route path="/client-dashboard" element={<ClientDashboard />} />
+          <Route path="/client-projectreview" element={<ClientProjectReview />} />
           
 
           <Route path="*" element={<HomePage />} />
