@@ -23,9 +23,7 @@ const SideMenu = () => {
               alt="Admin"
               className="w-10 h-10 rounded-full mr-3 shadow-md"
             />
-            <span className="font-semibold text-lg text-[#1C628F]">
-              Admin
-            </span>
+            <span className="font-semibold text-lg text-[#1C628F]">Admin</span>
           </div>
 
           {/* Navigation */}

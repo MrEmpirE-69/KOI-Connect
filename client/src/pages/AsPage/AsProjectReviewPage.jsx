@@ -127,9 +127,7 @@ const AsProjectReviewPage = () => {
                         } transition duration-300`}
                         onClick={() => setSelectedProject(project)}
                       >
-                        {project.status === "Pending"
-                          ? "Review"
-                          : "Re-review"}
+                        {project.status === "Pending" ? "Review" : "Re-review"}
                       </button>
                     </td>
                   </tr>
@@ -151,7 +149,9 @@ const AsProjectReviewPage = () => {
             <button
               className="px-4 py-2 bg-gray-300 text-sm rounded-full hover:bg-gray-400"
               onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage * projectsPerPage >= filteredProjects.length}
+              disabled={
+                currentPage * projectsPerPage >= filteredProjects.length
+              }
             >
               Next
             </button>

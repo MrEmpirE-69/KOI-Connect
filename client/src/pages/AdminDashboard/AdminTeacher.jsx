@@ -52,7 +52,9 @@ const AdminTeacher = () => {
                   {name.charAt(0)}
                 </div>
                 <h2 className="text-lg font-semibold text-[#1C628F]">{name}</h2>
-                <p className="text-sm text-gray-500">KOI ID: TCH{100 + index}</p>
+                <p className="text-sm text-gray-500">
+                  KOI ID: TCH{100 + index}
+                </p>
               </div>
             ))}
           </div>

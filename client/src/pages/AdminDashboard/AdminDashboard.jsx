@@ -54,7 +54,8 @@ const AdminDashboard = () => {
                 Announcement
               </h3>
               <p className="text-gray-700">
-                Maintenance is scheduled on <strong>Sunday, 6th May</strong>. Systems will be offline from 2am to 6am AEST.
+                Maintenance is scheduled on <strong>Sunday, 6th May</strong>.
+                Systems will be offline from 2am to 6am AEST.
               </p>
             </div>
 
@@ -64,7 +65,8 @@ const AdminDashboard = () => {
                 New Feature
               </h3>
               <p className="text-gray-700">
-                Role management system updated. Admins can now assign roles per course or department.
+                Role management system updated. Admins can now assign roles per
+                course or department.
               </p>
             </div>
           </div>
@@ -75,7 +77,9 @@ const AdminDashboard = () => {
       <aside className="hidden xl:flex flex-col justify-between w-[350px] bg-gray-100 p-6 animate-fadeInRight shadow-inner">
         {/* Recent Activity */}
         <div>
-          <h2 className="text-2xl font-semibold mb-6 text-[#1C628F]">Recent Activity</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-[#1C628F]">
+            Recent Activity
+          </h2>
           <div className="bg-white rounded-xl p-4 shadow-md flex items-start gap-4 transition hover:scale-[1.02] hover:shadow-md duration-300">
             <div className="bg-green-100 p-3 rounded-full">
               <svg

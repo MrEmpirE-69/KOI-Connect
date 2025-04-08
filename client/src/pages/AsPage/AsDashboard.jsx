@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import AsSideMenu from "../../AsComponents/AsSideMenu/AsSideMenu";  
-import AsTopNavbar from "../../AsComponents/AsTopNavbar/AsTopNavbar"; 
+import AsSideMenu from "../../AsComponents/AsSideMenu/AsSideMenu";
+import AsTopNavbar from "../../AsComponents/AsTopNavbar/AsTopNavbar";
 import { FaFileAlt, FaArrowCircleUp } from "react-icons/fa";
 import user1 from "../../assets/user1.png";
 import user2 from "../../assets/user2.png";
@@ -38,7 +38,9 @@ const AsDashboard = () => {
               >
                 Dashboard
               </motion.h1>
-              <p className="text-md text-gray-600 font-medium mt-2">Hello ABC, Welcome back</p>
+              <p className="text-md text-gray-600 font-medium mt-2">
+                Hello ABC, Welcome back
+              </p>
             </div>
 
             {/* Submission Box */}
@@ -69,17 +71,25 @@ const AsDashboard = () => {
 
                 {/* Students List */}
                 <div className="bg-white p-6 rounded-lg shadow-md w-full">
-                  <div className="font-semibold text-center mb-4">Students Involved</div>
+                  <div className="font-semibold text-center mb-4">
+                    Students Involved
+                  </div>
                   {[user1, user2, user3].map((user, i) => (
                     <div key={i} className="flex items-center gap-3 mb-3">
-                      <img src={user} alt={`user${i}`} className="w-10 h-10 rounded-full" />
+                      <img
+                        src={user}
+                        alt={`user${i}`}
+                        className="w-10 h-10 rounded-full"
+                      />
                       <span className="font-medium text-gray-700">
                         {["Kushal Nepal", "Gagan Bohara", "Rohan Poudel"][i]}
                       </span>
                     </div>
                   ))}
                   <div className="text-center mt-4">
-                    <a href="#" className="text-blue-600 hover:underline">More students...</a>
+                    <a href="#" className="text-blue-600 hover:underline">
+                      More students...
+                    </a>
                   </div>
                 </div>
 
@@ -121,12 +131,16 @@ const AsDashboard = () => {
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 className="bg-white p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300"
               >
-                <h3 className="font-bold mb-4 text-[#1C628F]">Upcoming Events</h3>
+                <h3 className="font-bold mb-4 text-[#1C628F]">
+                  Upcoming Events
+                </h3>
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   className="bg-green-200 rounded-full w-32 h-32 mx-auto flex items-center justify-center mt-4"
                 >
-                  <p className="text-xl font-semibold text-[#1C628F]">Sample 1</p>
+                  <p className="text-xl font-semibold text-[#1C628F]">
+                    Sample 1
+                  </p>
                 </motion.div>
               </motion.div>
 
@@ -137,7 +151,9 @@ const AsDashboard = () => {
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 className="bg-white p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300"
               >
-                <h3 className="font-bold mb-4 text-[#1C628F]">Assign the Project</h3>
+                <h3 className="font-bold mb-4 text-[#1C628F]">
+                  Assign the Project
+                </h3>
                 <div className="bg-gray-100 p-6 rounded-lg mb-6">
                   {["Sample 1", "Sample 2", "Sample 3"].map((project, idx) => (
                     <motion.div
@@ -184,7 +200,9 @@ const AsDashboard = () => {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="bg-white p-6 rounded-xl shadow-lg mb-8"
             >
-              <h3 className="font-semibold text-lg text-[#1C628F] mb-4">Recent Activity</h3>
+              <h3 className="font-semibold text-lg text-[#1C628F] mb-4">
+                Recent Activity
+              </h3>
               <div className="flex flex-col gap-4">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -195,7 +213,9 @@ const AsDashboard = () => {
                   <FaArrowCircleUp className="text-xl text-[#6C63FF]" />
                   <div className="text-sm font-medium text-gray-700">
                     Submission Of NLP Programming
-                    <p className="text-xs text-gray-500">09 Jan 2025 • 02:29 pm</p>
+                    <p className="text-xs text-gray-500">
+                      09 Jan 2025 • 02:29 pm
+                    </p>
                   </div>
                 </motion.div>
                 <motion.div
@@ -207,7 +227,9 @@ const AsDashboard = () => {
                   <FaArrowCircleUp className="text-xl text-[#6C63FF]" />
                   <div className="text-sm font-medium text-gray-700">
                     Uploaded The Sample 6 File
-                    <p className="text-xs text-gray-500">12 Jan 2025 • 03:45 pm</p>
+                    <p className="text-xs text-gray-500">
+                      12 Jan 2025 • 03:45 pm
+                    </p>
                   </div>
                 </motion.div>
               </div>
@@ -219,7 +241,9 @@ const AsDashboard = () => {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="bg-white p-6 rounded-xl shadow-lg"
             >
-              <h3 className="font-semibold text-lg text-[#1C628F] mb-4">Latest Message</h3>
+              <h3 className="font-semibold text-lg text-[#1C628F] mb-4">
+                Latest Message
+              </h3>
               <div className="flex items-center space-x-3">
                 {[user1, user2, user3].map((user, idx) => (
                   <img

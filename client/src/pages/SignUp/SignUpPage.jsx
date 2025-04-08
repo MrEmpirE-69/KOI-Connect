@@ -13,10 +13,18 @@ export default function SignUpPage() {
       {/* Left Column */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12">
         <div className="flex items-center mb-6 md:mb-8">
-          <img src={logo} alt="KOI Logo" className="w-14 h-14 md:w-16 md:h-16 mr-2" />
-          <h1 className="text-2xl md:text-3xl font-bold text-[#1C628F]">KOI Connect</h1>
+          <img
+            src={logo}
+            alt="KOI Logo"
+            className="w-14 h-14 md:w-16 md:h-16 mr-2"
+          />
+          <h1 className="text-2xl md:text-3xl font-bold text-[#1C628F]">
+            KOI Connect
+          </h1>
         </div>
-        <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-[#333]">Sign Up to</h2>
+        <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-[#333]">
+          Sign Up to
+        </h2>
         <h3 className="text-lg md:text-xl mb-4 md:mb-6 text-[#1C628F] font-medium flex items-center">
           KOI Connect <span className="ml-2 text-2xl">🎓</span>
         </h3>
@@ -24,7 +32,11 @@ export default function SignUpPage() {
         <p className="text-sm font-medium text-[#6C63FF] cursor-pointer hover:underline">
           You can <a href="/login">Login here!</a>
         </p>
-        <img src={student} alt="Student Illustration" className="w-60 md:w-[300px] mt-8" />
+        <img
+          src={student}
+          alt="Student Illustration"
+          className="w-60 md:w-[300px] mt-8"
+        />
       </div>
 
       {/* Right Column */}
