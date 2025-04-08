@@ -1,8 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaClipboardList, FaComment, FaCog, FaSignOutAlt } from 'react-icons/fa';
-import logo from '../../assets/koi.png'; // Make sure the logo image is correctly imported
-import userImage from '../../assets/user1.png'; // Replace this with the correct path to the user's image
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  FaClipboardList,
+  FaComment,
+  FaCog,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import logo from "../../assets/koi.png"; // Make sure the logo image is correctly imported
+import userImage from "../../assets/user1.png"; // Replace this with the correct path to the user's image
 
 const ClientSideMenu = ({ currentPage }) => {
   return (
@@ -15,7 +20,7 @@ const ClientSideMenu = ({ currentPage }) => {
       {/* User Profile Section */}
       <div className="flex items-center gap-3 py-4 px-3 bg-[#e6f0ff] rounded-lg">
         <img
-          src={userImage} 
+          src={userImage}
           alt="Client"
           className="w-10 h-10 rounded-full border-2 border-[#226CD1]"
         />
@@ -27,7 +32,11 @@ const ClientSideMenu = ({ currentPage }) => {
         {/* Dashboard Link */}
         <Link
           to="/client/dashboard"
-          className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === 'dashboard' ? 'bg-[#f0f2ff] text-[#226CD1]' : 'text-[#444]'} hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
+          className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
+            currentPage === "dashboard"
+              ? "bg-[#f0f2ff] text-[#226CD1]"
+              : "text-[#444]"
+          } hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
         >
           <FaClipboardList />
           Dashboard
@@ -36,7 +45,11 @@ const ClientSideMenu = ({ currentPage }) => {
         {/* Project Review Link */}
         <Link
           to="/client/project-review"
-          className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === 'project-review' ? 'bg-[#f0f2ff] text-[#226CD1]' : 'text-[#444]'} hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
+          className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
+            currentPage === "project-review"
+              ? "bg-[#f0f2ff] text-[#226CD1]"
+              : "text-[#444]"
+          } hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
         >
           <FaClipboardList />
           Project Review
@@ -45,7 +58,11 @@ const ClientSideMenu = ({ currentPage }) => {
         {/* Communication Page Link */}
         <Link
           to="/client/communication"
-          className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === 'communication' ? 'bg-[#f0f2ff] text-[#226CD1]' : 'text-[#444]'} hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
+          className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
+            currentPage === "communication"
+              ? "bg-[#f0f2ff] text-[#226CD1]"
+              : "text-[#444]"
+          } hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
         >
           <FaComment />
           Communication Page
@@ -54,7 +71,11 @@ const ClientSideMenu = ({ currentPage }) => {
         {/* Settings Link */}
         <Link
           to="/client/settings"
-          className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === 'settings' ? 'bg-[#f0f2ff] text-[#226CD1]' : 'text-[#444]'} hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
+          className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
+            currentPage === "settings"
+              ? "bg-[#f0f2ff] text-[#226CD1]"
+              : "text-[#444]"
+          } hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
         >
           <FaCog />
           Settings

@@ -34,7 +34,9 @@ const AdminSettingPage = () => {
             {/* Account Security Card */}
             <div className="w-72 h-52 bg-white shadow-md rounded-2xl flex flex-col items-center justify-center gap-3 border hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer">
               <FaShieldAlt className="text-4xl text-[#226CD1]" />
-              <h3 className="text-xl font-semibold text-[#333]">Account Security</h3>
+              <h3 className="text-xl font-semibold text-[#333]">
+                Account Security
+              </h3>
               <p className="text-sm text-gray-500 text-center px-4">
                 Update password & secure your account
               </p>

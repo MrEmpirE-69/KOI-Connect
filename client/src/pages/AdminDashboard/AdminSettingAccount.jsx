@@ -28,7 +28,9 @@ const AdminSettingAccount = () => {
 
             {/* Password Section */}
             <div className="flex-1 min-w-[280px] w-full max-w-md">
-              <h2 className="text-xl font-semibold text-[#333] mb-4">Change Password</h2>
+              <h2 className="text-xl font-semibold text-[#333] mb-4">
+                Change Password
+              </h2>
               <div className="space-y-4">
                 <input
                   type="password"
@@ -50,7 +52,9 @@ const AdminSettingAccount = () => {
 
             {/* Address Section */}
             <div className="flex-1 min-w-[280px] w-full max-w-md">
-              <h2 className="text-xl font-semibold text-[#333] mb-4">Address</h2>
+              <h2 className="text-xl font-semibold text-[#333] mb-4">
+                Address
+              </h2>
               <div className="space-y-4">
                 <input
                   type="text"

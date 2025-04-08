@@ -81,7 +81,9 @@ const AdminCommunicationPage = () => {
             <div className="bg-white rounded-lg p-6 shadow-md h-full flex flex-col">
               {/* Chat Header */}
               <div className="mb-4 border-b pb-2">
-                <h3 className="text-xl font-semibold text-[#226CD1]">Project 1</h3>
+                <h3 className="text-xl font-semibold text-[#226CD1]">
+                  Project 1
+                </h3>
                 <p className="text-sm text-gray-500">Conversation with Rohan</p>
               </div>
 
@@ -101,7 +103,10 @@ const AdminCommunicationPage = () => {
               {/* Input Area */}
               <div className="mt-4 border-t pt-3 flex items-center gap-2">
                 {/* Attachment */}
-                <label htmlFor="fileInput" className="cursor-pointer text-gray-500 hover:text-[#226CD1] transition">
+                <label
+                  htmlFor="fileInput"
+                  className="cursor-pointer text-gray-500 hover:text-[#226CD1] transition"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

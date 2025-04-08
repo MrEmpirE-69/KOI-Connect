@@ -38,9 +38,7 @@ const StudentTopNavbar = () => {
           transition={{ delay: 0.2 }}
           className="text-right"
         >
-          <p className="font-semibold text-sm text-gray-700">
-            Logged in as
-          </p>
+          <p className="font-semibold text-sm text-gray-700">Logged in as</p>
           <p className="text-sm text-[#6C63FF] font-bold">Student</p>
         </motion.div>
       </div>

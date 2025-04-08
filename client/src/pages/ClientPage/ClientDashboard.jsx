@@ -121,18 +121,31 @@ const ClientDashboard = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          {[{ label: "Total Reviews", value: feedbackHistory.length, color: "bg-blue-100 text-blue-800" },
-            { label: "Pending Feedback", value: 3 - feedbackHistory.length, color: "bg-yellow-100 text-yellow-800" },
-            { label: "Rated Projects", value: feedbackHistory.filter((r) => r.rating > 0).length, color: "bg-green-100 text-green-800" }]
-            .map((stat, i) => (
-              <div
-                key={i}
-                className={`p-6 rounded-xl ${stat.color} text-center shadow-md transition-transform hover:scale-105`}
-              >
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <p>{stat.label}</p>
-              </div>
-            ))}
+          {[
+            {
+              label: "Total Reviews",
+              value: feedbackHistory.length,
+              color: "bg-blue-100 text-blue-800",
+            },
+            {
+              label: "Pending Feedback",
+              value: 3 - feedbackHistory.length,
+              color: "bg-yellow-100 text-yellow-800",
+            },
+            {
+              label: "Rated Projects",
+              value: feedbackHistory.filter((r) => r.rating > 0).length,
+              color: "bg-green-100 text-green-800",
+            },
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className={`p-6 rounded-xl ${stat.color} text-center shadow-md transition-transform hover:scale-105`}
+            >
+              <p className="text-2xl font-bold">{stat.value}</p>
+              <p>{stat.label}</p>
+            </div>
+          ))}
         </div>
 
         {/* Review Submission */}
@@ -157,7 +170,11 @@ const ClientDashboard = () => {
                 onMouseLeave={handleMouseLeave}
                 className="cursor-pointer text-xl"
               >
-                {i < (hoveredStars || selectedStars) ? <FaStar /> : <FaRegStar />}
+                {i < (hoveredStars || selectedStars) ? (
+                  <FaStar />
+                ) : (
+                  <FaRegStar />
+                )}
               </span>
             ))}
           </div>
@@ -253,7 +270,9 @@ const ClientDashboard = () => {
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow">
-              <h2 className="font-bold text-[#226CD1] mb-3">Upcoming Actions</h2>
+              <h2 className="font-bold text-[#226CD1] mb-3">
+                Upcoming Actions
+              </h2>
               <ul className="text-sm space-y-2">
                 <li>📅 Review due for Project 2 in 2 days</li>
                 <li>⚠️ Missing feedback for Project 3</li>

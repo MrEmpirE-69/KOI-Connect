@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { FaChevronDown, FaFileAlt, FaStar, FaRegStar } from "react-icons/fa";
 import { BsBell } from "react-icons/bs";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 import logo from "../../assets/koi.png";
 import avatar from "../../assets/user1.png";
 import ClientSideMenu from "./ClientSideMenu"; // Import the ClientSideMenu component
@@ -78,14 +86,22 @@ const ClientProjectReview = () => {
       <main className="flex-1 p-8 overflow-y-auto">
         {/* Navbar */}
         <div className="flex justify-between items-center mb-6">
-          <input type="text" placeholder="Search here" className="px-4 py-2 border rounded-md w-[300px]" />
+          <input
+            type="text"
+            placeholder="Search here"
+            className="px-4 py-2 border rounded-md w-[300px]"
+          />
           <div className="flex items-center gap-4">
             <BsBell className="text-xl text-blue-600" />
-            <p className="text-sm text-gray-600">Logged in as <strong>Client</strong></p>
+            <p className="text-sm text-gray-600">
+              Logged in as <strong>Client</strong>
+            </p>
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-center text-[#226CD1] mb-8">Project Review Page</h1>
+        <h1 className="text-3xl font-bold text-center text-[#226CD1] mb-8">
+          Project Review Page
+        </h1>
 
         {/* Table */}
         <div className="bg-white rounded-xl shadow p-6 overflow-x-auto">
@@ -105,17 +121,21 @@ const ClientProjectReview = () => {
               {projects.map((p) => (
                 <React.Fragment key={p.id}>
                   <tr className="bg-white shadow-sm rounded-lg hover:shadow-md transition duration-300">
-                    <td className="p-3 font-semibold text-gray-800">{p.student}</td>
+                    <td className="p-3 font-semibold text-gray-800">
+                      {p.student}
+                    </td>
                     <td className="p-3 text-gray-700">{p.title}</td>
                     <td className="p-3 text-gray-500">{p.date}</td>
                     <td className="p-3">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
-                        p.status === "Approved"
-                          ? "bg-green-100 text-green-700"
-                          : p.status === "Submitted"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
+                          p.status === "Approved"
+                            ? "bg-green-100 text-green-700"
+                            : p.status === "Submitted"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-blue-100 text-blue-700"
+                        }`}
+                      >
                         {p.status}
                       </span>
                     </td>
@@ -144,7 +164,9 @@ const ClientProjectReview = () => {
                     </td>
                     <td className="text-center">
                       <button
-                        onClick={() => setExpandedRow(expandedRow === p.id ? null : p.id)}
+                        onClick={() =>
+                          setExpandedRow(expandedRow === p.id ? null : p.id)
+                        }
                         className="hover:text-blue-500 transition"
                       >
                         <FaChevronDown className="inline" />
@@ -168,10 +190,16 @@ const ClientProjectReview = () => {
         {selectedProject && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-xl w-[400px] shadow-xl space-y-4 animate-fadeIn">
-              <h2 className="text-xl font-bold text-blue-600">Review {selectedProject.title}</h2>
+              <h2 className="text-xl font-bold text-blue-600">
+                Review {selectedProject.title}
+              </h2>
               <div className="flex justify-center text-yellow-500 text-xl">
                 {[...Array(5)].map((_, idx) => (
-                  <span key={idx} onClick={() => setRating(idx + 1)} className="cursor-pointer">
+                  <span
+                    key={idx}
+                    onClick={() => setRating(idx + 1)}
+                    className="cursor-pointer"
+                  >
                     {rating > idx ? <FaStar /> : <FaRegStar />}
                   </span>
                 ))}
@@ -184,8 +212,18 @@ const ClientProjectReview = () => {
                 className="w-full border p-2 rounded-md"
               />
               <div className="flex justify-end gap-3">
-                <button onClick={() => setSelectedProject(null)} className="bg-gray-200 px-4 py-2 rounded">Cancel</button>
-                <button onClick={handleFeedbackSubmit} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Submit</button>
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="bg-gray-200 px-4 py-2 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleFeedbackSubmit}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Submit
+                </button>
               </div>
             </div>
           </div>
@@ -195,18 +233,24 @@ const ClientProjectReview = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
           <div className="bg-blue-100 p-5 rounded-xl text-center shadow-md hover:scale-105 transition">
             <p className="text-lg font-bold text-blue-800">Total Reviews</p>
-            <p className="text-2xl font-semibold">{projects.filter(p => p.feedback === "Given").length}</p>
+            <p className="text-2xl font-semibold">
+              {projects.filter((p) => p.feedback === "Given").length}
+            </p>
           </div>
           <div className="bg-yellow-100 p-5 rounded-xl text-center shadow-md hover:scale-105 transition">
             <p className="text-lg font-bold text-yellow-800">Pending</p>
-            <p className="text-2xl font-semibold">{projects.filter(p => p.feedback === "Pending").length}</p>
+            <p className="text-2xl font-semibold">
+              {projects.filter((p) => p.feedback === "Pending").length}
+            </p>
           </div>
           <div className="bg-green-100 p-5 rounded-xl text-center shadow-md hover:scale-105 transition">
             <p className="text-lg font-bold text-green-800">Average Rating</p>
             <p className="text-2xl font-semibold">
               {(() => {
-                const rated = projects.filter(p => p.rating > 0);
-                const avg = rated.length ? rated.reduce((a, b) => a + b.rating, 0) / rated.length : 0;
+                const rated = projects.filter((p) => p.rating > 0);
+                const avg = rated.length
+                  ? rated.reduce((a, b) => a + b.rating, 0) / rated.length
+                  : 0;
                 return avg.toFixed(1) + " ★";
               })()}
             </p>
@@ -216,7 +260,9 @@ const ClientProjectReview = () => {
         {/* Chart and FAQ */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
           <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-xl font-bold text-blue-600 mb-4">Rating Breakdown</h2>
+            <h2 className="text-xl font-bold text-blue-600 mb-4">
+              Rating Breakdown
+            </h2>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={ratingStats}>
                 <XAxis dataKey="name" />
@@ -244,14 +290,21 @@ const ClientProjectReview = () => {
 
         {/* Sample Reviews */}
         <div className="mt-10 bg-white p-6 rounded-xl shadow">
-          <h2 className="text-xl font-bold text-blue-600 mb-4">Client Feedback Samples</h2>
+          <h2 className="text-xl font-bold text-blue-600 mb-4">
+            Client Feedback Samples
+          </h2>
           {projects
-            .filter(p => p.comment && p.feedback === "Given")
+            .filter((p) => p.comment && p.feedback === "Given")
             .slice(0, 3)
             .map((p, i) => (
-              <div key={i} className="mb-3 border-l-4 border-blue-500 bg-blue-50 pl-4 py-2 rounded">
+              <div
+                key={i}
+                className="mb-3 border-l-4 border-blue-500 bg-blue-50 pl-4 py-2 rounded"
+              >
                 <p className="text-sm italic text-gray-800">"{p.comment}"</p>
-                <p className="text-xs text-gray-500">— {p.student}, {p.rating}★</p>
+                <p className="text-xs text-gray-500">
+                  — {p.student}, {p.rating}★
+                </p>
               </div>
             ))}
         </div>
