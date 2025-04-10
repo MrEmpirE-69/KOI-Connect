@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import SideMenu from "../../components/SideMenu/SideMenu";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
 import { FaUsers, FaChalkboardTeacher, FaFileAlt } from "react-icons/fa";
@@ -27,23 +28,35 @@ const AdminDashboard = () => {
 
           {/* Dashboard Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-10 animate-fadeInUp">
-            <div className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
+            {/* Students Card */}
+            <Link
+              to="/student-list"
+              className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
+            >
               <FaUsers className="text-4xl mx-auto text-[#1C628F]" />
               <h2 className="text-4xl font-bold my-2">100</h2>
               <p className="text-gray-600 font-semibold text-lg">Students</p>
-            </div>
+            </Link>
 
-            <div className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
+            {/* Teachers Card */}
+            <Link
+              to="/teacher-list"
+              className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
+            >
               <FaChalkboardTeacher className="text-4xl mx-auto text-[#1C628F]" />
               <h2 className="text-4xl font-bold my-2">10</h2>
               <p className="text-gray-600 font-semibold text-lg">Teachers</p>
-            </div>
+            </Link>
 
-            <div className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
+            {/* Clients Card */}
+            <Link
+              to="/client-list"
+              className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
+            >
               <FaFileAlt className="text-4xl mx-auto text-[#1C628F]" />
               <h2 className="text-4xl font-bold my-2">20</h2>
               <p className="text-gray-600 font-semibold text-lg">Clients</p>
-            </div>
+            </Link>
           </div>
 
           {/* Announcements */}

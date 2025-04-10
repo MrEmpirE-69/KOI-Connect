@@ -1,11 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import logo from "../../assets/koi.png";
 import avatar from "../../assets/student.png";
 import { MdDashboard, MdSettings, MdLockOutline } from "react-icons/md";
 import { BiMessageSquareDetail } from "react-icons/bi";
 import { motion } from "framer-motion";
 
-const AsSideMenu = () => {
+const AsSideMenu = ({ currentPage }) => {
   return (
     <motion.aside
       initial={{ x: -100, opacity: 0 }}
@@ -43,42 +44,73 @@ const AsSideMenu = () => {
 
         {/* Navigation Links */}
         <nav className="flex flex-col gap-3 text-[#444] font-medium">
-          <motion.a
-            href="#"
-            className="flex items-center gap-2 py-2 px-3 rounded-lg bg-[#f0f2ff] text-[#226CD1] shadow-sm"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <MdDashboard className="text-xl" />
-            Dashboard
-          </motion.a>
-          <motion.a
-            href="#"
-            className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1]"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <MdLockOutline className="text-xl" />
-            Project Review
-          </motion.a>
-          <motion.a
-            href="#"
-            className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1]"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <BiMessageSquareDetail className="text-xl" />
-            Communication Page
-          </motion.a>
-          <motion.a
-            href="#"
-            className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1]"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <MdSettings className="text-xl" />
-            Setting
-          </motion.a>
+          {/* Dashboard Link */}
+          <motion.div key="dashboard">
+            <Link
+              to="/as-dashboard" // Redirect to the dashboard
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition duration-300 ${
+                currentPage === "dashboard"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              }`}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <MdDashboard className="text-xl" />
+              Dashboard
+            </Link>
+          </motion.div>
+
+          {/* Project Review Link */}
+          <motion.div key="project-review">
+            <Link
+              to="/as-projectreview" // Redirect to project review
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition duration-300 ${
+                currentPage === "project-review"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              }`}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <MdLockOutline className="text-xl" />
+              Project Review
+            </Link>
+          </motion.div>
+
+          {/* Communication Page Link */}
+          <motion.div key="communication">
+            <Link
+              to="/as-communication" // Redirect to communication page
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition duration-300 ${
+                currentPage === "communication"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              }`}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <BiMessageSquareDetail className="text-xl" />
+              Communication Page
+            </Link>
+          </motion.div>
+
+          {/* Setting Link */}
+          <motion.div key="setting">
+            <Link
+              to="/as-setting" // Redirect to settings
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition duration-300 ${
+                currentPage === "setting"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              }`}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <MdSettings className="text-xl" />
+              Setting
+            </Link>
+          </motion.div>
         </nav>
       </div>
 

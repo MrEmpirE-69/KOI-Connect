@@ -1,17 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import logo from "../../assets/koi.png";
 import studentAvatar from "../../assets/student1.png";
 import { MdDashboard, MdLock, MdSettings } from "react-icons/md";
 import { BiMessageSquareDetail } from "react-icons/bi";
 import { motion } from "framer-motion";
 
-const StudentsSideMenu = () => {
+const StudentsSideMenu = ({ currentPage }) => {
   return (
     <motion.aside
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="w-[250px] h-screen bg-white shadow-2xl rounded-r-xl flex flex-col justify-between"
+      className="w-[250px] h-screen bg-white shadow-xl rounded-r-xl flex flex-col justify-between p-6"
     >
       {/* Logo */}
       <div className="flex flex-col items-center py-6">
@@ -37,50 +38,54 @@ const StudentsSideMenu = () => {
           <img
             src={studentAvatar}
             alt="Student"
-            className="w-10 h-10 rounded-full mr-3 shadow-md border border-gray-200"
+            className="w-12 h-12 rounded-full mr-3 shadow-lg border-2 border-gray-300"
           />
-          <span className="font-semibold text-lg text-[#1C628F]">Student</span>
+          <span className="font-semibold text-lg text-[#226CD1]">Student</span>
         </motion.div>
 
         {/* Navigation */}
-        <nav className="flex flex-col gap-3 text-[#444] font-medium">
-          {[
+        <nav className="flex flex-col gap-4 text-[#444] font-medium">
+          {[ 
             {
               label: "Dashboard",
               icon: <MdDashboard className="text-xl" />,
-              href: "#",
-              active: true,
+              to: "/student-dashboard",
+              active: currentPage === "dashboard",
             },
             {
               label: "Assessment Page",
               icon: <MdLock className="text-xl" />,
-              href: "#",
+              to: "/student-assessment",
+              active: currentPage === "assessment",
             },
             {
               label: "Communication Page",
               icon: <BiMessageSquareDetail className="text-xl" />,
-              href: "#",
+              to: "/student-communication", // Adjusted as per your request
+              active: currentPage === "communication",
             },
             {
               label: "Setting",
               icon: <MdSettings className="text-xl" />,
-              href: "#",
+              to: "/student-setting", // Adjusted as per your request
+              active: currentPage === "settings",
             },
-          ].map(({ label, icon, href, active }, idx) => (
-            <motion.a
-              key={idx}
-              href={href}
-              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition duration-300 ${
-                active
-                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm"
-                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
-              }`}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {icon}
-              {label}
-            </motion.a>
+          ].map(({ label, icon, to, active }, idx) => (
+            <motion.div key={idx}>
+              <Link
+                to={to}
+                className={`flex items-center gap-3 py-2 px-4 rounded-lg transition duration-300 ${
+                  active
+                    ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                    : "hover:bg-[#f5f7ff] hover:text-[#226CD1] "
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {icon}
+                {label}
+              </Link>
+            </motion.div>
           ))}
         </nav>
       </div>
@@ -90,7 +95,7 @@ const StudentsSideMenu = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="px-6 py-4"
+        className="px-6 py-4 mt-auto"
       >
         <button className="text-sm text-[#444] hover:text-red-600 flex items-center gap-2 transition hover:scale-105">
           <svg

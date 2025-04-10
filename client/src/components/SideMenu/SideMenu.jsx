@@ -1,11 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";  // Import Link for navigation
 import logo from "../../assets/koi.png";
 import adminAvatar from "../../assets/admin.png";
 import { MdDashboard, MdSettings, MdLock } from "react-icons/md";
 import { RiTeamLine } from "react-icons/ri";
 import { BiMessageSquareDetail } from "react-icons/bi";
 
-const SideMenu = () => {
+const SideMenu = ({ currentPage }) => {
   return (
     <aside className="w-[250px] h-full bg-white shadow-2xl rounded-r-xl flex flex-col justify-between animate-slideInLeft transition-all duration-700">
       {/* Top Section */}
@@ -28,48 +29,57 @@ const SideMenu = () => {
 
           {/* Navigation */}
           <nav className="flex flex-col gap-3 text-[#444] font-medium">
-            <a
-              href="#"
-              className="flex items-center gap-2 py-2 px-3 rounded-lg bg-[#f0f2ff] text-[#226CD1] shadow-sm transition hover:scale-[1.02]"
+            {/* Dashboard Link */}
+            <Link
+              to="/admin-dashboard"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "dashboard" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition hover:scale-[1.02]`}
             >
               <MdDashboard className="text-xl" />
               Dashboard
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1] transition-all duration-300"
+            </Link>
+
+            {/* Project Review Link */}
+            <Link
+              to="/admin-projectreview"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "projectReview" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition-all duration-300`}
             >
               <MdLock className="text-xl" />
               Project Review
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1] transition-all duration-300"
+            </Link>
+
+            {/* Communication Page Link */}
+            <Link
+              to="/admin-communication"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "communication" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition-all duration-300`}
             >
               <BiMessageSquareDetail className="text-xl" />
               Communication Page
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1] transition-all duration-300"
+            </Link>
+
+            {/* Role Distributor Link */}
+            <Link
+              to="/admin-role-distributor"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "roleDistributor" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition-all duration-300`}
             >
               <RiTeamLine className="text-xl" />
               Role Distributor
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1] transition-all duration-300"
+            </Link>
+
+            {/* Settings Link */}
+            <Link
+              to="/admin-setting"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "setting" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition-all duration-300`}
             >
               <MdSettings className="text-xl" />
               Settings
-            </a>
+            </Link>
           </nav>
         </div>
       </div>
 
       {/* Bottom / Logout */}
       <div className="px-6 py-4">
-        <button className="flex items-center gap-2 text-sm text-[#444] hover:text-red-600 transition-all hover:scale-105">
+        <Link to="/" className="flex items-center gap-2 text-sm text-[#444] hover:text-red-600 transition-all hover:scale-105">
           <svg
             width="20"
             height="20"
@@ -80,7 +90,7 @@ const SideMenu = () => {
             <path d="M13 9l4 3-4 3V9z" />
           </svg>
           Logout
-        </button>
+        </Link>
       </div>
     </aside>
   );
