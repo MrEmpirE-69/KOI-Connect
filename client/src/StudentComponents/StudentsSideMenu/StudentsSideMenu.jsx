@@ -1,12 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate for programmatic navigation
 import logo from "../../assets/koi.png";
-import studentAvatar from "../../assets/student1.png";
+import studentAvatar from "../../assets/student1.png"; // Update to the correct student avatar
 import { MdDashboard, MdLock, MdSettings } from "react-icons/md";
 import { BiMessageSquareDetail } from "react-icons/bi";
 import { motion } from "framer-motion";
 
-const StudentsSideMenu = ({ currentPage }) => {
+const StudentsSideMenu = () => {
+  // Get the current location from react-router
+  const location = useLocation();
+  const currentPage = location.pathname.split("/")[1]; // Extract the page name from the URL
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  // Logout handler
+  const handleLogout = () => {
+    // Redirect to HomePage
+    navigate("/");
+  };
+
   return (
     <motion.aside
       initial={{ x: -100, opacity: 0 }}
@@ -45,30 +56,30 @@ const StudentsSideMenu = ({ currentPage }) => {
 
         {/* Navigation */}
         <nav className="flex flex-col gap-4 text-[#444] font-medium">
-          {[ 
+          {[
             {
               label: "Dashboard",
               icon: <MdDashboard className="text-xl" />,
               to: "/student-dashboard",
-              active: currentPage === "dashboard",
+              active: currentPage === "student-dashboard",
             },
             {
               label: "Assessment Page",
               icon: <MdLock className="text-xl" />,
               to: "/student-assessment",
-              active: currentPage === "assessment",
+              active: currentPage === "student-assessment",
             },
             {
               label: "Communication Page",
               icon: <BiMessageSquareDetail className="text-xl" />,
-              to: "/student-communication", // Adjusted as per your request
-              active: currentPage === "communication",
+              to: "/student-communication",
+              active: currentPage === "student-communication",
             },
             {
               label: "Setting",
               icon: <MdSettings className="text-xl" />,
-              to: "/student-setting", // Adjusted as per your request
-              active: currentPage === "settings",
+              to: "/student-setting",
+              active: currentPage === "student-setting",
             },
           ].map(({ label, icon, to, active }, idx) => (
             <motion.div key={idx}>
@@ -97,7 +108,10 @@ const StudentsSideMenu = ({ currentPage }) => {
         transition={{ delay: 0.4 }}
         className="px-6 py-4 mt-auto"
       >
-        <button className="text-sm text-[#444] hover:text-red-600 flex items-center gap-2 transition hover:scale-105">
+        <button
+          className="text-sm text-[#444] hover:text-red-600 flex items-center gap-2 transition hover:scale-105"
+          onClick={handleLogout} // Add the logout functionality
+        >
           <svg
             width="20"
             height="20"

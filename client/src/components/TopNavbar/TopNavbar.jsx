@@ -87,7 +87,7 @@ const TopNavbar = () => {
 
       {/* Notification Box */}
       {isNotificationOpen && (
-        <div className="absolute right-130 top-16 w-[500px]  bg-white shadow-lg rounded-md p-4 z-50">
+        <div className="absolute right-55 top-16 w-[500px]  bg-white shadow-lg rounded-md p-4 z-50">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-lg">Notifications</h3>
             <button

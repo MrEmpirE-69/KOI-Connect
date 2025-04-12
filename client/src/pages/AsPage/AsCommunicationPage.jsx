@@ -1,107 +1,148 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import AsSideMenu from "../../AsComponents/AsSideMenu/AsSideMenu";
 import AsTopNavbar from "../../AsComponents/AsTopNavbar/AsTopNavbar";
 
-
 const AsCommunicationPage = () => {
-    const projects = [
-      {
-        title: "Project 1",
-        message: "Rohan - I am working on it",
-        time: "2 min ago",
-        count: 3,
-      },
-      {
-        title: "Project 2",
-        message: "Gagan - Done with it?",
-        time: "2 min ago",
-        count: 4,
-      },
-      {
-        title: "Project 3",
-        message: "Kushal - Finally Done!",
-        time: "2 min ago",
-        count: 0,
-      },
-      {
-        title: "Project 4",
-        message: "Client - Doing Good?",
-        time: "2 min ago",
-        count: 0,
-      },
-      {
-        title: "Project 5",
-        message: "AS - I am having a look",
-        time: "2 min ago",
-        count: 0,
-      },
-    ];
-  
-    return (
-      <div className="flex h-screen bg-[#f9f9f9]">
-        {/* Sidebar */}
-        <AsSideMenu currentPage="communication" />
-  
-        {/* Main Section */}
-        <main className="flex-1 flex flex-col overflow-hidden">
-          <AsTopNavbar />
-  
-          <div className="flex flex-1 overflow-hidden">
-            {/* Chat Threads List */}
-            <div className="w-full md:w-1/3 lg:w-1/4 bg-white border-r p-4 overflow-y-auto animate-fade-in-left">
-              <h2 className="text-xl font-bold text-[#226CD1] mb-4">Chats</h2>
-              <div className="space-y-4">
-                {projects.map((project, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-lg shadow hover:shadow-md bg-[#f9f9ff] hover:bg-[#eef1ff] cursor-pointer transition flex justify-between items-start animate-fade-in-up"
-                    style={{
-                      animationDelay: `${idx * 80}ms`,
-                      animationFillMode: "backwards",
-                    }}
-                  >
-                    <div>
-                      <p className="font-bold text-[#226CD1]">{project.title}</p>
-                      <p className="text-sm text-gray-600">{project.message}</p>
-                    </div>
-                    <div className="text-right text-xs text-gray-500">
-                      <p>{project.time}</p>
-                      {project.count > 0 && (
-                        <span className="mt-1 inline-block bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                          {project.count}
-                        </span>
-                      )}
-                    </div>
+  // Example data for projects and messages
+  const projects = [
+    {
+      id: 1,
+      title: "Project 1",
+      messages: [
+        { sender: "Rohan", text: "I am working on it.", time: "2 min ago" },
+        { sender: "Client", text: "Okay, keep me updated.", time: "1 min ago" },
+      ],
+    },
+    {
+      id: 2,
+      title: "Project 2",
+      messages: [
+        { sender: "Gagan", text: "Done with it?", time: "5 min ago" },
+        { sender: "Client", text: "Great! Let's discuss the next steps.", time: "3 min ago" },
+      ],
+    },
+    {
+      id: 3,
+      title: "Project 3",
+      messages: [
+        { sender: "Kushal", text: "Finally Done!", time: "10 min ago" },
+        { sender: "Client", text: "Awesome, thanks!", time: "7 min ago" },
+      ],
+    },
+    {
+      id: 4,
+      title: "Project 4",
+      messages: [
+        { sender: "Client", text: "Doing Good?", time: "10 min ago" },
+        { sender: "Burno", text: "Yes, making progress.", time: "5 min ago" },
+      ],
+    },
+    {
+      id: 5,
+      title: "Project 5",
+      messages: [
+        { sender: "AS", text: "I am having a look.", time: "15 min ago" },
+        { sender: "Client", text: "Great, let me know your thoughts.", time: "12 min ago" },
+      ],
+    },
+  ];
+
+  // Set default project to be selected on page load
+  const [selectedProject, setSelectedProject] = useState(projects[0]);
+  const [message, setMessage] = useState(""); // For storing the typed message
+
+  useEffect(() => {
+    // Set the default selected project when the page loads
+    setSelectedProject(projects[0]);
+  }, []);
+
+  const handleProjectClick = (projectId) => {
+    const selected = projects.find((project) => project.id === projectId);
+    setSelectedProject(selected);
+  };
+
+  const handleSendMessage = () => {
+    if (message.trim() && selectedProject) {
+      const newMessage = {
+        sender: "You", // Placeholder for the current user (can be dynamic)
+        text: message,
+        time: "Just now",
+      };
+
+      // Add the new message to the selected project
+      const updatedProjects = projects.map((project) =>
+        project.id === selectedProject.id
+          ? { ...project, messages: [...project.messages, newMessage] }
+          : project
+      );
+
+      // Update the state with the new message list
+      setSelectedProject({ ...selectedProject, messages: [...selectedProject.messages, newMessage] });
+      setMessage(""); // Clear the input field
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-[#f9f9f9]">
+      {/* Sidebar */}
+      <AsSideMenu currentPage="communication" />
+
+      {/* Main Section */}
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <AsTopNavbar />
+
+        <div className="flex flex-1 overflow-hidden">
+          {/* Chat Threads List */}
+          <div className="w-full md:w-1/3 lg:w-1/4 bg-white border-r p-4 overflow-y-auto animate-fade-in-left">
+            <h2 className="text-xl font-bold text-[#226CD1] mb-4">Chats</h2>
+            <div className="space-y-4">
+              {projects.map((project) => (
+                <div
+                  key={project.id}
+                  className={`p-3 rounded-lg shadow hover:shadow-md cursor-pointer transition flex justify-between items-start animate-fade-in-up ${
+                    selectedProject.id === project.id
+                      ? "bg-[#eef1ff] border-l-4 border-[#226CD1]" // Active project is highlighted
+                      : "bg-[#f9f9ff]"
+                  }`}
+                  onClick={() => handleProjectClick(project.id)}
+                >
+                  <div>
+                    <p className="font-bold text-[#226CD1]">{project.title}</p>
+                    <p className="text-sm text-gray-600">{project.messages[project.messages.length - 1].text}</p>
                   </div>
-                ))}
-              </div>
+                  <div className="text-right text-xs text-gray-500">
+                    <p>{project.messages[project.messages.length - 1].time}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-  
-            {/* Chat Window */}
-            <div className="hidden md:flex flex-col flex-1 p-6 animate-fade-in-up">
+          </div>
+
+          {/* Chat Window */}
+          <div className="flex-1 p-6 animate-fade-in-up">
+            {selectedProject ? (
               <div className="bg-white rounded-lg p-6 shadow-md h-full flex flex-col">
                 {/* Chat Header */}
                 <div className="mb-4 border-b pb-2">
-                  <h3 className="text-xl font-semibold text-[#226CD1]">
-                    Project 1
-                  </h3>
-                  <p className="text-sm text-gray-500">Conversation with Rohan</p>
+                  <h3 className="text-xl font-semibold text-[#226CD1]">{selectedProject.title}</h3>
+                  <p className="text-sm text-gray-500">
+                    Conversation with {selectedProject.messages[0]?.sender}
+                  </p>
                 </div>
-  
+
                 {/* Messages */}
                 <div className="flex-1 overflow-y-auto space-y-4 pr-2">
-                  <div className="self-start bg-gray-100 p-3 rounded-lg max-w-xs">
-                    Hey! Just checking on the status.
-                  </div>
-                  <div className="self-end bg-blue-500 text-white p-3 rounded-lg max-w-xs">
-                    I'm working on it, should be done soon.
-                  </div>
-                  <div className="self-start bg-gray-100 p-3 rounded-lg max-w-xs">
-                    Awesome, thanks!
-                  </div>
+                  {selectedProject.messages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`p-3 rounded-lg max-w-xs ${msg.sender === "Client" ? "bg-gray-100" : "bg-blue-500 text-white"} `}
+                    >
+                      <p>{msg.text}</p>
+                      <div className="text-xs text-right">{msg.time}</div>
+                    </div>
+                  ))}
                 </div>
-  
+
                 {/* Input Area */}
                 <div className="mt-4 border-t pt-3 flex items-center gap-2">
                   {/* Attachment */}
@@ -136,26 +177,35 @@ const AsCommunicationPage = () => {
                       }
                     }}
                   />
-  
+
                   {/* Input */}
                   <input
                     type="text"
                     placeholder="Type a message..."
                     className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   />
-  
+
                   {/* Send Button */}
-                  <button className="bg-[#226CD1] text-white px-4 py-2 rounded-full hover:bg-blue-600 transition">
+                  <button
+                    className="bg-[#226CD1] text-white px-4 py-2 rounded-full hover:bg-blue-600 transition"
+                    onClick={handleSendMessage} // Send message
+                  >
                     Send
                   </button>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex justify-center items-center h-full text-center text-gray-500">
+                <p>Select a project to view the conversation</p>
+              </div>
+            )}
           </div>
-        </main>
-      </div>
-    );
-  };
-  
-  export default AsCommunicationPage;
-  
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default AsCommunicationPage;

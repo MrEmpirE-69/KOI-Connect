@@ -1,15 +1,29 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import {
   FaClipboardList,
   FaComment,
   FaCog,
   FaSignOutAlt,
 } from "react-icons/fa";
-import logo from "../../assets/koi.png"; // Make sure the logo image is correctly imported
+import logo from "../../assets/koi.png"; // Ensure the logo image is correctly imported
 import userImage from "../../assets/user1.png"; // Replace this with the correct path to the user's image
 
-const ClientSideMenu = ({ currentPage }) => {
+const ClientSideMenu = () => {
+  // Get the current location from react-router
+  const location = useLocation();
+  const currentPage = location.pathname.split("/")[1]; // Extract the page name from the URL
+  const navigate = useNavigate(); // Initialize navigate function
+
+  // Function to handle logout
+  const handleLogout = () => {
+    // Clear any authentication-related data if needed (e.g., remove from localStorage)
+    // localStorage.removeItem('auth_token');  // Example: Removing auth token if stored
+
+    // Navigate to the homepage
+    navigate("/"); 
+  };
+
   return (
     <div className="w-[250px] shadow-xl rounded-r-xl flex flex-col h-full p-6">
       {/* Logo Section */}
@@ -31,12 +45,12 @@ const ClientSideMenu = ({ currentPage }) => {
       <div className="flex flex-col gap-4 mt-4">
         {/* Dashboard Link */}
         <Link
-          to="/client/dashboard"
+          to="/client-dashboard"
           className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
-            currentPage === "dashboard"
-              ? "bg-[#f0f2ff] text-[#226CD1]"
-              : "text-[#444]"
-          } hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
+            currentPage === "client-dashboard"
+              ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+              : "text-[#444] hover:bg-[#e0e7ff] hover:text-[#226CD1]"
+          } transition duration-300`}
         >
           <FaClipboardList />
           Dashboard
@@ -44,12 +58,12 @@ const ClientSideMenu = ({ currentPage }) => {
 
         {/* Project Review Link */}
         <Link
-          to="/client/project-review"
+          to="/client-projectreview"
           className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
-            currentPage === "project-review"
-              ? "bg-[#f0f2ff] text-[#226CD1]"
-              : "text-[#444]"
-          } hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
+            currentPage === "client-projectreview"
+              ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+              : "text-[#444] hover:bg-[#e0e7ff] hover:text-[#226CD1]"
+          } transition-all duration-300`}
         >
           <FaClipboardList />
           Project Review
@@ -57,12 +71,12 @@ const ClientSideMenu = ({ currentPage }) => {
 
         {/* Communication Page Link */}
         <Link
-          to="/client/communication"
+          to="/client-communication"
           className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
-            currentPage === "communication"
-              ? "bg-[#f0f2ff] text-[#226CD1]"
-              : "text-[#444]"
-          } hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
+            currentPage === "client-communication"
+              ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+              : "text-[#444] hover:bg-[#e0e7ff] hover:text-[#226CD1]"
+          } transition-all duration-300`}
         >
           <FaComment />
           Communication Page
@@ -70,12 +84,12 @@ const ClientSideMenu = ({ currentPage }) => {
 
         {/* Settings Link */}
         <Link
-          to="/client/settings"
+          to="/client-setting"
           className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
-            currentPage === "settings"
-              ? "bg-[#f0f2ff] text-[#226CD1]"
-              : "text-[#444]"
-          } hover:bg-[#e0e7ff] hover:text-[#226CD1] transition duration-300`}
+            currentPage === "client-setting"
+              ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+              : "text-[#444] hover:bg-[#e0e7ff] hover:text-[#226CD1]"
+          } transition-all duration-300`}
         >
           <FaCog />
           Settings
@@ -84,7 +98,10 @@ const ClientSideMenu = ({ currentPage }) => {
 
       {/* Logout Button */}
       <div className="px-6 py-4 mt-auto">
-        <button className="text-sm text-[#444] hover:text-red-600 flex gap-2 items-center">
+        <button
+          onClick={handleLogout} // Add onClick handler to navigate
+          className="text-sm text-[#444] hover:text-red-600 flex gap-2 items-center"
+        >
           <FaSignOutAlt />
           Logout
         </button>

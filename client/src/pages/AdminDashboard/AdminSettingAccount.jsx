@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import SideMenu from "../../components/SideMenu/SideMenu";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
 import { FaUserShield } from "react-icons/fa";
 
 const AdminSettingAccount = () => {
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  const [formData, setFormData] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+    streetAddress: "135-234 George st",
+    suburb: "Sydney, 2000",
+    state: "NSW",
+    confirm: false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.confirm) {
+      alert("Account updated successfully!");
+      navigate("/admin-setting");  // Redirect to the admin setting page after saving
+    } else {
+      alert("Please confirm the details before saving.");
+    }
+  };
+
   return (
     <div className="flex h-screen bg-[#f4f6fa] overflow-hidden">
       {/* Sidebar */}
@@ -34,17 +65,26 @@ const AdminSettingAccount = () => {
               <div className="space-y-4">
                 <input
                   type="password"
+                  name="oldPassword"
                   placeholder="Old Password"
+                  value={formData.oldPassword}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
                 />
                 <input
                   type="password"
+                  name="newPassword"
                   placeholder="New Password"
+                  value={formData.newPassword}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
                 />
                 <input
                   type="password"
+                  name="confirmPassword"
                   placeholder="Confirm New Password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
                 />
               </div>
@@ -58,20 +98,26 @@ const AdminSettingAccount = () => {
               <div className="space-y-4">
                 <input
                   type="text"
+                  name="streetAddress"
                   placeholder="Street Address"
-                  defaultValue="135-234 George st"
+                  value={formData.streetAddress}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
                 />
                 <input
                   type="text"
+                  name="suburb"
                   placeholder="Suburb"
-                  defaultValue="Sydney, 2000"
+                  value={formData.suburb}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
                 />
                 <input
                   type="text"
+                  name="state"
                   placeholder="State"
-                  defaultValue="NSW"
+                  value={formData.state}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
                 />
               </div>
@@ -81,11 +127,21 @@ const AdminSettingAccount = () => {
           {/* Save Button */}
           <div className="mt-10 text-center">
             <label className="inline-flex items-center text-sm text-gray-600 mb-3">
-              <input type="checkbox" className="mr-2 accent-green-500" />
+              <input
+                type="checkbox"
+                name="confirm"
+                checked={formData.confirm}
+                onChange={handleChange}
+                className="mr-2 accent-green-500 w-4 h-4"
+              />
               Do you confirm the above details
             </label>
             <div>
-              <button className="mt-2 bg-[#226CD1] hover:bg-blue-600 text-white px-6 py-2 rounded-full transition">
+              <button
+                type="submit"
+                onClick={handleSubmit}  // Submit and navigate
+                className="mt-2 bg-[#226CD1] text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-600 transition"
+              >
                 Save
               </button>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
 import { FaPen, FaTrash } from "react-icons/fa";
@@ -48,12 +48,20 @@ const AdminCommunicationPage = () => {
     },
   ];
 
-  const [selectedProject, setSelectedProject] = useState(null);
+  // State for selected project, message, and tracking which project is highlighted
+  const [selectedProject, setSelectedProject] = useState(projects[0]);
   const [message, setMessage] = useState(""); // For storing the typed message
+  const [activeProject, setActiveProject] = useState(1); // Track active project ID for highlighting
+
+  useEffect(() => {
+    // By default, set the first project as selected when page loads
+    setSelectedProject(projects[0]);
+  }, []);
 
   const handleProjectClick = (projectId) => {
     const selected = projects.find((project) => project.id === projectId);
     setSelectedProject(selected);
+    setActiveProject(projectId); // Highlight the clicked project
   };
 
   const handleSendMessage = () => {
@@ -94,7 +102,11 @@ const AdminCommunicationPage = () => {
               {projects.map((project) => (
                 <div
                   key={project.id}
-                  className="p-3 rounded-lg shadow hover:shadow-md bg-[#f9f9ff] hover:bg-[#eef1ff] cursor-pointer transition flex justify-between items-start animate-fade-in-up"
+                  className={`p-3 rounded-lg shadow hover:shadow-md cursor-pointer transition flex justify-between items-start animate-fade-in-up ${
+                    activeProject === project.id
+                      ? "bg-[#eef1ff] border-l-4 border-[#226CD1]"
+                      : "bg-[#f9f9ff]"
+                  }`}
                   onClick={() => handleProjectClick(project.id)}
                 >
                   <div>

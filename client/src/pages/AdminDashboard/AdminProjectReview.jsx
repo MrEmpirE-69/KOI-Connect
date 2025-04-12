@@ -2,85 +2,72 @@ import React, { useState } from "react";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { CSVLink } from "react-csv";
+import { Link } from "react-router-dom";
+
+// Mocked example data
+const projects = [
+  {
+    id: 1,
+    student: "Rohan Poudel",
+    title: "Implication Of AI In KOI",
+    date: "2025/09/19",
+    status: "Pending",
+    description: "Project focused on the implications of AI technology in education systems, particularly in the KOI university context.",
+    comments: ["Looks good, but needs more research.", "Please include a case study."],
+    files: ["file1.pdf", "file2.docx"],
+    reviewer: "Admin 1"
+  },
+  {
+    id: 2,
+    student: "Kushal Nepal",
+    title: "Upgrade Of Student Portal",
+    date: "2025/08/17",
+    status: "Pending",
+    description: "Revamping the student portal for better user experience.",
+    comments: [],
+    files: ["studentPortalDesign.pdf"],
+    reviewer: "Admin 2"
+  },
+  {
+    id: 3,
+    student: "Gagan Bohara",
+    title: "Adding New Features In Moodle",
+    date: "2025/06/12",
+    status: "Pending",
+    description: "Improving the Moodle platform with additional features for better functionality.",
+    comments: ["Seems promising!"],
+    files: ["moodleFeatures.docx"],
+    reviewer: "Admin 3"
+  },
+  {
+    id: 4,
+    student: "Ayesha Khan",
+    title: "Blockchain Integration for KOI",
+    date: "2025/05/01",
+    status: "Approved",
+    description: "Exploring how blockchain can be integrated into KOI's system.",
+    comments: ["Great research."],
+    files: ["blockchainIntegration.pdf"],
+    reviewer: "Admin 4"
+  },
+  {
+    id: 5,
+    student: "Sita Gurung",
+    title: "Student Portal Redesign",
+    date: "2025/04/15",
+    status: "Rejected",
+    description: "Redesigning the student portal for a more modern interface.",
+    comments: ["The design is too similar to the previous one."],
+    files: ["portalRedesign.png"],
+    reviewer: "Admin 5"
+  }
+];
 
 const AdminProjectReview = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [sortBy, setSortBy] = useState("date");
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [newComment, setNewComment] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
-  const projects = [
-    {
-      id: 1,
-      student: "Rohan Poudel",
-      title: "Implication Of AI In KOI",
-      date: "2025/09/19",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      student: "Kushal Nepal",
-      title: "Upgrade Of Student Portal",
-      date: "2025/08/17",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      student: "Gagan Bohara",
-      title: "Adding New features In Moodle",
-      date: "2025/06/12",
-      status: "Pending",
-    },
-    {
-      id: 4,
-      student: "Ayesha Khan",
-      title: "Blockchain Integration for KOI",
-      date: "2025/05/01",
-      status: "Approved",
-    },
-    {
-      id: 5,
-      student: "Sita Gurung",
-      title: "Student Portal Redesign",
-      date: "2025/04/15",
-      status: "Rejected",
-    },
-    {
-      id: 6,
-      student: "Rajesh Sharma",
-      title: "Enhancing User Experience in KOI",
-      date: "2025/03/10",
-      status: "Approved",
-    },
-    {
-      id: 7,
-      student: "Anjali Thapa",
-      title: "New Features in KOI Admin Panel",
-      date: "2025/07/20",
-      status: "Pending",
-    },
-    {
-      id: 8,
-      student: "Pradeep Rai",
-      title: "Developing New API for KOI",
-      date: "2025/01/25",
-      status: "Approved",
-    },
-    {
-      id: 9,
-      student: "Shiva Prasad",
-      title: "KOI Dashboard Improvement",
-      date: "2025/02/13",
-      status: "Pending",
-    },
-    {
-      id: 10,
-      student: "Maya Rathi",
-      title: "Upgrade of Student Feedback System",
-      date: "2025/03/22",
-      status: "Pending",
-    },
-  ];
 
   const filteredProjects = projects.filter((project) =>
     project.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -88,26 +75,52 @@ const AdminProjectReview = () => {
     project.status.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const sortedProjects = filteredProjects.sort((a, b) => {
-    if (sortOrder === "asc") {
-      return a[sortBy] > b[sortBy] ? 1 : -1;
-    } else {
-      return a[sortBy] < b[sortBy] ? 1 : -1;
-    }
-  });
-
   const projectsPerPage = 5;
-  const totalPages = Math.ceil(sortedProjects.length / projectsPerPage);
-  const currentProjects = sortedProjects.slice(
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+  const currentProjects = filteredProjects.slice(
     (currentPage - 1) * projectsPerPage,
     currentPage * projectsPerPage
   );
 
-  const handleStatusChange = (id, newStatus) => {
+  const handleProjectClick = (projectId) => {
+    const project = projects.find((p) => p.id === projectId);
+    setSelectedProject(project);
+  };
+
+  const handleCommentSubmit = () => {
+    if (newComment.trim()) {
+      const updatedProject = {
+        ...selectedProject,
+        comments: [...selectedProject.comments, newComment],
+      };
+      setSelectedProject(updatedProject);
+      setNewComment(""); // Clear comment input
+    }
+  };
+
+  const handleStatusChange = (newStatus) => {
     const updatedProjects = projects.map((project) =>
-      project.id === id ? { ...project, status: newStatus } : project
+      project.id === selectedProject.id
+        ? { ...project, status: newStatus }
+        : project
     );
-    setCurrentPage(updatedProjects);
+
+    // Update the selected project state as well
+    const updatedSelectedProject = { ...selectedProject, status: newStatus };
+    setSelectedProject(updatedSelectedProject);
+
+    // Updating the projects list to reflect the change
+    const updatedProjectsState = projects.map((project) =>
+      project.id === selectedProject.id
+        ? { ...project, status: newStatus }
+        : project
+    );
+    // Here, we update the state of the projects in the parent component as well
+    projects.splice(0, projects.length, ...updatedProjectsState); // In place update for the project state
+  };
+
+  const handleFileDownload = (fileName) => {
+    alert(`Downloading: ${fileName}`);
   };
 
   return (
@@ -118,7 +131,7 @@ const AdminProjectReview = () => {
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 px-6 md:px-10 pt-4 overflow-y-auto animate-fade-in-up duration-700">
+      <main className="flex-1 flex flex-col overflow-hidden">
         <TopNavbar />
 
         {/* Page Title */}
@@ -159,6 +172,7 @@ const AdminProjectReview = () => {
                   <tr
                     key={project.id}
                     className="border-b hover:bg-gray-50 transition-all duration-300"
+                    onClick={() => handleProjectClick(project.id)}
                   >
                     <td className="py-3 px-4">{project.student}</td>
                     <td className="py-3 px-4">{project.title}</td>
@@ -189,7 +203,6 @@ const AdminProjectReview = () => {
 
           {/* Pagination */}
           <div className="flex justify-center mt-4">
-            {/* Conditionally show Previous button only on the second page */}
             {currentPage > 1 && (
               <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                 Previous
@@ -205,13 +218,69 @@ const AdminProjectReview = () => {
           <div className="mt-6 flex justify-center">
             <CSVLink
               data={projects}
-              filename="projects.csv"
+              filename="projects_report.csv"
               className="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 transition"
             >
               Export to CSV
             </CSVLink>
           </div>
         </div>
+
+        {/* Detailed Project View Modal */}
+        {selectedProject && (
+          <div className="fixed top-0 left-0 w-full h-full bg-gray-500 bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-md shadow-lg w-1/3">
+              <h2 className="text-xl font-bold text-[#226CD1] mb-4">{selectedProject.title}</h2>
+              <p className="mb-4"><strong>Description:</strong> {selectedProject.description}</p>
+
+              <h3 className="text-lg font-semibold mb-2">Comments:</h3>
+              <ul className="mb-4">
+                {selectedProject.comments.map((comment, index) => (
+                  <li key={index} className="border-b py-2">{comment}</li>
+                ))}
+              </ul>
+
+              {/* Comment Section */}
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Leave a comment"
+                className="w-full p-2 border rounded-md mb-4"
+              ></textarea>
+              <button onClick={handleCommentSubmit} className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                Add Comment
+              </button>
+
+              <h3 className="text-lg font-semibold mt-4">Files:</h3>
+              <ul className="mb-4">
+                {selectedProject.files.map((file, index) => (
+                  <li key={index} className="text-blue-500 cursor-pointer" onClick={() => handleFileDownload(file)}>{file}</li>
+                ))}
+              </ul>
+
+              <div className="mt-4 flex justify-between">
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="bg-gray-500 text-white px-4 py-2 rounded-md"
+                >
+                  Close
+                </button>
+                <Link
+                  to="/admin-projectreview"
+                  className="bg-green-500 text-white px-4 py-2 rounded-md"
+                >
+                  Approve
+                </Link>
+                <button
+                  onClick={() => handleStatusChange('Rejected')}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

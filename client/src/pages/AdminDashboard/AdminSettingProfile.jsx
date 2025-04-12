@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";  // Import useNavigate for redirection
 import SideMenu from "../../components/SideMenu/SideMenu";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
 import { FaUserCircle } from "react-icons/fa";
@@ -12,6 +13,8 @@ const AdminSettingProfile = () => {
     confirm: false,
   });
 
+  const navigate = useNavigate();  // Initialize the navigate function
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -24,7 +27,8 @@ const AdminSettingProfile = () => {
     e.preventDefault();
     if (formData.confirm) {
       alert("Profile updated successfully!");
-      // Add backend submission here
+      // Navigate to the admin-setting page after successful form submission
+      navigate("/admin-setting");  // Redirect to the settings page
     } else {
       alert("Please confirm the details before saving.");
     }

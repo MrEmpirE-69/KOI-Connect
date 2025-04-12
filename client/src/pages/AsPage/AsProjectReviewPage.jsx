@@ -1,68 +1,236 @@
 import React, { useState } from "react";
 import AsSideMenu from "../../AsComponents/AsSideMenu/AsSideMenu";
 import AsTopNavbar from "../../AsComponents/AsTopNavbar/AsTopNavbar";
-import { FaFileAlt } from "react-icons/fa";
-import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import { FaUserCircle } from "react-icons/fa";
 
-// Dummy project data
-const projectsData = [
+// Mocked example data
+const projects = [
   {
+    id: 1,
     student: "Rohan Poudel",
     title: "Implication Of AI In KOI",
     date: "2025/09/19",
     status: "Pending",
+    description: "Project focused on the implications of AI technology in education systems, particularly in the KOI university context.",
+    comments: ["Looks good, but needs more research.", "Please include a case study."],
+    files: ["file1.pdf", "file2.docx"],
+    reviewer: "Academic Supervisor",
     progress: 72,
   },
   {
+    id: 2,
     student: "Kushal Nepal",
     title: "Upgrade Of Student Portal",
     date: "2025/08/17",
     status: "Pending",
+    description: "Revamping the student portal for better user experience.",
+    comments: [],
+    files: ["studentPortalDesign.pdf"],
+    reviewer: "Academic Supervisor",
     progress: 54,
   },
   {
+    id: 3,
     student: "Gagan Bohara",
     title: "Adding New Features In Moodle",
-    date: "2025/04/12",
-    status: "Reviewed",
+    date: "2025/06/12",
+    status: "Pending",
+    description: "Improving the Moodle platform with additional features for better functionality.",
+    comments: ["Seems promising!"],
+    files: ["moodleFeatures.docx"],
+    reviewer: "Academic Supervisor",
     progress: 85,
   },
+  {
+    id: 2,
+    student: "Kushal Nepal",
+    title: "Upgrade Of Student Portal",
+    date: "2025/08/17",
+    status: "Pending",
+    description: "Revamping the student portal for better user experience.",
+    comments: [],
+    files: ["studentPortalDesign.pdf"],
+    reviewer: "Academic Supervisor",
+    progress: 54,
+  },
+  {
+    id: 3,
+    student: "Gagan Bohara",
+    title: "Adding New Features In Moodle",
+    date: "2025/06/12",
+    status: "Pending",
+    description: "Improving the Moodle platform with additional features for better functionality.",
+    comments: ["Seems promising!"],
+    files: ["moodleFeatures.docx"],
+    reviewer: "Academic Supervisor",
+    progress: 85,
+  },
+  {
+    id: 4,
+    student: "Ankit Parajuli",
+    title: "Student Portal Redesign",
+    date: "2025/04/15",
+    status: "Rejected",
+    description: "Redesigning the student portal for a more modern interface.",
+    comments: ["The design is too similar to the previous one."],
+    files: ["portalRedesign.png"],
+    reviewer: "Academic Supervisor",
+    progress: 40,
+  },
+  {
+    id: 5,
+    student: "Sajeet Kc",
+    title: "Blockchain Integration for KOI",
+    date: "2025/05/01",
+    status: "Approved",
+    description: "Exploring how blockchain can be integrated into KOI's system.",
+    comments: ["Great research."],
+    files: ["blockchainIntegration.pdf"],
+    reviewer: "Academic Supervisor",
+    progress: 95,
+  },
+  {
+    id: 6,
+    student: "Manjul Tamang",
+    title: "Smart Classroom Implementation",
+    date: "2025/11/20",
+    status: "Pending",
+    description: "Implementing smart classroom technology to enhance teaching methods.",
+    comments: ["Needs more data on student engagement."],
+    files: ["smartClassroom.pdf"],
+    reviewer: "Academic Supervisor",
+    progress: 60,
+  },
+  {
+    id: 7,
+    student: "Nirajan Thapa",
+    title: "AI for Student Performance Prediction",
+    date: "2025/10/05",
+    status: "Reviewed",
+    description: "Using machine learning to predict student performance and outcomes.",
+    comments: ["Interesting application of AI."],
+    files: ["AIStudentPerformance.pdf"],
+    reviewer: "Academic Supervisor",
+    progress: 80,
+  },
+  {
+    id: 8,
+    student: "Manish Gurung",
+    title: "Automated Timetable Generator",
+    date: "2025/07/30",
+    status: "Approved",
+    description: "Developing an algorithm for automatically generating class timetables.",
+    comments: ["Efficiency is key here."],
+    files: ["timetableAlgorithm.pdf"],
+    reviewer: "Academic Supervisor",
+    progress: 90,
+  },
+  {
+    id: 9,
+    student: "Suman Rathi",
+    title: "University Attendance System",
+    date: "2025/03/18",
+    status: "Pending",
+    description: "Creating an automated attendance system with biometric integration.",
+    comments: ["Check security standards for biometric data."],
+    files: ["attendanceSystem.pdf"],
+    reviewer: "Academic Supervisor",
+    progress: 50,
+  },
+  {
+    id: 10,
+    student: "Tara Bista",
+    title: "Mobile App for Student Grades",
+    date: "2025/04/05",
+    status: "Reviewed",
+    description: "Building a mobile app to display student grades and course progress.",
+    comments: ["User-friendly design, but needs more features."],
+    files: ["gradesApp.pdf"],
+    reviewer: "Academic Supervisor",
+    progress: 65,
+  },
+ 
+  // Add more projects...
 ];
 
 const statusColors = {
   Pending: "#FF6F61",
   Reviewed: "#00B0FF",
+  Approved: "#00FF00",
+  Rejected: "#FF0000",
 };
 
-// The actual page component
 const AsProjectReviewPage = () => {
-  const [filter, setFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
+  const [newComment, setNewComment] = useState("");
+  const [isReviewing, setIsReviewing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const projectsPerPage = 3;
 
-  // Filtering projects based on student name, project title, or status
-  const filteredProjects = projectsData.filter(
-    (project) =>
-      project.student.toLowerCase().includes(filter.toLowerCase()) ||
-      project.title.toLowerCase().includes(filter.toLowerCase()) ||
-      project.status.toLowerCase().includes(filter.toLowerCase())
+  // Filtering projects
+  const filteredProjects = projects.filter((project) =>
+    project.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    project.status.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Paginate projects
-  const indexOfLastProject = currentPage * projectsPerPage;
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+  const projectsPerPage = 5;
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
   const currentProjects = filteredProjects.slice(
-    indexOfFirstProject,
-    indexOfLastProject
+    (currentPage - 1) * projectsPerPage,
+    currentPage * projectsPerPage
   );
 
-  const handlePageChange = (pageNum) => setCurrentPage(pageNum);
+  const handleProjectClick = (projectId) => {
+    const project = projects.find((p) => p.id === projectId);
+    setSelectedProject(project);
+    setIsReviewing(true); // Start reviewing mode when a project is clicked
+  };
+
+  const handleCommentSubmit = () => {
+    if (newComment.trim()) {
+      const updatedProject = {
+        ...selectedProject,
+        comments: [...selectedProject.comments, newComment],
+      };
+      setSelectedProject(updatedProject);
+      setNewComment(""); // Clear comment input
+    }
+  };
+
+  const handleFileDownload = (fileName) => {
+    alert(`Downloading: ${fileName}`);
+  };
+
+  const handleStatusChange = (newStatus) => {
+    // Update the status of the selected project
+    const updatedProjects = projects.map((project) =>
+      project.id === selectedProject.id
+        ? { ...project, status: newStatus }
+        : project
+    );
+
+    // Update the selected project state as well
+    const updatedSelectedProject = { ...selectedProject, status: newStatus };
+    setSelectedProject(updatedSelectedProject);
+
+    // Updating the projects list to reflect the change
+    const updatedProjectsState = projects.map((project) =>
+      project.id === selectedProject.id
+        ? { ...project, status: newStatus }
+        : project
+    );
+    projects.splice(0, projects.length, ...updatedProjectsState); // In-place update for the project state
+
+    // Close the review section after approving/rejecting the project
+    setIsReviewing(false);
+  };
 
   return (
-    <div className="flex h-screen w-full bg-[#f9f9f9] overflow-hidden">
+    <div className="flex h-screen w-full bg-[#f9f9f9]">
       {/* Sidebar */}
-      <AsSideMenu />
+      <AsSideMenu currentPage="projectReview" />
 
       {/* Main Content */}
       <div className="flex flex-col flex-1 h-full overflow-hidden">
@@ -80,8 +248,8 @@ const AsProjectReviewPage = () => {
               type="text"
               className="w-full p-4 rounded-md border border-gray-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-[#6C63FF] transition-all duration-300"
               placeholder="Search by Student Name, Project Title, or Status"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
@@ -105,15 +273,14 @@ const AsProjectReviewPage = () => {
                   <tr
                     key={index}
                     className="border-b hover:bg-gray-50 transition duration-300"
+                    onClick={() => handleProjectClick(project.id)}
                   >
                     <td className="px-4 py-2">{project.student}</td>
                     <td className="px-4 py-2">{project.title}</td>
                     <td className="px-4 py-2">{project.date}</td>
                     <td className="px-4 py-2">
                       <span
-                        className={`px-4 py-2 rounded-full ${
-                          statusColors[project.status]
-                        } text-white`}
+                        className={`px-4 py-2 rounded-full ${statusColors[project.status]} text-white`}
                       >
                         {project.status}
                       </span>
@@ -125,9 +292,11 @@ const AsProjectReviewPage = () => {
                             ? "bg-green-500 hover:bg-green-600"
                             : "bg-blue-500 hover:bg-blue-600"
                         } transition duration-300`}
-                        onClick={() => setSelectedProject(project)}
+                        onClick={() => handleProjectClick(project.id)}
                       >
-                        {project.status === "Pending" ? "Review" : "Re-review"}
+                        {project.status === "Pending"
+                          ? "Review"
+                          : "Re-review"}
                       </button>
                     </td>
                   </tr>
@@ -140,7 +309,7 @@ const AsProjectReviewPage = () => {
           <div className="flex justify-center mt-8 space-x-4">
             <button
               className="px-4 py-2 bg-gray-300 text-sm rounded-full hover:bg-gray-400"
-              onClick={() => handlePageChange(currentPage - 1)}
+              onClick={() => setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
             >
               Previous
@@ -148,17 +317,15 @@ const AsProjectReviewPage = () => {
             <span className="text-lg font-semibold">{currentPage}</span>
             <button
               className="px-4 py-2 bg-gray-300 text-sm rounded-full hover:bg-gray-400"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={
-                currentPage * projectsPerPage >= filteredProjects.length
-              }
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage * 5 >= filteredProjects.length}
             >
               Next
             </button>
           </div>
 
           {/* Pie chart for Project Progress */}
-          {selectedProject && (
+          {isReviewing && selectedProject && (
             <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-2xl font-bold text-[#226CD1] text-center mb-6">
                 Project Progress: {selectedProject.title}
@@ -187,6 +354,57 @@ const AsProjectReviewPage = () => {
                   <Tooltip />
                   <Legend />
                 </PieChart>
+              </div>
+
+              {/* Comments Section */}
+              <div className="mt-6">
+                <textarea
+                  placeholder="Add a comment"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  className="w-full p-4 border rounded-md mb-4"
+                ></textarea>
+                <button
+                  onClick={handleCommentSubmit}
+                  className="bg-blue-500 text-white px-6 py-2 rounded-full"
+                >
+                  Submit Comment
+                </button>
+              </div>
+
+              {/* File Downloads */}
+              <div className="mt-6">
+                <h4 className="text-xl font-semibold text-[#226CD1] mb-4">
+                  Files
+                </h4>
+                <ul>
+                  {selectedProject.files.map((file, index) => (
+                    <li key={index} className="mb-2">
+                      <button
+                        onClick={() => handleFileDownload(file)}
+                        className="text-blue-500 hover:text-blue-700"
+                      >
+                        {file}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Approve/Reject Button */}
+              <div className="mt-6 flex justify-between">
+                <button
+                  onClick={() => handleStatusChange("Approved")}
+                  className="bg-green-500 text-white px-6 py-2 rounded-full"
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={() => handleStatusChange("Rejected")}
+                  className="bg-red-500 text-white px-6 py-2 rounded-full"
+                >
+                  Reject
+                </button>
               </div>
             </div>
           )}
