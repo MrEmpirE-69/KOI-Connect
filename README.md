@@ -1,4 +1,4 @@
-# School Management System
+# KOI Connect -School Management System
 
 This is a web-based School Management System built using **Node.js** for the backend, **React** with **Vite** for the frontend, and **Tailwind CSS** for styling. The system allows administrators and teachers to manage student data, grades, and classes effectively.
 
@@ -36,5 +36,5 @@ Follow these steps to get the project up and running on your local machine.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/school-management-system.git
-cd school-management-system
+git clone https://github.com/Manzultmg7/KOI-Connect
+cd KOI-Connect
