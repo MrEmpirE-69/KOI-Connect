@@ -1,12 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import SideMenu from "../../components/SideMenu/SideMenu";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
-import { FaUsers, FaChalkboardTeacher, FaFileAlt } from "react-icons/fa";
-import user1 from "../../assets/user1.png";
-import user2 from "../../assets/user2.png";
-import user3 from "../../assets/user3.png";
+import { FaUsers, FaChalkboardTeacher, FaFileAlt, FaClipboardList } from "react-icons/fa";
+import { CSVLink } from "react-csv";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"; // For activity analytics chart
+import Calendar from 'react-calendar'; // Calendar for upcoming events
+
+// Mocked example data
+const projects = [
+  { id: 1, student: "Rohan Poudel", title: "Implication Of AI In KOI", date: "2025/09/19", status: "Pending", progress: 72 },
+  { id: 2, student: "Kushal Nepal", title: "Upgrade Of Student Portal", date: "2025/08/17", status: "Pending", progress: 54 },
+  { id: 3, student: "Gagan Bohara", title: "Adding New Features In Moodle", date: "2025/06/12", status: "Reviewed", progress: 85 },
+  // Add more projects...
+];
+
+// Sample user activity data for charts
+const userActivityData = [
+  { date: "2025-01-01", loginCount: 50 },
+  { date: "2025-01-02", loginCount: 30 },
+  { date: "2025-01-03", loginCount: 70 },
+  { date: "2025-01-04", loginCount: 90 },
+  { date: "2025-01-05", loginCount: 110 },
+];
+
+// Sample event data
+const events = [
+  { date: "2025/05/01", event: "Exams Begin" },
+  { date: "2025/06/12", event: "Course Registration" },
+];
 
 const AdminDashboard = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date()); // for calendar view
+  const [userLogs, setUserLogs] = useState([
+    "Admin logged in at 2:30 PM",
+    "John Doe updated profile settings at 3:15 PM",
+    "System update applied at 4:00 PM",
+  ]);
+  const [systemHealth, setSystemHealth] = useState({
+    uptime: "99.99%",
+    responseTime: "200ms",
+    recentUpdates: [
+      "Security patch applied on 2025/04/01",
+      "Database optimization on 2025/04/02",
+    ],
+  });
+
   return (
     <div className="flex h-screen bg-[#f5f6fa] overflow-hidden">
       {/* Sidebar */}
@@ -22,105 +61,120 @@ const AdminDashboard = () => {
             Dashboard
           </h1>
           <p className="text-lg text-gray-700 mb-10 animate-fadeInDown delay-100">
-            Hello Bronzo, Welcome back
+            Hello Admin, Welcome back
           </p>
 
           {/* Dashboard Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-10 animate-fadeInUp">
-            <div className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
+            {/* Students Card */}
+            <Link
+              to="/student-list"
+              className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
+            >
               <FaUsers className="text-4xl mx-auto text-[#1C628F]" />
               <h2 className="text-4xl font-bold my-2">100</h2>
               <p className="text-gray-600 font-semibold text-lg">Students</p>
-            </div>
+            </Link>
 
-            <div className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
+            {/* Teachers Card */}
+            <Link
+              to="/teacher-list"
+              className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
+            >
               <FaChalkboardTeacher className="text-4xl mx-auto text-[#1C628F]" />
               <h2 className="text-4xl font-bold my-2">10</h2>
               <p className="text-gray-600 font-semibold text-lg">Teachers</p>
-            </div>
+            </Link>
 
-            <div className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
+            {/* Clients Card */}
+            <Link
+              to="/client-list"
+              className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
+            >
               <FaFileAlt className="text-4xl mx-auto text-[#1C628F]" />
               <h2 className="text-4xl font-bold my-2">20</h2>
               <p className="text-gray-600 font-semibold text-lg">Clients</p>
+            </Link>
+          </div>
+
+          {/* Activity Analytics */}
+          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">User Activity Analytics</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={userActivityData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="loginCount" stroke="#226CD1" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* CSV/Excel Export */}
+          <div className="mb-10">
+            <CSVLink
+              data={projects}
+              filename="projects_report.csv"
+              className="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 transition"
+            >
+              Export Projects Report (CSV)
+            </CSVLink>
+          </div>
+
+          {/* Upcoming Events Calendar */}
+          <div className="mb-10">
+            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">Upcoming Events</h3>
+            <Calendar
+              onChange={setSelectedDate}
+              value={selectedDate}
+              className="w-full shadow-lg rounded-lg"
+            />
+            <div className="mt-4">
+              <h4 className="text-xl font-semibold">Scheduled Events</h4>
+              {events.map((event, index) => (
+                <div key={index} className="mt-2">
+                  <span className="font-bold">{event.date}:</span> {event.event}
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Announcements */}
-          <div className="grid md:grid-cols-2 gap-6 animate-fadeInLeft">
-            <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
-              <h3 className="text-lg font-semibold text-[#6C63FF] mb-2 flex items-center gap-2">
-                <span>📢</span>
-                Announcement
-              </h3>
-              <p className="text-gray-700">
-                Maintenance is scheduled on <strong>Sunday, 6th May</strong>.
-                Systems will be offline from 2am to 6am AEST.
-              </p>
-            </div>
+          {/* Audit Logs */}
+          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">Audit Logs</h3>
+            <ul>
+              {userLogs.map((log, index) => (
+                <li key={index} className="text-sm text-gray-700">{log}</li>
+              ))}
+            </ul>
+          </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
-              <h3 className="text-lg font-semibold text-[#6C63FF] mb-2 flex items-center gap-2">
-                <span>🚀</span>
-                New Feature
-              </h3>
-              <p className="text-gray-700">
-                Role management system updated. Admins can now assign roles per
-                course or department.
-              </p>
+          {/* System Health Dashboard */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">System Health Dashboard</h3>
+            <div className="flex gap-6">
+              <div className="w-1/2">
+                <h4>Uptime:</h4>
+                <p>{systemHealth.uptime}</p>
+              </div>
+              <div className="w-1/2">
+                <h4>Response Time:</h4>
+                <p>{systemHealth.responseTime}</p>
+              </div>
+            </div>
+            <div className="mt-4">
+              <h4>Recent System Updates</h4>
+              <ul>
+                {systemHealth.recentUpdates.map((update, index) => (
+                  <li key={index}>{update}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
       </main>
-
-      {/* Right Sidebar */}
-      <aside className="hidden xl:flex flex-col justify-between w-[350px] bg-gray-100 p-6 animate-fadeInRight shadow-inner">
-        {/* Recent Activity */}
-        <div>
-          <h2 className="text-2xl font-semibold mb-6 text-[#1C628F]">
-            Recent Activity
-          </h2>
-          <div className="bg-white rounded-xl p-4 shadow-md flex items-start gap-4 transition hover:scale-[1.02] hover:shadow-md duration-300">
-            <div className="bg-green-100 p-3 rounded-full">
-              <svg
-                className="w-6 h-6 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path d="M4 6h16M4 12h8m-8 6h16" />
-              </svg>
-            </div>
-            <div className="flex flex-col">
-              <p className="font-medium text-[#222] leading-snug">
-                Role Updated For Bahil <br /> as Student
-              </p>
-              <div className="flex justify-between text-sm text-gray-500 mt-2">
-                <span>12 Jan 2025</span>
-                <span>02:29 pm</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Latest Messages */}
-        <div>
-          <h2 className="text-2xl font-semibold mb-6 text-[#1C628F] mt-10">
-            Latest Message
-          </h2>
-          <div className="flex flex-wrap gap-5 justify-center">
-            {[user1, user2, user3].map((user, index) => (
-              <img
-                key={index}
-                src={user}
-                alt={`User ${index + 1}`}
-                className="w-14 h-14 rounded-full shadow-md hover:ring-2 hover:ring-[#6C63FF] hover:scale-110 transition duration-300"
-              />
-            ))}
-          </div>
-        </div>
-      </aside>
     </div>
   );
 };

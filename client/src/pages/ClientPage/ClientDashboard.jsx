@@ -6,6 +6,7 @@ import Papa from "papaparse";
 import logo from "../../assets/koi.png";
 import avatar1 from "../../assets/user1.png";
 import ClientSideMenu from "./ClientSideMenu"; // Import the ClientSideMenu component
+import ClientTopNavbar from "./ClientTopNavbar"; // Import the ClientTopNavbar
 
 const ClientDashboard = () => {
   const [selectedStars, setSelectedStars] = useState(0);
@@ -97,27 +98,9 @@ const ClientDashboard = () => {
       <ClientSideMenu currentPage="dashboard" />
 
       {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <input
-            type="text"
-            placeholder="Search projects..."
-            className="border px-4 py-2 rounded-md w-[300px]"
-          />
-          <div className="flex items-center gap-4">
-            <BsBell className="text-xl text-[#6C63FF]" />
-            <div className="text-right">
-              <p className="font-semibold">John</p>
-              <p className="text-sm text-gray-500">Client</p>
-            </div>
-            <img
-              src={avatar1}
-              alt="avatar"
-              className="w-10 h-10 rounded-full shadow hover:ring-2 ring-[#226CD1] transition"
-            />
-          </div>
-        </div>
+      <main className="flex-1 p-2 overflow-y-auto mt-[1px]">
+        {/* Keep only ClientTopNavbar */}
+        <ClientTopNavbar />
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

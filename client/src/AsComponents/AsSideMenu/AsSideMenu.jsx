@@ -1,111 +1,110 @@
 import React from "react";
+import { Link, useLocation } from "react-router-dom";  // Import useLocation for getting current route
 import logo from "../../assets/koi.png";
-import avatar from "../../assets/student.png";
-import { MdDashboard, MdSettings, MdLockOutline } from "react-icons/md";
+import adminAvatar from "../../assets/admin.png"; // Update to use the correct avatar
+import { MdDashboard, MdSettings, MdLockOutline } from "react-icons/md"; // Update icons for Academic Supervisor
 import { BiMessageSquareDetail } from "react-icons/bi";
-import { motion } from "framer-motion";
 
 const AsSideMenu = () => {
-  return (
-    <motion.aside
-      initial={{ x: -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="w-[250px] h-full bg-white shadow-2xl rounded-r-xl flex flex-col justify-between"
-    >
-      {/* Logo */}
-      <div className="flex flex-col items-center py-6">
-        <motion.img
-          src={logo}
-          alt="KOI Logo"
-          className="w-20 h-20"
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2 }}
-        />
-      </div>
+  // Get the current location from react-router
+  const location = useLocation();
+  const currentPage = location.pathname.split("/")[1]; // Extract the page name from the URL
 
-      {/* Info Section */}
-      <div className="px-6">
-        <div className="flex items-center mb-6">
-          <motion.img
-            src={avatar}
-            alt="Academic Supervisor"
-            className="w-10 h-10 rounded-full mr-3 shadow-md"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          />
-          <span className="font-semibold text-sm text-[#1C628F]">
-            Academic Supervisor
-          </span>
+  return (
+    <aside className="w-[250px] h-full bg-white shadow-2xl rounded-r-xl flex flex-col justify-between animate-slideInLeft transition-all duration-700">
+      {/* Top Section */}
+      <div>
+        {/* Logo */}
+        <div className="flex items-center justify-center py-6 transition hover:scale-105 duration-300">
+          <img src={logo} alt="KOI Logo" className="w-20 h-20" />
         </div>
 
-        {/* Navigation Links */}
-        <nav className="flex flex-col gap-3 text-[#444] font-medium">
-          <motion.a
-            href="#"
-            className="flex items-center gap-2 py-2 px-3 rounded-lg bg-[#f0f2ff] text-[#226CD1] shadow-sm"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <MdDashboard className="text-xl" />
-            Dashboard
-          </motion.a>
-          <motion.a
-            href="#"
-            className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1]"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <MdLockOutline className="text-xl" />
-            Project Review
-          </motion.a>
-          <motion.a
-            href="#"
-            className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1]"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <BiMessageSquareDetail className="text-xl" />
-            Communication Page
-          </motion.a>
-          <motion.a
-            href="#"
-            className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#f5f7ff] hover:text-[#226CD1]"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <MdSettings className="text-xl" />
-            Setting
-          </motion.a>
-        </nav>
+        {/* Admin Info */}
+        <div className="px-6">
+          <div className="flex items-center mb-6">
+            <img
+              src={adminAvatar} // Update to use the correct avatar (admin or supervisor)
+              alt="Academic Supervisor"
+              className="w-10 h-10 rounded-full mr-3 shadow-md"
+            />
+            <span className="font-semibold text-lg text-[#1C628F]">
+              Academic Supervisor
+            </span>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex flex-col gap-3 text-[#444] font-medium">
+            {/* Dashboard Link */}
+            <Link
+              to="/as-dashboard"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-300 ${
+                currentPage === "as-dashboard"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              }`}
+            >
+              <MdDashboard className="text-xl" />
+              Dashboard
+            </Link>
+
+            {/* Project Review Link */}
+            <Link
+              to="/as-projectreview"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-300 ${
+                currentPage === "as-projectreview"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              }`}
+            >
+              <MdLockOutline className="text-xl" />
+              Project Review
+            </Link>
+
+            {/* Communication Page Link */}
+            <Link
+              to="/as-communication"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-300 ${
+                currentPage === "as-communication"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              }`}
+            >
+              <BiMessageSquareDetail className="text-xl" />
+              Communication Page
+            </Link>
+
+            {/* Settings Link */}
+            <Link
+              to="/as-setting"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-300 ${
+                currentPage === "as-setting"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              }`}
+            >
+              <MdSettings className="text-xl" />
+              Settings
+            </Link>
+          </nav>
+        </div>
       </div>
 
-      {/* Logout Button with Icon */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="px-6 py-4 flex items-center gap-2 text-sm text-[#444] cursor-pointer hover:text-red-500 hover:scale-105 transition-all duration-300"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M17 16l4-4m0 0l-4-4m4 4H7m7 4v-8a3 3 0 00-3-3h-2a3 3 0 00-3 3v8"
-          />
-        </svg>
-        Logout
-      </motion.div>
-    </motion.aside>
+      {/* Bottom / Logout */}
+      <div className="px-6 py-4">
+              <Link to="/" className="flex items-center gap-2 text-sm text-[#444] hover:text-red-600 transition-all hover:scale-105">
+                <svg
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  className="transition duration-300"
+                >
+                  <path d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h6a2 2 0 002-2v-4h2v4a4 4 0 01-4 4H5a4 4 0 01-4-4V5a4 4 0 014-4h6a4 4 0 014 4v4h-2V5a2 2 0 00-2-2H5z" />
+                  <path d="M13 9l4 3-4 3V9z" />
+                </svg>
+                Logout
+              </Link>
+            </div>
+    </aside>
   );
 };
 

@@ -2,6 +2,7 @@ import React from "react";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { FaArrowLeft } from "react-icons/fa";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 const teacherList = [
   "Dr. Alex Morgan",
@@ -30,10 +31,12 @@ const AdminTeacher = () => {
         <div className="flex-1 overflow-y-auto p-6 md:p-10">
           {/* Back Button */}
           <div className="mb-6">
-            <button className="flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2 rounded-full shadow hover:bg-gray-100 hover:scale-105 transition-all duration-300">
-              <FaArrowLeft />
-              Back
-            </button>
+            <Link to="/admin-dashboard">
+              <button className="flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2 rounded-full shadow hover:bg-gray-100 hover:scale-105 transition-all duration-300">
+                <FaArrowLeft />
+                Back
+              </button>
+            </Link>
           </div>
 
           {/* Title */}

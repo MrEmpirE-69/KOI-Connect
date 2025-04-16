@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
-import SideMenu from "../../components/SideMenu/SideMenu";
-import TopNavbar from "../../components/TopNavbar/TopNavbar";
-import { FaPen, FaTrash } from "react-icons/fa";
 
-const AdminCommunicationPage = () => {
+import React, { useState, useEffect } from "react";
+import { FaPen, FaTrash } from "react-icons/fa";
+import ClientSideMenu from "./ClientSideMenu"; // Import the ClientSideMenu component
+import ClientTopNavbar from "./ClientTopNavbar"; // Import the ClientTopNavbar
+
+
+const ClientCommunicationPage = () => {
   // Example data for projects and messages
   const projects = [
     {
@@ -34,7 +36,7 @@ const AdminCommunicationPage = () => {
       id: 4,
       title: "Project 4",
       messages: [
-        { sender: "Client", text: "Doing Good?", time: "10 min ago" },
+        { sender: "Academic Supervisor", text: "Doing Good?", time: "10 min ago" },
         { sender: "Burno", text: "Yes, making progress.", time: "5 min ago" },
       ],
     },
@@ -88,11 +90,11 @@ const AdminCommunicationPage = () => {
   return (
     <div className="flex h-screen bg-[#f9f9f9]">
       {/* Sidebar */}
-      <SideMenu currentPage="communication" />
+      <ClientSideMenu currentPage="communication" />
 
       {/* Main Section */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        <TopNavbar />
+        <ClientTopNavbar />
 
         <div className="flex flex-1 overflow-hidden">
           {/* Chat Threads List */}
@@ -211,4 +213,4 @@ const AdminCommunicationPage = () => {
   );
 };
 
-export default AdminCommunicationPage;
+export default ClientCommunicationPage;

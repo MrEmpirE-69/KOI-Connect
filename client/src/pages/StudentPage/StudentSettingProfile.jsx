@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";  // Import useNavigate for redirection
-import SideMenu from "../../components/SideMenu/SideMenu";
-import TopNavbar from "../../components/TopNavbar/TopNavbar";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import StudentsSideMenu from "../../StudentComponents/StudentsSideMenu/StudentsSideMenu";
+import StudentTopNavbar from "../../StudentComponents/StudentTopNavbar/StudentTopNavbar";
 import { FaUserCircle } from "react-icons/fa";
 
-const AdminSettingProfile = () => {
+const StudentSettingProfile = () => {
+  const navigate = useNavigate(); // Initialize navigate function
+
   const [formData, setFormData] = useState({
     givenName: "Abdul ali",
     familyName: "Khan",
@@ -12,8 +14,6 @@ const AdminSettingProfile = () => {
     mobile: "0444554456",
     confirm: false,
   });
-
-  const navigate = useNavigate();  // Initialize the navigate function
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -27,8 +27,7 @@ const AdminSettingProfile = () => {
     e.preventDefault();
     if (formData.confirm) {
       alert("Profile updated successfully!");
-      // Navigate to the admin-setting page after successful form submission
-      navigate("/admin-setting");  // Redirect to the settings page
+      navigate("/student-setting"); // Navigate to student-setting page
     } else {
       alert("Please confirm the details before saving.");
     }
@@ -37,11 +36,11 @@ const AdminSettingProfile = () => {
   return (
     <div className="flex h-screen bg-[#f9f9f9] overflow-hidden">
       {/* Sidebar */}
-      <SideMenu currentPage="setting" />
+      <StudentsSideMenu currentPage="setting" />
 
       {/* Main Section */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        <TopNavbar />
+        <StudentTopNavbar />
 
         <section className="flex-1 px-6 py-8 md:px-12 md:py-10 overflow-y-auto animate-fade-in-up duration-700">
           <h1 className="text-4xl font-extrabold text-[#226CD1] text-center mb-10">
@@ -140,4 +139,4 @@ const AdminSettingProfile = () => {
   );
 };
 
-export default AdminSettingProfile;
+export default StudentSettingProfile;

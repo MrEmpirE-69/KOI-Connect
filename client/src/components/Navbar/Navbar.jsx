@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/koi.png";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLoginClick = () => {
-    navigate("/login"); // Navigate to the login page
+    setDropdownOpen(!dropdownOpen); // Toggle dropdown visibility
+  };
+
+  const handleRoleSelect = (role) => {
+    // Navigate based on the selected role
+    switch (role) {
+      case "Admin":
+        navigate("/Login");
+        break;
+      case "Student":
+        navigate("/student-Login");
+        break;
+      case "Academic Supervisor":
+        navigate("/as-Login");
+        break;
+      case "Client":
+        navigate("/client-Login");
+        break;
+      default:
+        break;
+    }
+    setDropdownOpen(false); // Close the dropdown after selection
   };
 
   return (
@@ -34,13 +56,33 @@ const Navbar = () => {
         </div>
 
         {/* Auth Buttons */}
-        <div className="flex gap-4 items-center mt-4 md:mt-0">
+        <div className="flex gap-4 items-center mt-4 md:mt-0 relative">
           <button
             onClick={handleLoginClick}
             className="uppercase font-semibold text-sm md:text-base text-[#36384E] transition-transform duration-300 hover:scale-110"
           >
             Login
           </button>
+
+          {/* Dropdown Menu */}
+          {dropdownOpen && (
+            <div className="absolute top-full right-0 mt-2 w-48 bg-white shadow-md rounded-md z-10">
+              <ul>
+                {["Admin", "Student", "Academic Supervisor", "Client"].map(
+                  (role) => (
+                    <li
+                      key={role}
+                      onClick={() => handleRoleSelect(role)}
+                      className="px-4 py-2 text-sm text-[#36384E] cursor-pointer hover:bg-[#f4f4f4] transition duration-300"
+                    >
+                      As {role}
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+          )}
+
           <button className="uppercase font-semibold text-sm md:text-base text-white bg-[#6C63FF] px-4 py-2 rounded-md transition-all duration-300 hover:bg-[#827cee] hover:scale-105">
             Sign Up
           </button>

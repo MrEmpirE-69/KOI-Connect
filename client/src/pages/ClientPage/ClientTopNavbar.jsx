@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import adminAvatar from "../../assets/admin.png";
+import { BsBell } from "react-icons/bs";
 
-const TopNavbar = () => {
+const ClientTopNavbar = () => {
   // State to manage the visibility of the notification box
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
@@ -9,34 +9,41 @@ const TopNavbar = () => {
   const notifications = [
     {
       id: 1,
-      message: "New comment on your project review!",
+      message: "Your project review has been updated.",
       time: "2 minutes ago",
     },
     {
       id: 2,
-      message: "Admin updated your role!",
+      message: "New message from Admin.",
       time: "1 hour ago",
     },
     {
       id: 3,
-      message: "You have a new message from the communication page.",
+      message: "You have a new comment on your feedback.",
       time: "3 hours ago",
     },
     {
       id: 4,
-      message: "You have a new message from the Setting page.",
-      time: "3 hours ago",
+      message: "New task assigned for Project 2.",
+      time: "4 hours ago",
     },
     {
-      id: 5,
-      message: "You have a new message from the Project 3.",
-      time: "3 hours ago",
-    },
-    {
-      id: 6,
-      message: "You have a new message from the Project 2.",
-      time: "3 hours ago",
-    },
+        id: 4,
+        message: "You have a new message from the Setting page.",
+        time: "3 hours ago",
+      },
+      {
+        id: 5,
+        message: "You have a new message from the Project 3.",
+        time: "3 hours ago",
+      },
+      {
+        id: 6,
+        message: "You have a new message from the Project 2.",
+        time: "3 hours ago",
+      },
+
+
   ];
 
   // Toggle the notification box
@@ -53,41 +60,25 @@ const TopNavbar = () => {
         className="border rounded-md px-4 py-2 w-[300px] outline-none focus:ring-2 focus:ring-[#6C63FF] focus:border-transparent transition duration-300"
       />
 
-      {/* Notifications & Admin */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6">
         {/* Notification Icon */}
         <button
           className="hover:scale-110 transition duration-300"
           onClick={toggleNotifications}
         >
-          <svg
-            className="w-6 h-6 text-[#6C63FF]"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-5-5.917V4a2 2 0 10-4 0v1.083A6.002 6.002 0 004 11v3.159c0 .538-.214 1.055-.595 1.436L2 17h5m7 0v1a3 3 0 01-6 0v-1m6 0H9" />
-          </svg>
+          <BsBell className="text-2xl text-[#6C63FF] cursor-pointer" />
         </button>
 
-        {/* Admin Info */}
-        <div className="text-right transition duration-300 hover:scale-105">
-          <p className="font-semibold">Bronzo Magar</p>
-          <p className="text-sm text-gray-500">Admin</p>
+        {/* User Info */}
+        <div className="text-right">
+          <p className="font-semibold text-sm">Logged in as</p>
+          <p className="text-sm text-gray-500">Client</p>
         </div>
-
-        {/* Admin Avatar */}
-        <img
-          src={adminAvatar}
-          alt="Admin"
-          className="w-10 h-10 rounded-full shadow-md hover:ring-2 hover:ring-[#6C63FF] transition duration-300"
-        />
       </div>
 
       {/* Notification Box */}
       {isNotificationOpen && (
-        <div className="absolute right-55 top-16 w-[500px]  bg-white shadow-lg rounded-md p-4 z-50">
+        <div className="absolute right-35 top-16 w-[350px] bg-white shadow-lg rounded-md p-4 z-50">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-lg">Notifications</h3>
             <button
@@ -126,4 +117,4 @@ const TopNavbar = () => {
   );
 };
 
-export default TopNavbar;
+export default ClientTopNavbar;

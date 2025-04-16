@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import SideMenu from "../../components/SideMenu/SideMenu";
-import TopNavbar from "../../components/TopNavbar/TopNavbar";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import AsSideMenu from "../../AsComponents/AsSideMenu/AsSideMenu";
+import AsTopNavbar from "../../AsComponents/AsTopNavbar/AsTopNavbar";
 import { FaUserShield } from "react-icons/fa";
 
-const AdminSettingAccount = () => {
-  const navigate = useNavigate(); // Initialize the navigate function
+const AsSettingAccount = () => {
+  const navigate = useNavigate(); // Initialize navigate function
 
   const [formData, setFormData] = useState({
     oldPassword: "",
@@ -29,7 +29,7 @@ const AdminSettingAccount = () => {
     e.preventDefault();
     if (formData.confirm) {
       alert("Account updated successfully!");
-      navigate("/admin-setting");  // Redirect to the admin setting page after saving
+      navigate("/as-setting");  // Navigate to the as-setting page after saving
     } else {
       alert("Please confirm the details before saving.");
     }
@@ -38,11 +38,11 @@ const AdminSettingAccount = () => {
   return (
     <div className="flex h-screen bg-[#f4f6fa] overflow-hidden">
       {/* Sidebar */}
-      <SideMenu currentPage="setting" />
+      <AsSideMenu currentPage="setting" />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-full">
-        <TopNavbar />
+        <AsTopNavbar />
 
         <section className="flex-1 overflow-y-auto p-6 md:p-10 animate-fade-in-up duration-700">
           {/* Page Title */}
@@ -152,4 +152,4 @@ const AdminSettingAccount = () => {
   );
 };
 
-export default AdminSettingAccount;
+export default AsSettingAccount;

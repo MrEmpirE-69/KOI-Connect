@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import SideMenu from "../../components/SideMenu/SideMenu";
-import TopNavbar from "../../components/TopNavbar/TopNavbar";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import { FaUserShield } from "react-icons/fa";
+import ClientSideMenu from "./ClientSideMenu"; // Import the ClientSideMenu component
+import ClientTopNavbar from "./ClientTopNavbar"; // Import the ClientTopNavbar
 
-const AdminSettingAccount = () => {
-  const navigate = useNavigate(); // Initialize the navigate function
-
+const ClientSettingAccount = () => {
+  const navigate = useNavigate(); // Initialize navigate function
   const [formData, setFormData] = useState({
     oldPassword: "",
     newPassword: "",
-    confirmPassword: "",
+    confirmNewPassword: "",
     streetAddress: "135-234 George st",
     suburb: "Sydney, 2000",
     state: "NSW",
@@ -28,8 +27,8 @@ const AdminSettingAccount = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.confirm) {
-      alert("Account updated successfully!");
-      navigate("/admin-setting");  // Redirect to the admin setting page after saving
+      alert("Account details updated successfully!");
+      navigate("/client-setting"); // Navigate to the client setting page after saving
     } else {
       alert("Please confirm the details before saving.");
     }
@@ -38,11 +37,11 @@ const AdminSettingAccount = () => {
   return (
     <div className="flex h-screen bg-[#f4f6fa] overflow-hidden">
       {/* Sidebar */}
-      <SideMenu currentPage="setting" />
+      <ClientSideMenu currentPage="setting" />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-full">
-        <TopNavbar />
+        <ClientTopNavbar />
 
         <section className="flex-1 overflow-y-auto p-6 md:p-10 animate-fade-in-up duration-700">
           {/* Page Title */}
@@ -59,9 +58,7 @@ const AdminSettingAccount = () => {
 
             {/* Password Section */}
             <div className="flex-1 min-w-[280px] w-full max-w-md">
-              <h2 className="text-xl font-semibold text-[#333] mb-4">
-                Change Password
-              </h2>
+              <h2 className="text-xl font-semibold text-[#333] mb-4">Change Password</h2>
               <div className="space-y-4">
                 <input
                   type="password"
@@ -81,9 +78,9 @@ const AdminSettingAccount = () => {
                 />
                 <input
                   type="password"
-                  name="confirmPassword"
+                  name="confirmNewPassword"
                   placeholder="Confirm New Password"
-                  value={formData.confirmPassword}
+                  value={formData.confirmNewPassword}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
                 />
@@ -92,9 +89,7 @@ const AdminSettingAccount = () => {
 
             {/* Address Section */}
             <div className="flex-1 min-w-[280px] w-full max-w-md">
-              <h2 className="text-xl font-semibold text-[#333] mb-4">
-                Address
-              </h2>
+              <h2 className="text-xl font-semibold text-[#333] mb-4">Address</h2>
               <div className="space-y-4">
                 <input
                   type="text"
@@ -132,15 +127,15 @@ const AdminSettingAccount = () => {
                 name="confirm"
                 checked={formData.confirm}
                 onChange={handleChange}
-                className="mr-2 accent-green-500 w-4 h-4"
+                className="mr-2 accent-green-500"
               />
               Do you confirm the above details
             </label>
             <div>
               <button
                 type="submit"
-                onClick={handleSubmit}  // Submit and navigate
-                className="mt-2 bg-[#226CD1] text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-600 transition"
+                onClick={handleSubmit}
+                className="mt-2 bg-[#226CD1] hover:bg-blue-600 text-white px-6 py-2 rounded-full transition"
               >
                 Save
               </button>
@@ -152,4 +147,4 @@ const AdminSettingAccount = () => {
   );
 };
 
-export default AdminSettingAccount;
+export default ClientSettingAccount;

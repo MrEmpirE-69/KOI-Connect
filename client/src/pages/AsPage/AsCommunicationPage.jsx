@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import SideMenu from "../../components/SideMenu/SideMenu";
-import TopNavbar from "../../components/TopNavbar/TopNavbar";
-import { FaPen, FaTrash } from "react-icons/fa";
+import AsSideMenu from "../../AsComponents/AsSideMenu/AsSideMenu";
+import AsTopNavbar from "../../AsComponents/AsTopNavbar/AsTopNavbar";
 
-const AdminCommunicationPage = () => {
+const AsCommunicationPage = () => {
   // Example data for projects and messages
   const projects = [
     {
@@ -48,20 +47,18 @@ const AdminCommunicationPage = () => {
     },
   ];
 
-  // State for selected project, message, and tracking which project is highlighted
+  // Set default project to be selected on page load
   const [selectedProject, setSelectedProject] = useState(projects[0]);
   const [message, setMessage] = useState(""); // For storing the typed message
-  const [activeProject, setActiveProject] = useState(1); // Track active project ID for highlighting
 
   useEffect(() => {
-    // By default, set the first project as selected when page loads
+    // Set the default selected project when the page loads
     setSelectedProject(projects[0]);
   }, []);
 
   const handleProjectClick = (projectId) => {
     const selected = projects.find((project) => project.id === projectId);
     setSelectedProject(selected);
-    setActiveProject(projectId); // Highlight the clicked project
   };
 
   const handleSendMessage = () => {
@@ -88,11 +85,11 @@ const AdminCommunicationPage = () => {
   return (
     <div className="flex h-screen bg-[#f9f9f9]">
       {/* Sidebar */}
-      <SideMenu currentPage="communication" />
+      <AsSideMenu currentPage="communication" />
 
       {/* Main Section */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        <TopNavbar />
+        <AsTopNavbar />
 
         <div className="flex flex-1 overflow-hidden">
           {/* Chat Threads List */}
@@ -103,8 +100,8 @@ const AdminCommunicationPage = () => {
                 <div
                   key={project.id}
                   className={`p-3 rounded-lg shadow hover:shadow-md cursor-pointer transition flex justify-between items-start animate-fade-in-up ${
-                    activeProject === project.id
-                      ? "bg-[#eef1ff] border-l-4 border-[#226CD1]"
+                    selectedProject.id === project.id
+                      ? "bg-[#eef1ff] border-l-4 border-[#226CD1]" // Active project is highlighted
                       : "bg-[#f9f9ff]"
                   }`}
                   onClick={() => handleProjectClick(project.id)}
@@ -211,4 +208,4 @@ const AdminCommunicationPage = () => {
   );
 };
 
-export default AdminCommunicationPage;
+export default AsCommunicationPage;
