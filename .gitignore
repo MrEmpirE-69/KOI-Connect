@@ -1,0 +1,16 @@
+node_modules/
+api/node_modules/
+client/node_modules/
+
+.env
+api/.env
+client/.env
+
+dist/
+api/dist/
+client/dist/
+
+*.log
+
+.DS_Store
+.vscode/
