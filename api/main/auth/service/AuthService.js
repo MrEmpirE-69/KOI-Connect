@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../usermanager/model/User.js";
+import { createError } from "../../../utils/Error.js";
 
 export class AuthService {
   async authenticate(req, res, next) {

@@ -1,4 +1,4 @@
-import EmailTemplate from "../../../main/emailtemplate/model/EmailTemplate.js";
+import EmailTemplate from "../../../main/model/EmailTemplate.js";
 import { v4 as uuidv4 } from "uuid";
 
 const createEmailTemplate = async () => {

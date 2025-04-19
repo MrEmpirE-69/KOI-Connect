@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { dbConnection } from "./database.js";
 import AuthRoute from "./main/auth/route/AuthRoute.js";
+import UserRoute from "./main/usermanager/route/UserRoute.js";
 
 const app = express();
 dotenv.config();
@@ -10,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", AuthRoute);
+app.use("/api/user", UserRoute);
 app.get("/", (req, res) => {
   res.send("Welcome to KOI-Connect Server.");
 });

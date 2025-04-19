@@ -135,7 +135,7 @@ export class UserService {
   async updateUser(uuid, userData) {
     try {
       const { password, isVerified, code, ...updatableData } = userData;
-      const requiredFields = ['fullName', 'address', 'mobileNumber', 'email'];
+      const requiredFields = ["fullName", "address", "mobileNumber", "email"];
       const missingFields = requiredFields.filter((field) => !userData[field]);
       if (missingFields.length > 0) {
         throw createError(
