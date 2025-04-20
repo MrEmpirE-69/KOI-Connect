@@ -4,6 +4,14 @@ import cors from "cors";
 import { dbConnection } from "./database.js";
 import AuthRoute from "./main/auth/route/AuthRoute.js";
 import UserRoute from "./main/usermanager/route/UserRoute.js";
+import User from "./main/usermanager/model/User.js";
+import Student from "./main/model/Student.js";
+import Project from "./main/model/Project.js";
+import Client from "./main/model/Client.js";
+import StudentProjectMap from "./main/model/StudentProjectMap.js";
+import Teacher from "./main/model/Teacher.js";
+import Supervisor from "./main/model/Supervisor.js";
+import "./main/model/associations.js";
 
 const app = express();
 dotenv.config();
