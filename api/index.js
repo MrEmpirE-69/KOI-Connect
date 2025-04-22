@@ -12,14 +12,41 @@ import StudentProjectMap from "./main/model/StudentProjectMap.js";
 import Teacher from "./main/model/Teacher.js";
 import Supervisor from "./main/model/Supervisor.js";
 import "./main/model/associations.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
+import SuperVisorRoute from "./main/route/SupervisorRoute.js";
 
 const app = express();
 dotenv.config();
 app.use(cors());
 app.use(express.json());
 
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "KOI Connect API",
+      version: "1.0.0",
+      description: "API documentation for KOI Connect",
+    },
+    servers: [
+      {
+        url: "http://localhost:5000/api",
+      },
+    ],
+  },
+  apis: ["./main/usermanager/route/*.js", "./main/auth/route/*.js"],
+};
+
+// Initialize swagger-jsdoc
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 app.use("/api", AuthRoute);
 app.use("/api/user", UserRoute);
+app.use("/api/supervisor", SuperVisorRoute);
+
 app.get("/", (req, res) => {
   res.send("Welcome to KOI-Connect Server.");
 });

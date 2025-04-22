@@ -1,52 +1,65 @@
-import { SupervisorService } from "../service/SupervisorService.js"; // Service for business logic
-
+import { SupervisorService } from "../service/SupervisorService.js";
 const supervisorService = new SupervisorService();
 
 export class SupervisorController {
-  // List all users
-  async listUsers(req, res, next) {
+  async create(req, res, next) {
     try {
-      const users = await supervisorService.listUsers();
+      const supervisor = await supervisorService.createSupervisor(req.body);
+
       res.status(200).json({
         status: 200,
         success: true,
-        message: "Users retrieved successfully",
-        users: users,
+        message: "supervisor created successfully.",
+        data: supervisor,
       });
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   }
 
-  // View user profile
-  async viewUserProfile(req, res, next) {
+  async getAll(req, res, next) {
     try {
-      const { uuid } = req.params;
-      const userProfile = await supervisorService.viewUserProfile(uuid);
+      const response = await supervisorService.getAllSupervisors();
+
       res.status(200).json({
         status: 200,
         success: true,
-        message: "User profile retrieved successfully",
-        userProfile,
+        message: "Supervisor list retrieved successfully.",
+        data: response,
       });
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   }
 
-  // Update user profile (supervisor can update only certain fields)
-  async updateUser(req, res, next) {
+  async getActive(req, res, next) {
     try {
-      const { uuid, ...userData } = req.body;
-      const updatedUser = await supervisorService.updateUser(uuid, userData);
+      const response = await supervisorService.getActiveSupervisors();
+
       res.status(200).json({
         status: 200,
         success: true,
-        message: "User updated successfully",
-        updatedUser,
+        message: "Active supervisor list retrieved successfully.",
+        data: response,
       });
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async edit(req, res, next) {
+    try {
+      const { uuid, ...data } = req.body;
+      const response = await supervisorService.updateSupervisor(uuid, data);
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: "Supervisor updated successfully.",
+        data: response,
+      });
+    } catch (err) {
+      next(err);
     }
   }
 }

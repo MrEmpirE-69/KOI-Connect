@@ -1,15 +1,13 @@
-import express from "express"; // External module
-import { SupervisorController } from "../controller/SupervisorController.js"; // Controller
-import { verifySupervisor } from "../../../utils/VerifyToken.js"; // Utility for token verification
-import { authenticate } from "../../middleware/auth.js"; // Middleware for authentication
+import express from "express";
+import { SupervisorController } from "../controller/SupervisorController.js";
+import { verifyAdmin } from "../../utils/VerifyToken.js";
 
 const router = express.Router();
+const controller = new SupervisorController();
 
-const supervisorController = new SupervisorController();
-
-// Supervisor routes
-router.get("/list", verifySupervisor, supervisorController.listUsers.bind(supervisorController)); // List users
-router.get("/profile/:uuid", authenticate, supervisorController.viewUserProfile.bind(supervisorController)); // View a user's profile
-router.post("/update", verifySupervisor, supervisorController.updateUser.bind(supervisorController)); // Update user
+router.post("/create", verifyAdmin, controller.create.bind(controller));
+router.get("/list", controller.getAll.bind(controller));
+router.get("/list/active", verifyAdmin, controller.getActive.bind(controller));
+router.post("/edit", verifyAdmin, controller.edit.bind(controller));
 
 export default router;

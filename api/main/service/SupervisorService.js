@@ -1,66 +1,44 @@
-export class SupervisorService {
-  async createSupervisor(requestBody) {}
-}
-import User from "../model/User.js"; // Model for interacting with user data
-import { createError } from "../../../utils/Error.js"; // Custom error utility
+import Supervisor from "../model/Supervisor.js";
+import { v4 as uuidv4 } from "uuid";
+import { createError } from "../../utils/Error.js";
 
 export class SupervisorService {
-  // View a list of users (not all details, excluding sensitive info)
-  async listUsers() {
-    try {
-      const users = await User.findAll({
-        attributes: { exclude: ["password", "id", "isVerified", "isSuperAdmin"] },
-        order: [["createdAt", "DESC"]],
-      });
-      return users;
-    } catch (error) {
-      throw error;
+  async createSupervisor(data) {
+    const uuid = uuidv4();
+    const { fullName, email, mobileNumber, department } = data;
+
+    if (!fullName || !email || !mobileNumber || !department) {
+      throw createError(400, "Missing required fields.");
     }
+
+    const existing = await Supervisor.findOne({ where: { email } });
+    if (existing)
+      throw createError(409, "Supervisor with this email already exists.");
+
+    return await Supervisor.create({
+      ...data,
+      uuid,
+    });
   }
 
-  // View profile of a specific user (supervisors may view)
-  async viewUserProfile(uuid) {
-    try {
-      const user = await User.findOne({
-        where: { uuid },
-        attributes: { exclude: ["password", "isVerified", "createdAt", "updatedAt"] },
-      });
-      if (!user) {
-        throw createError(404, "User not found");
-      }
-      return user;
-    } catch (error) {
-      throw error;
-    }
+  async getAllSupervisors() {
+    return await Supervisor.findAll({
+      attributes: { exclude: ["id"] },
+      order: [["createdAt", "DESC"]],
+    });
   }
 
-  // Update user information (supervisor can update non-sensitive fields)
-  async updateUser(uuid, userData) {
-    try {
-      const { fullName, mobileNumber, address, email } = userData;
-      const requiredFields = ["fullName", "address", "mobileNumber", "email"];
-      const missingFields = requiredFields.filter((field) => !userData[field]);
-      if (missingFields.length > 0) {
-        throw createError(400, `Missing required fields: ${missingFields.join(", ")}`);
-      }
+  async getActiveSupervisors() {
+    return await Supervisor.findAll({
+      where: { status: "ACTIVE" },
+      attributes: { exclude: ["id"] },
+    });
+  }
 
-      const user = await User.findOne({ where: { uuid } });
+  async updateSupervisor(uuid, data) {
+    const supervisor = await Supervisor.findOne({ where: { uuid } });
+    if (!supervisor) throw createError(404, "Supervisor not found.");
 
-      if (!user) {
-        throw createError(404, "User not found");
-      }
-
-      // Update only permissible fields
-      const updatedUser = await user.update({
-        fullName,
-        mobileNumber,
-        address,
-        email,
-      });
-
-      return updatedUser;
-    } catch (error) {
-      throw error;
-    }
+    return await supervisor.update(data);
   }
 }
