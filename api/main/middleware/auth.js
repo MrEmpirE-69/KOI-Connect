@@ -14,8 +14,7 @@ export const authenticate = (req, res, next) => {
         createError(403, "Failed to authenticate with provided credentials")
       );
     }
-    req.id = decoded.id;
-    req.roles = decoded.role;
+    req.user = decoded;
     next();
   });
 };

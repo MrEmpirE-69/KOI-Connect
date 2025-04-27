@@ -1,20 +1,50 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../usermanager/model/User.js";
+import Supervisor from "../../model/Supervisor.js";
+import Student from "../../model/Student.js";
 import { createError } from "../../../utils/Error.js";
 
 export class AuthService {
-  async authenticate(req, res, next) {
+  async authenticateUser(req, res, next) {
     try {
-      const user = await User.findOne({ where: { email: req.body.email } });
+      const { email, password } = req.body;
+
+      let user = null;
+      let role = null;
+      let userType = null;
+
+      //  Try finding Admin (User table)
+      user = await User.findOne({ where: { email } });
+      if (user) {
+        role = "ADMIN";
+        userType = "User"; // Sequelize model
+      }
+
+      // If not Admin, try finding Supervisor
       if (!user) {
-        return next(createError(404, "User doesnot exist."));
+        user = await Supervisor.findOne({ where: { email } });
+        if (user) {
+          role = "SUPERVISOR";
+          userType = "Supervisor";
+        }
       }
-      if (!user.isVerified || user.status === "PENDING") {
-        return next(
-          createError(403, "Please verify your account to continue.")
-        );
+
+      // If not Supervisor, try finding Student
+      if (!user) {
+        user = await Student.findOne({ where: { email } });
+        if (user) {
+          role = "STUDENT";
+          userType = "Student";
+        }
       }
+
+      //  If user not found at all
+      if (!user) {
+        return next(createError(404, "User does not exist."));
+      }
+
+      //  Status and verification checks
       if (user.status === "BLOCKED") {
         return next(
           createError(
@@ -23,26 +53,47 @@ export class AuthService {
           )
         );
       }
-      const isPasswordCorrect = await bcrypt.compare(
-        req.body.password,
-        user.password
-      );
+
+      if (user.status === "DELETED") {
+        return next(createError(403, "Your account has been deleted."));
+      }
+
+      if (!user.isVerified || user.status === "PENDING") {
+        return next(
+          createError(403, "Please verify your account to continue.")
+        );
+      }
+
+      //  Verify password
+      const isPasswordCorrect = await bcrypt.compare(password, user.password);
       if (!isPasswordCorrect) {
         return next(createError(401, "The password is incorrect."));
       }
+      //Create token
       const token = jwt.sign(
         {
           id: user.id,
-          role: "ADMIN",
+          role: role,
         },
         process.env.JWT_SECRET_KEY,
         { expiresIn: "1d" }
       );
+
+      //  Update last login, isVerified true, status ACTIVE for Supervisor/Student
+      if (userType === "Supervisor" || userType === "Student") {
+        await user.update({
+          lastLoginTime: new Date(),
+          status: "ACTIVE",
+          isVerified: true,
+        });
+      }
+
       res.status(200).json({
         success: true,
         status: 200,
-        message: "Successfully Signed In.",
+        message: `Successfully logged in as ${role}`,
         token,
+        role,
       });
     } catch (error) {
       next(error);

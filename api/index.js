@@ -9,12 +9,12 @@ import Student from "./main/model/Student.js";
 import Project from "./main/model/Project.js";
 import Client from "./main/model/Client.js";
 import StudentProjectMap from "./main/model/StudentProjectMap.js";
-import Teacher from "./main/model/Teacher.js";
 import Supervisor from "./main/model/Supervisor.js";
 import "./main/model/associations.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import SuperVisorRoute from "./main/route/SupervisorRoute.js";
+import swaggerDocs from "./swagger.js";
 
 const app = express();
 dotenv.config();
@@ -38,11 +38,6 @@ const swaggerOptions = {
   apis: ["./main/usermanager/route/*.js", "./main/auth/route/*.js"],
 };
 
-// Initialize swagger-jsdoc
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 app.use("/api", AuthRoute);
 app.use("/api/user", UserRoute);
 app.use("/api/supervisor", SuperVisorRoute);
@@ -65,3 +60,4 @@ app.listen(process.env.PORT, async () => {
   await dbConnection();
   console.log(`Server running on port ${process.env.PORT}`);
 });
+swaggerDocs(app, `${process.env.PORT}`);

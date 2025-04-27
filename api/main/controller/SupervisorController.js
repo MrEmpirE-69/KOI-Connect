@@ -10,7 +10,6 @@ export class SupervisorController {
         status: 200,
         success: true,
         message: "supervisor created successfully.",
-        data: supervisor,
       });
     } catch (err) {
       next(err);
@@ -56,7 +55,6 @@ export class SupervisorController {
         status: 200,
         success: true,
         message: "Supervisor updated successfully.",
-        data: response,
       });
     } catch (err) {
       next(err);

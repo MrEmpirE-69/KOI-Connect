@@ -22,6 +22,7 @@ router.post(
   verifyAdmin,
   userController.resetPassword.bind(userController)
 );
+
 router.get("/list", verifyToken, userController.listUsers.bind(userController));
 router.post(
   "/update",
