@@ -25,7 +25,7 @@ const createEmailTemplate = async () => {
     defaults: {
       name: "ADMIN_REGISTRATION_CONFIRMATION",
       subject: "Welcome to KOI-Connect",
-      messageText: `Hello {name},\n\nYour KOI admin account has been created.\n\nPlease login to our web app (https://app.kcmit.edu.np) using following credentials:\n\nEmail: {email}\nPassword: {password}\n\nBest regards,\n`,
+      messageText: `Hello {name},\n\nYour KOI admin account has been created.\n\nPlease login to our web app using following credentials:\n\nEmail: {email}\nPassword: {password}\n\nBest regards,\n`,
       messageHtml: `Hello <b>{name},</b><br><br>
         Your KOI admin account has been created. Please login to our web app (<a href="https://koi.connect.edu.au">here</a>) using following credentials:<br><br>
         <b>Email: </b>{email} <br>
@@ -33,6 +33,22 @@ const createEmailTemplate = async () => {
        Best regards, <br>
        KOI-Connect`,
       uuid: uuid4,
+    },
+  });
+  const uuid5 = uuidv4();
+  await EmailTemplate.findOrCreate({
+    where: { name: "SUPERVISOR_REGISTRATION_CONFIRMATION" },
+    defaults: {
+      name: "SUPERVISOR_REGISTRATION_CONFIRMATION",
+      subject: "Welcome to KOI-Connect",
+      messageText: `Hello {name},\n\nYour KOI supervisor account has been created.\n\nPlease login to our web app  using following credentials:\n\nEmail: {email}\nPassword: {password}\n\nBest regards,\n`,
+      messageHtml: `Hello <b>{name},</b><br><br>
+        Your KOI supervisor account has been created. Please login to our web app (<a href="https://koi.connect.edu.au">here</a>) using following credentials:<br><br>
+        <b>Email: </b>{email} <br>
+       <b>Password: </b>{password}<br><br>
+       Best regards, <br>
+       KOI-Connect`,
+      uuid: uuid5,
     },
   });
 

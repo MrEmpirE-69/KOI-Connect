@@ -48,29 +48,16 @@ export const verifyStudent = (req, res, next) => {
     }
   });
 };
-export const verifyParent = (req, res, next) => {
+
+export const verifySuperVisor = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.role === "PARENT") {
+    if (req.user.role.includes("SUPERVISOR")) {
       next();
     } else {
       return next(
         createError(
           403,
-          "Access denied: Only parents are authorized to perform this action!"
-        )
-      );
-    }
-  });
-};
-export const verifyFaculty = (req, res, next) => {
-  verifyToken(req, res, () => {
-    if (req.user.role.includes("FACULTY")) {
-      next();
-    } else {
-      return next(
-        createError(
-          403,
-          "Access denied: Only faculties are authorized to perform this action!"
+          "Access denied: Only supervisor are authorized to perform this action!"
         )
       );
     }
