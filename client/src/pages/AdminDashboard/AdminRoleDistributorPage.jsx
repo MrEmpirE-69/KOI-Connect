@@ -5,33 +5,173 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 // Example users with initials
 const usersData = [
-  { id: 1, name: "Kushal Nepal", role: "Student", email: "12202457@students.koi.edu.au", status: "Active", initials: "KN" },
-  { id: 2, name: "Gagan Bohara", role: "Student", email: "12202423@students.koi.edu.au", status: "Inactive", initials: "GB" },
-  { id: 3, name: "Rohan Poudel", role: "Student", email: "12202475@students.koi.edu.au", status: "Inactive", initials: "RP" },
-  { id: 4, name: "Sajit KC", role: "Student", email: "12203368@students.koi.edu.au", status: "Active", initials: "SKC" },
-  { id: 5, name: "Harry Magar", role: "Admin", email: "harrymagar@koi.edu.au", status: "Active", initials: "HM" },
-  { id: 6, name: "Burno Shrestha", role: "Academic Supervisor", email: "burnostha@koi.edu.au", status: "Active", initials: "BS" },
-  { id: 7, name: "Cristiano Maharjan", role: "Admin", email: "cristianomaharjan@koi.edu.au", status: "Inactive", initials: "CM" },
-  { id: 8, name: "Messi Limbu", role: "Client", email: "limbumessi@hotmail.com", status: "Active", initials: "ML" },
-  { id: 9, name: "Lamine Yamal", role: "Client", email: "laminey@hotmail.com", status: "Active", initials: "LY" },
-  { id: 10, name: "Rafi Ana", role: "Client", email: "rafiii@hotmail.com", status: "Active", initials: "RF" },
-  { id: 11, name: "Ankit Parajuli", role: "Client", email: "parajuliankit@hotmail.com", status: "Active", initials: "AP" },
-  { id: 12, name: "Neymar Jung Rana", role: "Client", email: "NaymarJr@hotmail.com", status: "Active", initials: "NJR" },
-  { id: 13, name: "Pablo Gavi", role: "Client", email: "Gavides@hotmail.com", status: "Active", initials: "PG" },
-  { id: 14, name: "Vini Jr", role: "Client", email: "crybaby@hotmail.com", status: "Active", initials: "VJR" },
-  { id: 15, name: "Kilian Mbappe", role: "Client", email: "Ninjaturtle@hotmail.com", status: "Active", initials: "KM" },
-  { id: 16, name: "Pedri González", role: "Client", email: "nextxavi@hotmail.com", status: "Active", initials: "PG" },
-  { id: 17, name: "Wojciech Szczęsny", role: "Client", email: "smokey@hotmail.com", status: "Active", initials: "WS" },
-  { id: 18, name: "Robert Lewandowski", role: "Client", email: "golski@hotmail.com", status: "Active", initials: "RL" },
-  { id: 19, name: "Frenkie de Jong", role: "Client", email: "Frankieyee@hotmail.com", status: "Active", initials: "FDJ" },
-  { id: 20, name: "Alejandro Balde", role: "Client", email: "jordiregen@hotmail.com", status: "Active", initials: "AB" },
+  {
+    id: 1,
+    name: "Kushal Nepal",
+    role: "Student",
+    email: "12202457@students.koi.edu.au",
+    status: "Active",
+    initials: "KN",
+  },
+  {
+    id: 2,
+    name: "Gagan Bohara",
+    role: "Student",
+    email: "12202423@students.koi.edu.au",
+    status: "Inactive",
+    initials: "GB",
+  },
+  {
+    id: 3,
+    name: "Rohan Poudel",
+    role: "Student",
+    email: "12202475@students.koi.edu.au",
+    status: "Inactive",
+    initials: "RP",
+  },
+  {
+    id: 4,
+    name: "Sajit KC",
+    role: "Student",
+    email: "12203368@students.koi.edu.au",
+    status: "Active",
+    initials: "SKC",
+  },
+  {
+    id: 5,
+    name: "Harry Magar",
+    role: "Admin",
+    email: "harrymagar@koi.edu.au",
+    status: "Active",
+    initials: "HM",
+  },
+  {
+    id: 6,
+    name: "Burno Shrestha",
+    role: "Academic Supervisor",
+    email: "burnostha@koi.edu.au",
+    status: "Active",
+    initials: "BS",
+  },
+  {
+    id: 7,
+    name: "Cristiano Maharjan",
+    role: "Admin",
+    email: "cristianomaharjan@koi.edu.au",
+    status: "Inactive",
+    initials: "CM",
+  },
+  {
+    id: 8,
+    name: "Messi Limbu",
+    role: "Client",
+    email: "limbumessi@hotmail.com",
+    status: "Active",
+    initials: "ML",
+  },
+  {
+    id: 9,
+    name: "Lamine Yamal",
+    role: "Client",
+    email: "laminey@hotmail.com",
+    status: "Active",
+    initials: "LY",
+  },
+  {
+    id: 10,
+    name: "Rafi Ana",
+    role: "Client",
+    email: "rafiii@hotmail.com",
+    status: "Active",
+    initials: "RF",
+  },
+  {
+    id: 11,
+    name: "Ankit Parajuli",
+    role: "Client",
+    email: "parajuliankit@hotmail.com",
+    status: "Active",
+    initials: "AP",
+  },
+  {
+    id: 12,
+    name: "Neymar Jung Rana",
+    role: "Client",
+    email: "NaymarJr@hotmail.com",
+    status: "Active",
+    initials: "NJR",
+  },
+  {
+    id: 13,
+    name: "Pablo Gavi",
+    role: "Client",
+    email: "Gavides@hotmail.com",
+    status: "Active",
+    initials: "PG",
+  },
+  {
+    id: 14,
+    name: "Vini Jr",
+    role: "Client",
+    email: "crybaby@hotmail.com",
+    status: "Active",
+    initials: "VJR",
+  },
+  {
+    id: 15,
+    name: "Kilian Mbappe",
+    role: "Client",
+    email: "Ninjaturtle@hotmail.com",
+    status: "Active",
+    initials: "KM",
+  },
+  {
+    id: 16,
+    name: "Pedri González",
+    role: "Client",
+    email: "nextxavi@hotmail.com",
+    status: "Active",
+    initials: "PG",
+  },
+  {
+    id: 17,
+    name: "Wojciech Szczęsny",
+    role: "Client",
+    email: "smokey@hotmail.com",
+    status: "Active",
+    initials: "WS",
+  },
+  {
+    id: 18,
+    name: "Robert Lewandowski",
+    role: "Client",
+    email: "golski@hotmail.com",
+    status: "Active",
+    initials: "RL",
+  },
+  {
+    id: 19,
+    name: "Frenkie de Jong",
+    role: "Client",
+    email: "Frankieyee@hotmail.com",
+    status: "Active",
+    initials: "FDJ",
+  },
+  {
+    id: 20,
+    name: "Alejandro Balde",
+    role: "Client",
+    email: "jordiregen@hotmail.com",
+    status: "Active",
+    initials: "AB",
+  },
 ];
 
 const AdminRoleDistributorPage = () => {
   const [users, setUsers] = useState(usersData); // Store users in state
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [roleFilter, setRoleFilter] = useState(''); // Track role filter
-  const [statusFilter, setStatusFilter] = useState(''); // Track status filter
+  const [roleFilter, setRoleFilter] = useState(""); // Track role filter
+  const [statusFilter, setStatusFilter] = useState(""); // Track status filter
   const [editingUserId, setEditingUserId] = useState(null); // Track user being edited
   const [newStatus, setNewStatus] = useState(""); // Track new status for editing
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // For delete confirmation
@@ -63,7 +203,9 @@ const AdminRoleDistributorPage = () => {
 
   // Confirm deletion of the user
   const confirmDelete = () => {
-    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userToDelete));
+    setUsers((prevUsers) =>
+      prevUsers.filter((user) => user.id !== userToDelete)
+    );
     setIsDeleteModalOpen(false);
     setUserToDelete(null);
   };
@@ -103,8 +245,12 @@ const AdminRoleDistributorPage = () => {
         <div className="flex-1 overflow-y-auto p-6 md:p-10">
           {/* Page Heading */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-[#226CD1] mb-2">Role Distributor</h1>
-            <p className="text-lg text-gray-600">Manage user roles and permissions</p>
+            <h1 className="text-4xl font-bold text-[#226CD1] mb-2">
+              Role Distributor
+            </h1>
+            <p className="text-lg text-gray-600">
+              Manage user roles and permissions
+            </p>
           </div>
 
           {/* Filter by Role and Status */}
@@ -184,18 +330,7 @@ const AdminRoleDistributorPage = () => {
                       {user.initials}
                     </td>
                     <td className="py-3 px-6 font-semibold">{user.name}</td>
-                    <td className="py-3 px-6">
-                      <select
-                        value={user.role}
-                        onChange={(e) => handleRoleChange(user.id, e.target.value)} // Trigger role change here
-                        className="px-2 py-1 border rounded"
-                      >
-                        <option value="Admin">Admin</option>
-                        <option value="Student">Student</option>
-                        <option value="Academic Supervisor">Academic Supervisor</option>
-                        <option value="Client">Client</option>
-                      </select>
-                    </td>
+                    <td className="py-3 px-6">{user.role}</td>
                     <td className="py-3 px-6">{user.email}</td>
                     <td className="py-3 px-6 text-center">
                       <div className="flex justify-center gap-4">

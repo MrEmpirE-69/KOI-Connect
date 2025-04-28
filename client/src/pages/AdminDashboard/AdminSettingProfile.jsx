@@ -1,19 +1,22 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";  // Import useNavigate for redirection
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import SideMenu from "../../components/SideMenu/SideMenu";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
 import { FaUserCircle } from "react-icons/fa";
+import { BASE_URL } from "../../utils/config";
+import useFetch from "../../hooks/useFetch";
+import { adminRequest, updateAuthToken } from "../../utils/requestMethods";
+import { Loader } from "lucide-react";
 
 const AdminSettingProfile = () => {
   const [formData, setFormData] = useState({
-    givenName: "Abdul ali",
-    familyName: "Khan",
-    email: "abdulali@gmail.com",
-    mobile: "0444554456",
+    fullName: "",
+    email: "",
+    mobile: "",
     confirm: false,
   });
 
-  const navigate = useNavigate();  // Initialize the navigate function
+  const navigate = useNavigate(); // Initialize the navigate function
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,11 +31,16 @@ const AdminSettingProfile = () => {
     if (formData.confirm) {
       alert("Profile updated successfully!");
       // Navigate to the admin-setting page after successful form submission
-      navigate("/admin-setting");  // Redirect to the settings page
+      navigate("/admin-setting"); // Redirect to the settings page
     } else {
       alert("Please confirm the details before saving.");
     }
   };
+  const { data, loading } = useFetch(`${BASE_URL}/user/profile`, adminRequest);
+  updateAuthToken();
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex h-screen bg-[#f9f9f9] overflow-hidden">
@@ -58,32 +66,20 @@ const AdminSettingProfile = () => {
 
               {/* Form Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Given Name
+                    Full Name
                   </label>
                   <input
                     type="text"
-                    name="givenName"
-                    value={formData.givenName}
+                    name="fullName"
+                    value={data.data?.fullName}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
                     required
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Family Name
-                  </label>
-                  <input
-                    type="text"
-                    name="familyName"
-                    value={formData.familyName}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
-                    required
-                  />
-                </div>
+
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Email
@@ -91,7 +87,7 @@ const AdminSettingProfile = () => {
                   <input
                     type="email"
                     name="email"
-                    value={formData.email}
+                    value={data.data?.email}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
                     required
@@ -104,7 +100,20 @@ const AdminSettingProfile = () => {
                   <input
                     type="tel"
                     name="mobile"
-                    value={formData.mobile}
+                    value={data.data?.mobileNumber}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={data.data?.address}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
                     required

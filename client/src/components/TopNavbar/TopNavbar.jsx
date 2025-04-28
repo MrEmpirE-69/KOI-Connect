@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import adminAvatar from "../../assets/admin.png";
+import { Loader } from "lucide-react";
+import { BASE_URL } from "../../utils/config";
+import useFetch from "../../hooks/useFetch";
+import { adminRequest, updateAuthToken } from "../../utils/requestMethods";
 
 const TopNavbar = () => {
-  // State to manage the visibility of the notification box
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
-  // Example notifications (like YouTube)
+  const { data, loading } = useFetch(`${BASE_URL}/user/profile`, adminRequest);
+  updateAuthToken();
+  if (loading) {
+    return <Loader />;
+  }
   const notifications = [
     {
       id: 1,
@@ -22,24 +29,8 @@ const TopNavbar = () => {
       message: "You have a new message from the communication page.",
       time: "3 hours ago",
     },
-    {
-      id: 4,
-      message: "You have a new message from the Setting page.",
-      time: "3 hours ago",
-    },
-    {
-      id: 5,
-      message: "You have a new message from the Project 3.",
-      time: "3 hours ago",
-    },
-    {
-      id: 6,
-      message: "You have a new message from the Project 2.",
-      time: "3 hours ago",
-    },
   ];
 
-  // Toggle the notification box
   const toggleNotifications = () => {
     setIsNotificationOpen(!isNotificationOpen);
   };
@@ -73,8 +64,8 @@ const TopNavbar = () => {
 
         {/* Admin Info */}
         <div className="text-right transition duration-300 hover:scale-105">
-          <p className="font-semibold">Bronzo Magar</p>
-          <p className="text-sm text-gray-500">Admin</p>
+          <p className="font-semibold">{data.data?.fullName}</p>
+          <p className="text-sm text-gray-500"></p>
         </div>
 
         {/* Admin Avatar */}

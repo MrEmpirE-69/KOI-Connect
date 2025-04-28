@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import logo from "../../assets/koi.png";
 import student from "../../assets/student.png";
 import { Eye, EyeOff } from "lucide-react";
-import { FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { BASE_URL } from "../../utils/config";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,15 +25,33 @@ export default function LoginPage() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
     const { email, password } = loginDetail;
 
-    if (email === "koiadmin" && password === "koiadmin") {
-      toast.success("Logged in successfully");
-      navigate("/admin-dashboard");
-      return;
-    } else {
-      toast.error("Login failed");
+    try {
+      const response = await axios.post(`${BASE_URL}/authenticate`, {
+        email,
+        password,
+      });
+
+      const { data } = response;
+
+      if (data.success) {
+        sessionStorage.setItem("authToken", data.token);
+
+        if (data.role === "ADMIN") {
+          navigate("/admin-dashboard");
+        } else if (data.role === "STUDENT") {
+          navigate("/student-dashboard");
+        } else if (data.role === "SUPERVISOR") {
+          navigate("/as-dashboard");
+        }
+
+        toast.success(`Logged in as ${data.role}`);
+      } else {
+        toast.error("Login failed");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "An error occurred");
     }
   };
 
@@ -62,12 +81,6 @@ export default function LoginPage() {
           <p className="text-sm md:text-base text-gray-600 mb-4">
             Log in to access your dashboard and continue your academic journey
             with KOI Connect 🎓
-          </p>
-
-          {/* Sign Up Prompt */}
-          <p className="text-sm text-gray-500 mb-1">Don’t have an account?</p>
-          <p className="text-sm font-medium text-[#6C63FF] hover:underline">
-            <a href="/signup">Register here</a>
           </p>
 
           {/* Illustration */}
@@ -125,12 +138,6 @@ export default function LoginPage() {
               Login
             </button>
           </form>
-
-          <div className="my-4 text-center text-gray-500">or continue with</div>
-
-          <div className="flex justify-center">
-            <FaGoogle className="text-[#4285F4] w-6 h-6" />
-          </div>
         </div>
       </div>
     </div>

@@ -2,16 +2,46 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Import Link for navigation
 import SideMenu from "../../components/SideMenu/SideMenu";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
-import { FaUsers, FaChalkboardTeacher, FaFileAlt, FaClipboardList } from "react-icons/fa";
+import { FaUsers, FaChalkboardTeacher, FaFileAlt } from "react-icons/fa";
 import { CSVLink } from "react-csv";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"; // For activity analytics chart
-import Calendar from 'react-calendar'; // Calendar for upcoming events
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts"; // For activity analytics chart
+import Calendar from "react-calendar"; // Calendar for upcoming events
 
 // Mocked example data
 const projects = [
-  { id: 1, student: "Rohan Poudel", title: "Implication Of AI In KOI", date: "2025/09/19", status: "Pending", progress: 72 },
-  { id: 2, student: "Kushal Nepal", title: "Upgrade Of Student Portal", date: "2025/08/17", status: "Pending", progress: 54 },
-  { id: 3, student: "Gagan Bohara", title: "Adding New Features In Moodle", date: "2025/06/12", status: "Reviewed", progress: 85 },
+  {
+    id: 1,
+    student: "Rohan Poudel",
+    title: "Implication Of AI In KOI",
+    date: "2025/09/19",
+    status: "Pending",
+    progress: 72,
+  },
+  {
+    id: 2,
+    student: "Kushal Nepal",
+    title: "Upgrade Of Student Portal",
+    date: "2025/08/17",
+    status: "Pending",
+    progress: 54,
+  },
+  {
+    id: 3,
+    student: "Gagan Bohara",
+    title: "Adding New Features In Moodle",
+    date: "2025/06/12",
+    status: "Reviewed",
+    progress: 85,
+  },
   // Add more projects...
 ];
 
@@ -83,7 +113,7 @@ const AdminDashboard = () => {
             >
               <FaChalkboardTeacher className="text-4xl mx-auto text-[#1C628F]" />
               <h2 className="text-4xl font-bold my-2">10</h2>
-              <p className="text-gray-600 font-semibold text-lg">Teachers</p>
+              <p className="text-gray-600 font-semibold text-lg">Supervisors</p>
             </Link>
 
             {/* Clients Card */}
@@ -99,7 +129,9 @@ const AdminDashboard = () => {
 
           {/* Activity Analytics */}
           <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">User Activity Analytics</h3>
+            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">
+              User Activity Analytics
+            </h3>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={userActivityData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -125,7 +157,9 @@ const AdminDashboard = () => {
 
           {/* Upcoming Events Calendar */}
           <div className="mb-10">
-            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">Upcoming Events</h3>
+            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">
+              Upcoming Events
+            </h3>
             <Calendar
               onChange={setSelectedDate}
               value={selectedDate}
@@ -143,17 +177,23 @@ const AdminDashboard = () => {
 
           {/* Audit Logs */}
           <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">Audit Logs</h3>
+            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">
+              Audit Logs
+            </h3>
             <ul>
               {userLogs.map((log, index) => (
-                <li key={index} className="text-sm text-gray-700">{log}</li>
+                <li key={index} className="text-sm text-gray-700">
+                  {log}
+                </li>
               ))}
             </ul>
           </div>
 
           {/* System Health Dashboard */}
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">System Health Dashboard</h3>
+            <h3 className="text-2xl font-semibold text-[#226CD1] mb-4">
+              System Health Dashboard
+            </h3>
             <div className="flex gap-6">
               <div className="w-1/2">
                 <h4>Uptime:</h4>

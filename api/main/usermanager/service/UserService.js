@@ -237,7 +237,7 @@ export class UserService {
             "id",
             "password",
             "isVerified",
-            "code",
+            "uuid",
             "createdAt",
             "updatedAt",
           ],

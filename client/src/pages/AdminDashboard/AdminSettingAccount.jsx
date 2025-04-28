@@ -11,10 +11,6 @@ const AdminSettingAccount = () => {
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
-    streetAddress: "135-234 George st",
-    suburb: "Sydney, 2000",
-    state: "NSW",
-    confirm: false,
   });
 
   const handleChange = (e) => {
@@ -29,7 +25,7 @@ const AdminSettingAccount = () => {
     e.preventDefault();
     if (formData.confirm) {
       alert("Account updated successfully!");
-      navigate("/admin-setting");  // Redirect to the admin setting page after saving
+      navigate("/admin-setting"); // Redirect to the admin setting page after saving
     } else {
       alert("Please confirm the details before saving.");
     }
@@ -89,62 +85,17 @@ const AdminSettingAccount = () => {
                 />
               </div>
             </div>
-
-            {/* Address Section */}
-            <div className="flex-1 min-w-[280px] w-full max-w-md">
-              <h2 className="text-xl font-semibold text-[#333] mb-4">
-                Address
-              </h2>
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  name="streetAddress"
-                  placeholder="Street Address"
-                  value={formData.streetAddress}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
-                />
-                <input
-                  type="text"
-                  name="suburb"
-                  placeholder="Suburb"
-                  value={formData.suburb}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
-                />
-                <input
-                  type="text"
-                  name="state"
-                  placeholder="State"
-                  value={formData.state}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-300"
-                />
-              </div>
-            </div>
           </div>
 
           {/* Save Button */}
           <div className="mt-10 text-center">
-            <label className="inline-flex items-center text-sm text-gray-600 mb-3">
-              <input
-                type="checkbox"
-                name="confirm"
-                checked={formData.confirm}
-                onChange={handleChange}
-                className="mr-2 accent-green-500 w-4 h-4"
-              />
-              Do you confirm the above details
-            </label>
-            <div>
-              <button
-                type="submit"
-                onClick={handleSubmit}  // Submit and navigate
-                className="mt-2 bg-[#226CD1] text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-600 transition"
-              >
-                Save
-              </button>
-            </div>
+            <button
+              type="submit"
+              onClick={handleSubmit} // Submit and navigate
+              className="mt-2 bg-[#226CD1] text-white font-semibold px-6 py-2 cursor-pointer rounded-full hover:bg-blue-600 transition"
+            >
+              Save
+            </button>
           </div>
         </section>
       </main>
