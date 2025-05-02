@@ -27,7 +27,6 @@ import AdminCommunicationPage from "./pages/AdminDashboard/AdminCommunicationPag
 import AdminRoleDistributorPage from "./pages/AdminDashboard/AdminRoleDistributorPage";
 import AdminStudent from "./pages/AdminDashboard/AdminStudent";
 import AdminClient from "./pages/AdminDashboard/AdminClient";
-import AdminTeacher from "./pages/AdminDashboard/AdminTeacher";
 import ClientDashboard from "./pages/ClientPage/ClientDashboard";
 
 import ClientProjectReview from "./pages/ClientPage/ClientProjectReview";
@@ -36,6 +35,10 @@ import ClientSettingPage from "./pages/ClientPage/ClientSettingPage";
 import ClientSettingProfile from "./pages/ClientPage/ClientSettingProfile";
 import ClientSettingAccount from "./pages/ClientPage/ClientSettingAccount";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import AdminList from "./pages/AdminDashboard/Admin/AdminList";
+import SupervisorList from "./pages/AdminDashboard/Supervisor/SupervisorList";
+import CreateAdmin from "./pages/AdminDashboard/Admin/CreateAdmin";
+import CreateSupervisor from "./pages/AdminDashboard/Supervisor/CreateSupervisor";
 
 function App() {
   return (
@@ -46,8 +49,33 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route element={<PrivateRoute />}>
+            {/* Admin */}
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/create-supervisor" element={<CreateSupervisor />} />
+            <Route
+              path="/admin-projectreview"
+              element={<AdminProjectReview />}
+            />
+            <Route path="/supervisor-list" element={<SupervisorList />} />
+            <Route path="/student-list" element={<AdminStudent />} />
+            <Route path="/client-list" element={<AdminClient />} />
+            <Route path="/admin-setting" element={<AdminSettingPage />} />
+            <Route path="/admin-list" element={<AdminList />} />
+            <Route path="/create-admin" element={<CreateAdmin />} />
+            <Route
+              path="/admin-settingprofile"
+              element={<AdminSettingProfile />}
+            />
+            <Route
+              path="/admin-settingaccount"
+              element={<AdminSettingAccount />}
+            />
+            <Route
+              path="/admin-communication"
+              element={<AdminCommunicationPage />}
+            />
 
+            {/* Student */}
             <Route path="/student-dashboard" element={<StudentDashboard />} />
             <Route
               path="/student-assessment"
@@ -67,6 +95,7 @@ function App() {
               element={<StudentSettingAccount />}
             />
 
+            {/* Supervisor */}
             <Route path="/as-dashboard" element={<AsDashboard />} />
             <Route path="/as-projectreview" element={<AsProjectReviewPage />} />
             <Route path="/as-communication" element={<AsCommunicationPage />} />
@@ -74,11 +103,7 @@ function App() {
             <Route path="/as-settingprofile" element={<AsSettingProfile />} />
             <Route path="/as-settingaccount" element={<AsSettingAccount />} />
 
-            <Route
-              path="/admin-projectreview"
-              element={<AdminProjectReview />}
-            />
-            <Route path="/student-list" element={<AdminStudent />} />
+            {/* Client */}
             <Route path="/client-dashboard" element={<ClientDashboard />} />
             <Route
               path="/client-communication"
@@ -93,29 +118,9 @@ function App() {
               path="/client-settingaccount"
               element={<ClientSettingAccount />}
             />
-
             <Route
               path="/client-projectreview"
               element={<ClientProjectReview />}
-            />
-            <Route path="/teacher-list" element={<AdminTeacher />} />
-            <Route path="/client-list" element={<AdminClient />} />
-            <Route path="/admin-setting" element={<AdminSettingPage />} />
-            <Route
-              path="/admin-settingprofile"
-              element={<AdminSettingProfile />}
-            />
-            <Route
-              path="/admin-settingaccount"
-              element={<AdminSettingAccount />}
-            />
-            <Route
-              path="/admin-communication"
-              element={<AdminCommunicationPage />}
-            />
-            <Route
-              path="/admin-role-distributor"
-              element={<AdminRoleDistributorPage />}
             />
           </Route>
 

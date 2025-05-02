@@ -24,13 +24,18 @@ router.post(
 );
 
 router.get("/list", verifyToken, userController.listUsers.bind(userController));
+router.get(
+  "/count",
+  verifyToken,
+  userController.getActiveUserCount.bind(userController)
+);
 router.post(
   "/update",
   verifyAdmin,
   userController.updateUser.bind(userController)
 );
 router.post(
-  "/block",
+  "/delete",
   verifyAdmin,
   userController.blockUser.bind(userController)
 );

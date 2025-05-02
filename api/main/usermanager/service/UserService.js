@@ -8,6 +8,7 @@ import getEmailTemplate from "../../../utils/GetEmailTemplate.js";
 import validatePhone from "../../../utils/ValidatePhone.js";
 import validateEmail from "../../../utils/ValidateEmail.js";
 import validateName from "../../../utils/validateName.js";
+import { Op } from "sequelize";
 
 export class UserService {
   async createUser(userData) {
@@ -61,7 +62,7 @@ export class UserService {
         password: hashedPassword,
         uuid: uuid,
         isVerified: true,
-        status: "ACTIVE",
+        status: "PENDING",
       });
       const placeholders = { name, email, password };
       const { subject, text, html } = await getEmailTemplate(
@@ -123,10 +124,25 @@ export class UserService {
   async listUsers() {
     try {
       const users = await User.findAll({
+        where: {
+          status: {
+            [Op.in]: ["ACTIVE", "PENDING"],
+          },
+        },
         attributes: { exclude: ["password", "id"] },
         order: [["createdAt", "DESC"]],
       });
       return users;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getActiveUserCount() {
+    try {
+      const count = await User.count({
+        where: { status: "ACTIVE" },
+      });
+      return count;
     } catch (error) {
       throw error;
     }
@@ -195,13 +211,13 @@ export class UserService {
         throw createError(404, "User not found.");
       }
       if (user.isSuperAdmin) {
-        throw createError(400, "Super Admin can't be blocked.");
+        throw createError(400, "Super Admin can't be deleted.");
       }
       if (user.status === "PENDING") {
-        throw createError(400, "Pending user can't be blocked.");
+        throw createError(400, "Pending user can't be deleted.");
       }
       if (user.status === "BLOCKED") {
-        throw createError(409, "User is already blocked.");
+        throw createError(409, "User is already deleted.");
       }
       await user.update({ status: "BLOCKED" });
       return user;

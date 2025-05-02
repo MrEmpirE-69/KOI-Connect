@@ -1,14 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";  // Import Link for navigation
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/koi.png";
 import adminAvatar from "../../assets/admin.png";
 import { MdDashboard, MdSettings, MdLock } from "react-icons/md";
-import { RiTeamLine } from "react-icons/ri";
 import { BiMessageSquareDetail } from "react-icons/bi";
 
 const SideMenu = ({ currentPage }) => {
+  const navigate = useNavigate(); //
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/login"); //
+  };
+
   return (
-    <aside className="w-[250px] h-full bg-white shadow-2xl rounded-r-xl flex flex-col justify-between animate-slideInLeft transition-all duration-700">
+    <aside className="w-[250px] h-full bg-[#dddddd] shadow-md flex flex-col justify-between animate-slideInLeft transition-all duration-700">
       {/* Top Section */}
       <div>
         {/* Logo */}
@@ -32,7 +38,11 @@ const SideMenu = ({ currentPage }) => {
             {/* Dashboard Link */}
             <Link
               to="/admin-dashboard"
-              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "dashboard" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition hover:scale-[1.02]`}
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
+                currentPage === "dashboard"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              } transition hover:scale-[1.02]`}
             >
               <MdDashboard className="text-xl" />
               Dashboard
@@ -41,7 +51,11 @@ const SideMenu = ({ currentPage }) => {
             {/* Project Review Link */}
             <Link
               to="/admin-projectreview"
-              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "projectReview" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition-all duration-300`}
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
+                currentPage === "projectReview"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              } transition-all duration-300`}
             >
               <MdLock className="text-xl" />
               Project Review
@@ -50,25 +64,24 @@ const SideMenu = ({ currentPage }) => {
             {/* Communication Page Link */}
             <Link
               to="/admin-communication"
-              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "communication" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition-all duration-300`}
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
+                currentPage === "communication"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              } transition-all duration-300`}
             >
               <BiMessageSquareDetail className="text-xl" />
               Communication Page
             </Link>
 
-            {/* Role Distributor Link */}
-            <Link
-              to="/admin-role-distributor"
-              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "roleDistributor" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition-all duration-300`}
-            >
-              <RiTeamLine className="text-xl" />
-              Role Distributor
-            </Link>
-
             {/* Settings Link */}
             <Link
               to="/admin-setting"
-              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${currentPage === "setting" ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm" : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"} transition-all duration-300`}
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
+                currentPage === "setting"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              } transition-all duration-300`}
             >
               <MdSettings className="text-xl" />
               Settings
@@ -79,7 +92,10 @@ const SideMenu = ({ currentPage }) => {
 
       {/* Bottom / Logout */}
       <div className="px-6 py-4">
-        <Link to="/" className="flex items-center gap-2 text-sm text-[#444] hover:text-red-600 transition-all hover:scale-105">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 text-sm text-[#444] hover:text-red-600 transition-all hover:scale-105"
+        >
           <svg
             width="20"
             height="20"
@@ -90,7 +106,7 @@ const SideMenu = ({ currentPage }) => {
             <path d="M13 9l4 3-4 3V9z" />
           </svg>
           Logout
-        </Link>
+        </button>
       </div>
     </aside>
   );

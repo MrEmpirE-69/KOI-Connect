@@ -8,6 +8,7 @@ import validatePhone from "../../utils/ValidatePhone.js";
 import validateEmail from "../../utils/ValidateEmail.js";
 import validateName from "../../utils/validateName.js";
 import generateRandomPassword from "../../utils/GeneratePassword.js";
+import { Op } from "sequelize";
 
 export class SupervisorService {
   async createSupervisor(data) {
@@ -93,9 +94,23 @@ export class SupervisorService {
 
   async getActiveSupervisors() {
     return await Supervisor.findAll({
-      where: { status: "ACTIVE" },
-      attributes: { exclude: ["id"] },
+      where: {
+        status: {
+          [Op.in]: ["ACTIVE", "PENDING"],
+        },
+      },
+      attributes: { exclude: ["id", "password"] },
     });
+  }
+  async getActiveUserCount() {
+    try {
+      const count = await Supervisor.count({
+        where: { status: "ACTIVE" },
+      });
+      return count;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updateSupervisor(uuid, data) {
@@ -103,5 +118,24 @@ export class SupervisorService {
     if (!supervisor) throw createError(404, "Supervisor not found.");
 
     return await supervisor.update(data);
+  }
+  async deleteUser(uuid) {
+    try {
+      const user = await Supervisor.findOne({ where: { uuid } });
+      if (!user) {
+        throw createError(404, "User not found.");
+      }
+
+      if (user.status === "PENDING") {
+        throw createError(400, "Pending user can't be deleted.");
+      }
+      if (user.status === "DELETED") {
+        throw createError(409, "User not found.");
+      }
+      await user.update({ status: "DELETED" });
+      return user;
+    } catch (error) {
+      throw error;
+    }
   }
 }

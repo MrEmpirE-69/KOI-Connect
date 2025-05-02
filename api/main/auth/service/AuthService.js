@@ -14,7 +14,6 @@ export class AuthService {
       let role = null;
       let userType = null;
 
-      //  Try finding Admin (User table)
       user = await User.findOne({ where: { email } });
       if (user) {
         role = "ADMIN";
@@ -39,7 +38,6 @@ export class AuthService {
         }
       }
 
-      //  If user not found at all
       if (!user) {
         return next(createError(404, "User does not exist."));
       }
@@ -56,12 +54,6 @@ export class AuthService {
 
       if (user.status === "DELETED") {
         return next(createError(403, "Your account has been deleted."));
-      }
-
-      if (!user.isVerified || user.status === "PENDING") {
-        return next(
-          createError(403, "Please verify your account to continue.")
-        );
       }
 
       //  Verify password

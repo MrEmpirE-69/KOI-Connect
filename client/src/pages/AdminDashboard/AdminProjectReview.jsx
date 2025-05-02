@@ -12,10 +12,14 @@ const projects = [
     title: "Implication Of AI In KOI",
     date: "2025/09/19",
     status: "Pending",
-    description: "Project focused on the implications of AI technology in education systems, particularly in the KOI university context.",
-    comments: ["Looks good, but needs more research.", "Please include a case study."],
+    description:
+      "Project focused on the implications of AI technology in education systems, particularly in the KOI university context.",
+    comments: [
+      "Looks good, but needs more research.",
+      "Please include a case study.",
+    ],
     files: ["file1.pdf", "file2.docx"],
-    reviewer: "Admin 1"
+    reviewer: "Admin 1",
   },
   {
     id: 2,
@@ -26,7 +30,7 @@ const projects = [
     description: "Revamping the student portal for better user experience.",
     comments: [],
     files: ["studentPortalDesign.pdf"],
-    reviewer: "Admin 2"
+    reviewer: "Admin 2",
   },
   {
     id: 3,
@@ -34,10 +38,11 @@ const projects = [
     title: "Adding New Features In Moodle",
     date: "2025/06/12",
     status: "Pending",
-    description: "Improving the Moodle platform with additional features for better functionality.",
+    description:
+      "Improving the Moodle platform with additional features for better functionality.",
     comments: ["Seems promising!"],
     files: ["moodleFeatures.docx"],
-    reviewer: "Admin 3"
+    reviewer: "Admin 3",
   },
   {
     id: 4,
@@ -45,10 +50,11 @@ const projects = [
     title: "Blockchain Integration for KOI",
     date: "2025/05/01",
     status: "Approved",
-    description: "Exploring how blockchain can be integrated into KOI's system.",
+    description:
+      "Exploring how blockchain can be integrated into KOI's system.",
     comments: ["Great research."],
     files: ["blockchainIntegration.pdf"],
-    reviewer: "Admin 4"
+    reviewer: "Admin 4",
   },
   {
     id: 5,
@@ -59,8 +65,8 @@ const projects = [
     description: "Redesigning the student portal for a more modern interface.",
     comments: ["The design is too similar to the previous one."],
     files: ["portalRedesign.png"],
-    reviewer: "Admin 5"
-  }
+    reviewer: "Admin 5",
+  },
 ];
 
 const AdminProjectReview = () => {
@@ -69,10 +75,11 @@ const AdminProjectReview = () => {
   const [newComment, setNewComment] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredProjects = projects.filter((project) =>
-    project.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    project.status.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProjects = projects.filter(
+    (project) =>
+      project.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.status.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const projectsPerPage = 5;
@@ -131,22 +138,22 @@ const AdminProjectReview = () => {
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col overflow-hidden">
+      <main className="flex-1 flex flex-col px-8 overflow-hidden">
         <TopNavbar />
 
         {/* Page Title */}
-        <h1 className="text-4xl font-bold text-[#226CD1] text-center my-10 animate-fade-in-down">
+        <h1 className="text-4xl font-bold text-[#226CD1] text-left my-10 animate-fade-in-down">
           Project Review Page
         </h1>
 
         {/* Search Bar */}
-        <div className="flex justify-center mb-4">
+        <div className="flex mb-4">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by student, title, or status"
-            className="px-4 py-2 border rounded-md w-full max-w-md"
+            className="px-4 py-2 border rounded-md"
           />
         </div>
 
@@ -160,10 +167,21 @@ const AdminProjectReview = () => {
             <table className="w-full text-sm text-left text-gray-700">
               <thead className="border-b text-black font-semibold">
                 <tr>
-                  <th className="py-3 px-4" onClick={() => setSortBy("student")}>Student</th>
-                  <th className="py-3 px-4" onClick={() => setSortBy("title")}>Project Title</th>
-                  <th className="py-3 px-4" onClick={() => setSortBy("date")}>Publishing Date</th>
-                  <th className="py-3 px-4" onClick={() => setSortBy("status")}>Status</th>
+                  <th
+                    className="py-3 px-4"
+                    onClick={() => setSortBy("student")}
+                  >
+                    Student
+                  </th>
+                  <th className="py-3 px-4" onClick={() => setSortBy("title")}>
+                    Project Title
+                  </th>
+                  <th className="py-3 px-4" onClick={() => setSortBy("date")}>
+                    Publishing Date
+                  </th>
+                  <th className="py-3 px-4" onClick={() => setSortBy("status")}>
+                    Status
+                  </th>
                   <th className="py-3 px-4">Action</th>
                 </tr>
               </thead>
@@ -204,12 +222,22 @@ const AdminProjectReview = () => {
           {/* Pagination */}
           <div className="flex justify-center mt-4">
             {currentPage > 1 && (
-              <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
                 Previous
               </button>
             )}
-            <span className="px-4 py-2">Page {currentPage} of {totalPages}</span>
-            <button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            <span className="px-4 py-2">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
               Next
             </button>
           </div>
@@ -230,13 +258,19 @@ const AdminProjectReview = () => {
         {selectedProject && (
           <div className="fixed top-0 left-0 w-full h-full bg-gray-500 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-md shadow-lg w-1/3">
-              <h2 className="text-xl font-bold text-[#226CD1] mb-4">{selectedProject.title}</h2>
-              <p className="mb-4"><strong>Description:</strong> {selectedProject.description}</p>
+              <h2 className="text-xl font-bold text-[#226CD1] mb-4">
+                {selectedProject.title}
+              </h2>
+              <p className="mb-4">
+                <strong>Description:</strong> {selectedProject.description}
+              </p>
 
               <h3 className="text-lg font-semibold mb-2">Comments:</h3>
               <ul className="mb-4">
                 {selectedProject.comments.map((comment, index) => (
-                  <li key={index} className="border-b py-2">{comment}</li>
+                  <li key={index} className="border-b py-2">
+                    {comment}
+                  </li>
                 ))}
               </ul>
 
@@ -247,14 +281,23 @@ const AdminProjectReview = () => {
                 placeholder="Leave a comment"
                 className="w-full p-2 border rounded-md mb-4"
               ></textarea>
-              <button onClick={handleCommentSubmit} className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+              <button
+                onClick={handleCommentSubmit}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              >
                 Add Comment
               </button>
 
               <h3 className="text-lg font-semibold mt-4">Files:</h3>
               <ul className="mb-4">
                 {selectedProject.files.map((file, index) => (
-                  <li key={index} className="text-blue-500 cursor-pointer" onClick={() => handleFileDownload(file)}>{file}</li>
+                  <li
+                    key={index}
+                    className="text-blue-500 cursor-pointer"
+                    onClick={() => handleFileDownload(file)}
+                  >
+                    {file}
+                  </li>
                 ))}
               </ul>
 
@@ -272,7 +315,7 @@ const AdminProjectReview = () => {
                   Approve
                 </Link>
                 <button
-                  onClick={() => handleStatusChange('Rejected')}
+                  onClick={() => handleStatusChange("Rejected")}
                   className="bg-red-500 text-white px-4 py-2 rounded-md"
                 >
                   Reject

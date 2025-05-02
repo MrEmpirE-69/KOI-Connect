@@ -8,11 +8,9 @@ const AsSettingProfile = () => {
   const navigate = useNavigate(); // Initialize navigate function
 
   const [formData, setFormData] = useState({
-    givenName: "Abdul ali",
-    familyName: "Khan",
+    fullName: "Abdul ali",
     email: "abdulali@gmail.com",
     mobile: "0444554456",
-    confirm: false,
   });
 
   const handleChange = (e) => {
@@ -27,7 +25,7 @@ const AsSettingProfile = () => {
     e.preventDefault();
     if (formData.confirm) {
       alert("Profile updated successfully!");
-      navigate("/as-setting");  // Navigate to the settings page after saving
+      navigate("/as-setting"); // Navigate to the settings page after saving
     } else {
       alert("Please confirm the details before saving.");
     }
@@ -57,32 +55,20 @@ const AsSettingProfile = () => {
 
               {/* Form Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Given Name
+                    Full Name
                   </label>
                   <input
                     type="text"
-                    name="givenName"
-                    value={formData.givenName}
+                    name="fullName"
+                    value={formData.fullName}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
                     required
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Family Name
-                  </label>
-                  <input
-                    type="text"
-                    name="familyName"
-                    value={formData.familyName}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
-                    required
-                  />
-                </div>
+
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Email
@@ -113,17 +99,6 @@ const AsSettingProfile = () => {
 
               {/* Confirmation & Button */}
               <div className="mt-8">
-                <label className="flex items-center gap-2 mb-4 text-sm text-gray-700">
-                  <input
-                    type="checkbox"
-                    name="confirm"
-                    checked={formData.confirm}
-                    onChange={handleChange}
-                    className="accent-[#226CD1] w-4 h-4"
-                  />
-                  Do you confirm the above details
-                </label>
-
                 <button
                   type="submit"
                   className="bg-[#226CD1] text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-600 transition"

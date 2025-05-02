@@ -15,22 +15,19 @@ export class SupervisorController {
       next(err);
     }
   }
-
-  async getAll(req, res, next) {
+  async getActiveUserCount(req, res, next) {
     try {
-      const response = await supervisorService.getAllSupervisors();
-
+      const response = await supervisorService.getActiveUserCount();
       res.status(200).json({
         status: 200,
         success: true,
-        message: "Supervisor list retrieved successfully.",
+        message: "Supervisor count retrieved successfully",
         data: response,
       });
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
     }
   }
-
   async getActive(req, res, next) {
     try {
       const response = await supervisorService.getActiveSupervisors();
@@ -43,6 +40,20 @@ export class SupervisorController {
       });
     } catch (err) {
       next(err);
+    }
+  }
+
+  async deletUser(req, res, next) {
+    try {
+      const { uuid } = req.body;
+      await supervisorService.deleteUser(uuid);
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: "Supervisor deleted successfully.",
+      });
+    } catch (error) {
+      next(error);
     }
   }
 

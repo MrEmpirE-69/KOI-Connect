@@ -49,7 +49,20 @@ export class UserController {
         status: 200,
         success: true,
         message: "Users retrieved successfully",
-        users: users,
+        data: users,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getActiveUserCount(req, res, next) {
+    try {
+      const response = await userService.getActiveUserCount();
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: "Users count retrieved successfully",
+        data: response,
       });
     } catch (error) {
       next(error);
@@ -79,7 +92,7 @@ export class UserController {
       res.status(200).json({
         status: 200,
         success: true,
-        message: "User blocked successfully.",
+        message: "User deleted successfully.",
       });
     } catch (error) {
       next(error);
