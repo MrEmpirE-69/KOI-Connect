@@ -24,9 +24,6 @@ import AdminSettingPage from "./pages/AdminDashboard/AdminSettingPage";
 import AdminSettingProfile from "./pages/AdminDashboard/AdminSettingProfile";
 import AdminSettingAccount from "./pages/AdminDashboard/AdminSettingAccount";
 import AdminCommunicationPage from "./pages/AdminDashboard/AdminCommunicationPage";
-import AdminRoleDistributorPage from "./pages/AdminDashboard/AdminRoleDistributorPage";
-import AdminStudent from "./pages/AdminDashboard/AdminStudent";
-import AdminClient from "./pages/AdminDashboard/AdminClient";
 import ClientDashboard from "./pages/ClientPage/ClientDashboard";
 
 import ClientProjectReview from "./pages/ClientPage/ClientProjectReview";
@@ -39,6 +36,10 @@ import AdminList from "./pages/AdminDashboard/Admin/AdminList";
 import SupervisorList from "./pages/AdminDashboard/Supervisor/SupervisorList";
 import CreateAdmin from "./pages/AdminDashboard/Admin/CreateAdmin";
 import CreateSupervisor from "./pages/AdminDashboard/Supervisor/CreateSupervisor";
+import StudentList from "./pages/AdminDashboard/Student/StudentList";
+import CreateStudent from "./pages/AdminDashboard/Student/CreateStudent";
+import ClientList from "./pages/AdminDashboard/Client/ClientList";
+import CreateClient from "./pages/AdminDashboard/Client/CreateClient";
 
 function App() {
   return (
@@ -57,11 +58,13 @@ function App() {
               element={<AdminProjectReview />}
             />
             <Route path="/supervisor-list" element={<SupervisorList />} />
-            <Route path="/student-list" element={<AdminStudent />} />
-            <Route path="/client-list" element={<AdminClient />} />
+            <Route path="/student-list" element={<StudentList />} />
+            <Route path="/client-list" element={<ClientList />} />
             <Route path="/admin-setting" element={<AdminSettingPage />} />
             <Route path="/admin-list" element={<AdminList />} />
             <Route path="/create-admin" element={<CreateAdmin />} />
+            <Route path="/create-student" element={<CreateStudent />} />
+            <Route path="/create-client" element={<CreateClient />} />
             <Route
               path="/admin-settingprofile"
               element={<AdminSettingProfile />}

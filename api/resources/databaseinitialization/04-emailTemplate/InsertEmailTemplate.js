@@ -67,5 +67,24 @@ const createEmailTemplate = async () => {
       uuid: uuid6,
     },
   });
+
+  const uuidClient = uuidv4();
+  await EmailTemplate.findOrCreate({
+    where: { name: "CLIENT_REGISTRATION_CONFIRMATION" },
+    defaults: {
+      name: "CLIENT_REGISTRATION_CONFIRMATION",
+      subject: "Welcome to KOI-Connect",
+      messageText: `Hello {name},\n\nYour KOI-Connect client account has been successfully created.\n\nYou can log in to your account using the following credentials:\n\nEmail: {email}\nPassword: {password}\n\nIf you have any questions, feel free to contact our support team.\n\nBest regards,\nKOI-Connect Team`,
+      messageHtml: `Hello <b>{name},</b><br><br>
+      Your KOI-Connect client account has been successfully created.<br><br>
+      You can log in to your account using the following credentials:<br><br>
+      <b>Email: </b>{email} <br>
+      <b>Password: </b>{password}<br><br>
+      If you have any questions, feel free to contact our support team.<br><br>
+      Best regards, <br>
+      KOI-Connect Team`,
+      uuid: uuidClient,
+    },
+  });
 };
 export default createEmailTemplate;

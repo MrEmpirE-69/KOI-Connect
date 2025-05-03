@@ -249,14 +249,7 @@ export class UserService {
       const userProfile = await User.findOne({
         where: { id: userId },
         attributes: {
-          exclude: [
-            "id",
-            "password",
-            "isVerified",
-            "uuid",
-            "createdAt",
-            "updatedAt",
-          ],
+          exclude: ["id", "password", "isVerified"],
         },
       });
       if (!userProfile) {

@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { BsBell } from "react-icons/bs";
-import { motion } from "framer-motion";
 
 const StudentTopNavbar = () => {
-  // State to manage the visibility of the notification box
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
-  // Example notifications
   const notifications = [
     {
       id: 1,
@@ -30,18 +27,12 @@ const StudentTopNavbar = () => {
     },
   ];
 
-  // Toggle the notification box visibility
   const toggleNotifications = () => {
     setIsNotificationOpen(!isNotificationOpen);
   };
 
   return (
-    <motion.div
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="flex justify-between items-center px-6 h-[80px] bg-white shadow-md rounded-lg backdrop-blur-md"
-    >
+    <div className="flex justify-between items-center border-b border-gray-300 px-6 h-[80px] bg-[#f5f6fa] animate-fadeInDown transition-all duration-700">
       {/* Search Bar */}
       <div className="relative w-[320px]">
         <input
@@ -54,17 +45,17 @@ const StudentTopNavbar = () => {
       {/* Right Side - Notification + Profile */}
       <div className="flex items-center gap-6">
         {/* Notification Icon */}
-        <motion.div
-          whileHover={{ scale: 1.2 }}
-          className="relative cursor-pointer"
-        >
-          <BsBell className="text-2xl text-[#6C63FF]" onClick={toggleNotifications} />
+        <div whileHover={{ scale: 1.2 }} className="relative cursor-pointer">
+          <BsBell
+            className="text-2xl text-[#6C63FF]"
+            onClick={toggleNotifications}
+          />
           {/* Optional red dot for unread notifications */}
           <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
-        </motion.div>
+        </div>
 
         {/* User Info */}
-        <motion.div
+        <div
           initial={{ opacity: 0, x: 10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
@@ -72,7 +63,7 @@ const StudentTopNavbar = () => {
         >
           <p className="font-semibold text-sm text-gray-700">Logged in as</p>
           <p className="text-sm text-[#6C63FF] font-bold">Student</p>
-        </motion.div>
+        </div>
       </div>
 
       {/* Notification Box */}
@@ -112,7 +103,7 @@ const StudentTopNavbar = () => {
           </div>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 

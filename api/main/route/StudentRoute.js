@@ -1,10 +1,10 @@
 import express from "express";
-import { SupervisorController } from "../controller/SupervisorController.js";
+import { StudentController } from "../controller/StudentController.js";
 import { verifyAdmin } from "../../utils/VerifyToken.js";
 import { authenticate } from "../middleware/auth.js";
 
 const router = express.Router();
-const controller = new SupervisorController();
+const controller = new StudentController();
 
 router.post("/create", verifyAdmin, controller.create.bind(controller));
 router.get("/list", controller.getActive.bind(controller));

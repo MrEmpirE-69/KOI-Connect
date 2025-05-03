@@ -1,4 +1,4 @@
-import Supervisor from "../model/Supervisor.js";
+import Client from "../model/Client.js";
 import { v4 as uuidv4 } from "uuid";
 import { createError } from "../../utils/Error.js";
 import bcrypt from "bcrypt";
@@ -10,20 +10,14 @@ import validateName from "../../utils/validateName.js";
 import generateRandomPassword from "../../utils/GeneratePassword.js";
 import { Op } from "sequelize";
 
-export class SupervisorService {
-  async createSupervisor(data) {
+export class ClientService {
+  async createClient(data) {
     const uuid = uuidv4();
 
-    const { fullName, email, mobileNumber, department, designation } = data;
+    const { fullName, email, mobileNumber, address } = data;
 
     try {
-      const requiredFields = [
-        "fullName",
-        "email",
-        "mobileNumber",
-        "department",
-        "designation",
-      ];
+      const requiredFields = ["fullName", "email", "mobileNumber"];
       const missingFields = requiredFields.filter((field) => !data[field]);
       if (missingFields.length > 0) {
         throw createError(
@@ -47,66 +41,70 @@ export class SupervisorService {
         throw createError(400, "Invalid mobile number format");
       }
 
-      const existingSupervisorByEmail = await Supervisor.findOne({
+      // Check for existing records
+      const existingClientByEmail = await Client.findOne({
         where: { email },
       });
-      if (existingSupervisorByEmail) {
-        throw createError(409, "Supervisor with this email already exists");
+      if (existingClientByEmail) {
+        throw createError(409, "Client with this email already exists");
       }
 
-      const existingSupervisorByMobile = await Supervisor.findOne({
+      const existingClientByMobile = await Client.findOne({
         where: { mobileNumber },
       });
-      if (existingSupervisorByMobile) {
-        throw createError(
-          409,
-          "Supervisor with this mobile number already exists"
-        );
+      if (existingClientByMobile) {
+        throw createError(409, "Client with this mobile number already exists");
       }
 
       const password = generateRandomPassword(8);
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const newSupervisor = await Supervisor.create({
+      const newClient = await Client.create({
         fullName,
         email,
         mobileNumber,
-        department,
-        designation,
+        address,
         password: hashedPassword,
         uuid,
       });
 
-      const placeholders = { name: fullName, email, password };
+      const placeholders = {
+        name: fullName,
+        email,
+        password,
+      };
       const { subject, text, html } = await getEmailTemplate(
-        "SUPERVISOR_REGISTRATION_CONFIRMATION",
+        "CLIENT_REGISTRATION_CONFIRMATION",
         placeholders
       );
 
       await sendEmail(email, subject, text, html);
 
-      return newSupervisor;
+      return newClient;
     } catch (error) {
       throw error;
     }
   }
 
-  async getActiveSupervisors() {
-    return await Supervisor.findAll({
+  async getAllActive() {
+    return await Client.findAll({
       where: {
         status: {
-          [Op.in]: ["ACTIVE", "PENDING"],
+          [Op.in]: ["ACTIVE", "PENDING", "BLOCKED"],
         },
       },
       attributes: { exclude: ["id", "password"] },
     });
   }
-  async getActiveUserCount() {
+
+  async getActiveClientCount() {
     try {
-      const count = await Supervisor.count({
-        status: {
-          [Op.in]: ["ACTIVE", "PENDING", "BLOCKED"],
+      const count = await Client.count({
+        where: {
+          status: {
+            [Op.in]: ["ACTIVE", "PENDING", "BLOCKED"],
+          },
         },
       });
       return count;
@@ -115,34 +113,36 @@ export class SupervisorService {
     }
   }
 
-  async updateSupervisor(uuid, data) {
-    const supervisor = await Supervisor.findOne({ where: { uuid } });
-    if (!supervisor) throw createError(404, "Supervisor not found.");
-
-    return await supervisor.update(data);
-  }
-  async deleteUser(uuid) {
+  async deleteClient(uuid) {
     try {
-      const user = await Supervisor.findOne({ where: { uuid } });
-      if (!user) {
-        throw createError(404, "User not found.");
+      const client = await Client.findOne({ where: { uuid } });
+      if (!client) {
+        throw createError(404, "Client not found.");
       }
 
-      if (user.status === "PENDING") {
-        throw createError(400, "Pending user can't be deleted.");
+      if (client.status === "PENDING") {
+        throw createError(400, "Pending client can't be deleted.");
       }
-      if (user.status === "DELETED") {
-        throw createError(409, "User not found.");
+      if (client.status === "DELETED") {
+        throw createError(409, "Client is already deleted.");
       }
-      await user.update({ status: "DELETED" });
-      return user;
+      await client.update({ status: "DELETED" });
+      return client;
     } catch (error) {
       throw error;
     }
   }
+
+  async update(uuid, data) {
+    const client = await Client.findOne({ where: { uuid } });
+    if (!client) throw createError(404, "Client not found.");
+
+    return await client.update(data);
+  }
+
   async viewProfile(userId) {
     try {
-      const userProfile = await Supervisor.findOne({
+      const userProfile = await Client.findOne({
         where: { id: userId },
         attributes: {
           exclude: ["id", "password", "isVerified"],
@@ -170,7 +170,7 @@ export class SupervisorService {
         throw createError(400, "Confirm password is required");
       }
 
-      const user = await Supervisor.findOne({ where: { id: id } });
+      const user = await Client.findOne({ where: { id: id } });
       if (!user) {
         throw createError(404, "User not found");
       }

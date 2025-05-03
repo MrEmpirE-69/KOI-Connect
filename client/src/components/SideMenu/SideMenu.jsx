@@ -6,15 +6,15 @@ import { MdDashboard, MdSettings, MdLock } from "react-icons/md";
 import { BiMessageSquareDetail } from "react-icons/bi";
 
 const SideMenu = ({ currentPage }) => {
-  const navigate = useNavigate(); //
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     sessionStorage.clear();
-    navigate("/login"); //
+    navigate("/login");
   };
 
   return (
-    <aside className="w-[250px] h-full bg-[#dddddd] shadow-md flex flex-col justify-between animate-slideInLeft transition-all duration-700">
+    <aside className="w-[250px] h-full bg-[#c5dbf0] shadow-md flex flex-col justify-between animate-slideInLeft transition-all duration-700">
       {/* Top Section */}
       <div>
         {/* Logo */}

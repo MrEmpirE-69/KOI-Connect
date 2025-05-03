@@ -20,7 +20,6 @@ export class AuthService {
         userType = "User"; // Sequelize model
       }
 
-      // If not Admin, try finding Supervisor
       if (!user) {
         user = await Supervisor.findOne({ where: { email } });
         if (user) {
@@ -29,7 +28,6 @@ export class AuthService {
         }
       }
 
-      // If not Supervisor, try finding Student
       if (!user) {
         user = await Student.findOne({ where: { email } });
         if (user) {

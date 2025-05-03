@@ -14,6 +14,8 @@ import "./main/model/associations.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import SuperVisorRoute from "./main/route/SupervisorRoute.js";
+import StudentRoute from "./main/route/StudentRoute.js";
+import ClientRoute from "./main/route/ClientRoute.js";
 import swaggerDocs from "./swagger.js";
 
 const app = express();
@@ -41,6 +43,8 @@ const swaggerOptions = {
 app.use("/api", AuthRoute);
 app.use("/api/user", UserRoute);
 app.use("/api/supervisor", SuperVisorRoute);
+app.use("/api/student", StudentRoute);
+app.use("/api/client", ClientRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome to KOI-Connect Server.");

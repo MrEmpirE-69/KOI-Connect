@@ -3,21 +3,28 @@ import StudentsSideMenu from "../../StudentComponents/StudentsSideMenu/StudentsS
 import StudentTopNavbar from "../../StudentComponents/StudentTopNavbar/StudentTopNavbar";
 
 const StudentCommunicationPage = () => {
-  // Example data for the chat groups with sender names for each message
   const chatGroups = [
     {
       id: 1,
       title: "Admin",
       messages: [
         { sender: "Admin", text: "How can I assist you?", time: "2 min ago" },
-        { sender: "Student", text: "I need help with my project.", time: "1 min ago" },
+        {
+          sender: "Student",
+          text: "I need help with my project.",
+          time: "1 min ago",
+        },
       ],
     },
     {
       id: 2,
       title: "Client",
       messages: [
-        { sender: "Client", text: "Let’s discuss the next steps.", time: "5 min ago" },
+        {
+          sender: "Client",
+          text: "Let’s discuss the next steps.",
+          time: "5 min ago",
+        },
         { sender: "Student", text: "Sure, I’m ready.", time: "3 min ago" },
       ],
     },
@@ -25,16 +32,32 @@ const StudentCommunicationPage = () => {
       id: 3,
       title: "Academic Supervisor",
       messages: [
-        { sender: "Supervisor", text: "Please submit your progress report.", time: "10 min ago" },
-        { sender: "Student", text: "I’ll submit it by tomorrow.", time: "7 min ago" },
+        {
+          sender: "Supervisor",
+          text: "Please submit your progress report.",
+          time: "10 min ago",
+        },
+        {
+          sender: "Student",
+          text: "I’ll submit it by tomorrow.",
+          time: "7 min ago",
+        },
       ],
     },
     {
       id: 4,
       title: "Team Parker Verse",
       messages: [
-        { sender: "Rohan", text: "Let’s get started with the project tasks.", time: "10 min ago" },
-        { sender: "Kushal", text: "I will handle the backend.", time: "7 min ago" },
+        {
+          sender: "Rohan",
+          text: "Let’s get started with the project tasks.",
+          time: "10 min ago",
+        },
+        {
+          sender: "Kushal",
+          text: "I will handle the backend.",
+          time: "7 min ago",
+        },
         { sender: "Gagan", text: "I’ll work on the UI.", time: "5 min ago" },
         { sender: "Ankit", text: "I’m ready to start.", time: "3 min ago" },
         { sender: "Sajeet", text: "Same here.", time: "1 min ago" },
@@ -74,7 +97,10 @@ const StudentCommunicationPage = () => {
       );
 
       // Update the state with the new message list
-      setSelectedGroup({ ...selectedGroup, messages: [...selectedGroup.messages, newMessage] });
+      setSelectedGroup({
+        ...selectedGroup,
+        messages: [...selectedGroup.messages, newMessage],
+      });
       setMessage(""); // Clear the input field
     }
   };
@@ -105,7 +131,9 @@ const StudentCommunicationPage = () => {
                 >
                   <div>
                     <p className="font-bold text-[#226CD1]">{group.title}</p>
-                    <p className="text-sm text-gray-600">{group.messages[group.messages.length - 1].text}</p>
+                    <p className="text-sm text-gray-600">
+                      {group.messages[group.messages.length - 1].text}
+                    </p>
                   </div>
                   <div className="text-right text-xs text-gray-500">
                     <p>{group.messages[group.messages.length - 1].time}</p>
@@ -121,9 +149,12 @@ const StudentCommunicationPage = () => {
               <div className="bg-white rounded-lg p-6 shadow-md h-full flex flex-col">
                 {/* Chat Header */}
                 <div className="mb-4 border-b pb-2">
-                  <h3 className="text-xl font-semibold text-[#226CD1]">{selectedGroup.title}</h3>
+                  <h3 className="text-xl font-semibold text-[#226CD1]">
+                    {selectedGroup.title}
+                  </h3>
                   <p className="text-sm text-gray-500">
-                    Conversation with {selectedGroup.messages.map(msg => msg.sender).join(", ")}
+                    Conversation with{" "}
+                    {selectedGroup.messages.map((msg) => msg.sender).join(", ")}
                   </p>
                 </div>
 
@@ -133,10 +164,14 @@ const StudentCommunicationPage = () => {
                     <div
                       key={index}
                       className={`p-3 rounded-lg max-w-xs ${
-                        msg.sender === "Client" ? "bg-gray-100" : "bg-blue-500 text-white"
+                        msg.sender === "Client"
+                          ? "bg-gray-100"
+                          : "bg-blue-500 text-white"
                       }`}
                     >
-                      <p><strong>{msg.sender}:</strong> {msg.text}</p>
+                      <p>
+                        <strong>{msg.sender}:</strong> {msg.text}
+                      </p>
                       <div className="text-xs text-right">{msg.time}</div>
                     </div>
                   ))}

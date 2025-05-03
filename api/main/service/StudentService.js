@@ -1,4 +1,4 @@
-import Supervisor from "../model/Supervisor.js";
+import Student from "../model/Student.js";
 import { v4 as uuidv4 } from "uuid";
 import { createError } from "../../utils/Error.js";
 import bcrypt from "bcrypt";
@@ -10,19 +10,27 @@ import validateName from "../../utils/validateName.js";
 import generateRandomPassword from "../../utils/GeneratePassword.js";
 import { Op } from "sequelize";
 
-export class SupervisorService {
-  async createSupervisor(data) {
+export class StudentService {
+  async createStudent(data) {
     const uuid = uuidv4();
 
-    const { fullName, email, mobileNumber, department, designation } = data;
+    const {
+      studentId,
+      fullName,
+      email,
+      mobileNumber,
+      address,
+      dateOfBirth,
+      gender,
+    } = data;
 
     try {
       const requiredFields = [
+        "studentId",
         "fullName",
         "email",
         "mobileNumber",
-        "department",
-        "designation",
+        "address",
       ];
       const missingFields = requiredFields.filter((field) => !data[field]);
       if (missingFields.length > 0) {
@@ -30,6 +38,10 @@ export class SupervisorService {
           400,
           `Missing required fields: ${missingFields.join(", ")}`
         );
+      }
+
+      if (isNaN(studentId)) {
+        throw createError(400, "Student ID must be a valid number");
       }
 
       const isNameValid = validateName(fullName);
@@ -47,20 +59,28 @@ export class SupervisorService {
         throw createError(400, "Invalid mobile number format");
       }
 
-      const existingSupervisorByEmail = await Supervisor.findOne({
-        where: { email },
+      // Check for existing records
+      const existingStudentById = await Student.findOne({
+        where: { studentId },
       });
-      if (existingSupervisorByEmail) {
-        throw createError(409, "Supervisor with this email already exists");
+      if (existingStudentById) {
+        throw createError(409, "Student with this ID already exists");
       }
 
-      const existingSupervisorByMobile = await Supervisor.findOne({
+      const existingStudentByEmail = await Student.findOne({
+        where: { email },
+      });
+      if (existingStudentByEmail) {
+        throw createError(409, "Student with this email already exists");
+      }
+
+      const existingStudentByMobile = await Student.findOne({
         where: { mobileNumber },
       });
-      if (existingSupervisorByMobile) {
+      if (existingStudentByMobile) {
         throw createError(
           409,
-          "Supervisor with this mobile number already exists"
+          "Student with this mobile number already exists"
         );
       }
 
@@ -68,45 +88,54 @@ export class SupervisorService {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const newSupervisor = await Supervisor.create({
+      const newStudent = await Student.create({
+        studentId,
         fullName,
         email,
         mobileNumber,
-        department,
-        designation,
+        address,
+        dateOfBirth,
+        gender,
         password: hashedPassword,
         uuid,
       });
 
-      const placeholders = { name: fullName, email, password };
+      const placeholders = {
+        name: fullName,
+        email,
+        password,
+      };
       const { subject, text, html } = await getEmailTemplate(
-        "SUPERVISOR_REGISTRATION_CONFIRMATION",
+        "STUDENT_REGISTRATION_CONFIRMATION",
         placeholders
       );
 
       await sendEmail(email, subject, text, html);
 
-      return newSupervisor;
+      return newStudent;
     } catch (error) {
       throw error;
     }
   }
 
-  async getActiveSupervisors() {
-    return await Supervisor.findAll({
+  async getAllActive() {
+    return await Student.findAll({
       where: {
         status: {
-          [Op.in]: ["ACTIVE", "PENDING"],
+          [Op.in]: ["ACTIVE", "PENDING", "SUSPENDED"],
         },
       },
       attributes: { exclude: ["id", "password"] },
     });
   }
+
   async getActiveUserCount() {
     try {
-      const count = await Supervisor.count({
-        status: {
-          [Op.in]: ["ACTIVE", "PENDING", "BLOCKED"],
+      const count = await Student.count({
+        where: {
+          status: {
+            [Op.in]: ["ACTIVE", "PENDING", "SUSPENDED"],
+          },
         },
       });
       return count;
@@ -114,16 +143,9 @@ export class SupervisorService {
       throw error;
     }
   }
-
-  async updateSupervisor(uuid, data) {
-    const supervisor = await Supervisor.findOne({ where: { uuid } });
-    if (!supervisor) throw createError(404, "Supervisor not found.");
-
-    return await supervisor.update(data);
-  }
   async deleteUser(uuid) {
     try {
-      const user = await Supervisor.findOne({ where: { uuid } });
+      const user = await Student.findOne({ where: { uuid } });
       if (!user) {
         throw createError(404, "User not found.");
       }
@@ -140,9 +162,16 @@ export class SupervisorService {
       throw error;
     }
   }
+  async update(uuid, data) {
+    const student = await Student.findOne({ where: { uuid } });
+    if (!student) throw createError(404, "Student not found.");
+
+    return await student.update(data);
+  }
+
   async viewProfile(userId) {
     try {
-      const userProfile = await Supervisor.findOne({
+      const userProfile = await Student.findOne({
         where: { id: userId },
         attributes: {
           exclude: ["id", "password", "isVerified"],
@@ -170,7 +199,7 @@ export class SupervisorService {
         throw createError(400, "Confirm password is required");
       }
 
-      const user = await Supervisor.findOne({ where: { id: id } });
+      const user = await Student.findOne({ where: { id: id } });
       if (!user) {
         throw createError(404, "User not found");
       }

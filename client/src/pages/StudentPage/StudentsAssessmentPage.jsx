@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from "react";
 import StudentsSideMenu from "../../StudentComponents/StudentsSideMenu/StudentsSideMenu";
 import StudentTopNavbar from "../../StudentComponents/StudentTopNavbar/StudentTopNavbar";
-import { motion } from "framer-motion";
-
-const fadeIn = (delay = 0) => ({
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { delay, duration: 0.6, ease: "easeOut" },
-  },
-});
 
 const StudentsAssessmentPage = () => {
   const assessments = [
@@ -72,35 +62,20 @@ const StudentsAssessmentPage = () => {
 
         <div className="flex-1 overflow-y-auto p-8">
           {/* Heading */}
-          <motion.h1
-            variants={fadeIn(0.1)}
-            initial="hidden"
-            animate="visible"
-            className="text-3xl font-extrabold text-[#226CD1] text-center mb-6 drop-shadow-sm"
-          >
+          <h1 className="text-3xl font-extrabold text-[#226CD1] text-center mb-6 drop-shadow-sm">
             📊 Current Assessment Progress
-          </motion.h1>
+          </h1>
 
           {/* Countdown */}
-          <motion.div
-            variants={fadeIn(0.15)}
-            initial="hidden"
-            animate="visible"
-            className="text-center mb-10"
-          >
+          <div x className="text-center mb-10">
             <p className="text-sm text-gray-500">⏰ Time left to submit:</p>
             <p className="text-xl font-bold text-[#FF5858]">{timeLeft}</p>
-          </motion.div>
+          </div>
 
           {/* Progress Cards */}
-          <motion.div
-            variants={fadeIn(0.2)}
-            initial="hidden"
-            animate="visible"
-            className="bg-white rounded-2xl shadow-lg p-10 mb-14 flex justify-around items-center"
-          >
+          <div className="bg-white rounded-2xl shadow-lg p-10 mb-14 flex justify-around items-center">
             {assessments.map((item, idx) => (
-              <motion.div
+              <div
                 whileHover={{ scale: 1.05 }}
                 key={idx}
                 className="flex flex-col items-center"
@@ -151,27 +126,17 @@ const StudentsAssessmentPage = () => {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
 
           {/* Upload Heading */}
-          <motion.h2
-            variants={fadeIn(0.3)}
-            initial="hidden"
-            animate="visible"
-            className="text-2xl font-bold text-[#226CD1] text-center mb-6"
-          >
+          <h2 className="text-2xl font-bold text-[#226CD1] text-center mb-6">
             📁 Upload Your Assessment File
-          </motion.h2>
+          </h2>
 
           {/* Upload Box */}
-          <motion.div
-            variants={fadeIn(0.35)}
-            initial="hidden"
-            animate="visible"
-            className="bg-white rounded-2xl p-10 text-center shadow-md flex flex-col items-center gap-4 transition hover:shadow-lg"
-          >
+          <div className="bg-white rounded-2xl p-10 text-center shadow-md flex flex-col items-center gap-4 transition hover:shadow-lg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-10 w-10 text-[#6C63FF]"
@@ -195,15 +160,10 @@ const StudentsAssessmentPage = () => {
             <button className="mt-4 px-6 py-2 bg-[#6C63FF] text-white rounded-full shadow hover:bg-[#5952e4] transition">
               Browse File
             </button>
-          </motion.div>
+          </div>
 
           {/* Submission History */}
-          <motion.div
-            variants={fadeIn(0.4)}
-            initial="hidden"
-            animate="visible"
-            className="mt-16"
-          >
+          <div className="mt-16">
             <h3 className="text-xl font-bold text-[#226CD1] mb-4 text-center">
               🕓 Submission History
             </h3>
@@ -229,15 +189,10 @@ const StudentsAssessmentPage = () => {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Tips Section */}
-          <motion.div
-            variants={fadeIn(0.5)}
-            initial="hidden"
-            animate="visible"
-            className="mt-16"
-          >
+          <div className="mt-16">
             <h3 className="text-xl font-bold text-[#226CD1] mb-4 text-center">
               💡 Quick Tips Before You Submit
             </h3>
@@ -247,7 +202,7 @@ const StudentsAssessmentPage = () => {
               <li>✅ Upload before the deadline to avoid issues.</li>
               <li>✅ Contact your course coordinator for clarifications.</li>
             </ul>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

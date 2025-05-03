@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import TopNavbar from "../../components/TopNavbar/TopNavbar";
-import { FaUsers, FaChalkboardTeacher, FaFileAlt } from "react-icons/fa";
+import {
+  FaUsers,
+  FaChalkboardTeacher,
+  FaFileAlt,
+  FaUserCheck,
+} from "react-icons/fa";
 import {
   LineChart,
   Line,
@@ -28,6 +33,8 @@ const userActivityData = [
 const AdminDashboard = () => {
   const [adminCount, setAdminCount] = useState("");
   const [supervisorCount, setSupervisorCount] = useState("");
+  const [studentCOunt, setStudentCount] = useState("");
+  const [clientCount, setClientCount] = useState("");
 
   useEffect(() => {
     const fetchAdminCount = async () => {
@@ -42,14 +49,37 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchSupervisorCount = async () => {
       try {
-        const response = await adminRequest.get(`${BASE_URL}/user/count`);
+        const response = await adminRequest.get(`${BASE_URL}/supervisor/count`);
         setSupervisorCount(response.data.data);
       } catch (error) {
         console.error("Failed to fetch supervisor count:", error);
       }
     };
-
     fetchSupervisorCount();
+  }, []);
+
+  useEffect(() => {
+    const fetchClientCount = async () => {
+      try {
+        const response = await adminRequest.get(`${BASE_URL}/client/count`);
+        setClientCount(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch supervisor count:", error);
+      }
+    };
+    fetchClientCount();
+  }, []);
+
+  useEffect(() => {
+    const fetchStudentCount = async () => {
+      try {
+        const response = await adminRequest.get(`${BASE_URL}/student/count`);
+        setStudentCount(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch student count:", error);
+      }
+    };
+    fetchStudentCount();
   }, []);
 
   const { data } = useFetch(`${BASE_URL}/user/profile`, adminRequest);
@@ -80,7 +110,7 @@ const AdminDashboard = () => {
               to="/admin-list"
               className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
             >
-              <FaChalkboardTeacher className="text-4xl mx-auto text-[#1C628F]" />
+              <FaUserCheck className="text-4xl mx-auto text-[#1C628F]" />
               <div>
                 <h2 className="text-4xl font-bold my-2">{adminCount}</h2>
                 <p className="text-gray-600 font-semibold text-lg">Admin</p>
@@ -102,7 +132,7 @@ const AdminDashboard = () => {
               className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
             >
               <FaUsers className="text-4xl mx-auto text-[#1C628F]" />
-              <h2 className="text-4xl font-bold my-2">100</h2>
+              <h2 className="text-4xl font-bold my-2">{studentCOunt}</h2>
               <p className="text-gray-600 font-semibold text-lg">Students</p>
             </Link>
 
@@ -112,7 +142,7 @@ const AdminDashboard = () => {
               className="bg-white rounded-xl shadow-lg p-8 text-center h-48 flex flex-col justify-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
             >
               <FaFileAlt className="text-4xl mx-auto text-[#1C628F]" />
-              <h2 className="text-4xl font-bold my-2">20</h2>
+              <h2 className="text-4xl font-bold my-2">{clientCount}</h2>
               <p className="text-gray-600 font-semibold text-lg">Clients</p>
             </Link>
           </div>

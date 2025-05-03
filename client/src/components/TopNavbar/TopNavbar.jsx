@@ -36,7 +36,7 @@ const TopNavbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center px-6 h-[80px] bg-[#fdf8f8] animate-fadeInDown transition-all duration-700">
+    <div className="flex justify-between items-center border-b border-gray-300 px-6 h-[80px] bg-[#f5f6fa] animate-fadeInDown transition-all duration-700">
       {/* Search */}
       <input
         type="text"
