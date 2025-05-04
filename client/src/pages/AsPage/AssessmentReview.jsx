@@ -3,7 +3,6 @@ import AsSideMenu from "../../AsComponents/AsSideMenu/AsSideMenu";
 import AsTopNavbar from "../../AsComponents/AsTopNavbar/AsTopNavbar";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
-// Mocked example data
 const projects = [
   {
     id: 1,
@@ -105,7 +104,7 @@ const statusColors = {
   Rejected: "#FF0000",
 };
 
-const AsProjectReviewPage = () => {
+const AssessmentReview = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
   const [newComment, setNewComment] = useState("");
@@ -359,4 +358,4 @@ const AsProjectReviewPage = () => {
   );
 };
 
-export default AsProjectReviewPage;
+export default AssessmentReview;

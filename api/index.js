@@ -45,6 +45,7 @@ app.use("/api/user", UserRoute);
 app.use("/api/supervisor", SuperVisorRoute);
 app.use("/api/student", StudentRoute);
 app.use("/api/client", ClientRoute);
+app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("Welcome to KOI-Connect Server.");

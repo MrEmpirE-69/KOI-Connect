@@ -51,14 +51,7 @@ const AsTopNavbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center px-6 h-[80px] bg-white animate-fadeInDown">
-      {/* Search */}
-      <input
-        type="text"
-        placeholder="Search here"
-        className="border rounded-md px-4 py-2 w-[300px] outline-none focus:ring-2 focus:ring-[#6C63FF] focus:border-transparent transition duration-300"
-      />
-
+    <div className="flex justify-end items-center border-b border-gray-300 px-6 h-[80px] bg-[#f5f6fa] animate-fadeInDown transition-all duration-700">
       <div className="flex items-center gap-6">
         {/* Notification Icon */}
         <button

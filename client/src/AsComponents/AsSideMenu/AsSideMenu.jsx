@@ -1,17 +1,17 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";  // Import useLocation for getting current route
+import { Link, useLocation } from "react-router-dom"; // Import useLocation for getting current route
 import logo from "../../assets/koi.png";
-import adminAvatar from "../../assets/admin.png"; // Update to use the correct avatar
+import adminAvatar from "../../assets/user2.png"; // Update to use the correct avatar
 import { MdDashboard, MdSettings, MdLockOutline } from "react-icons/md"; // Update icons for Academic Supervisor
 import { BiMessageSquareDetail } from "react-icons/bi";
+import { Paperclip } from "lucide-react";
 
 const AsSideMenu = () => {
-  // Get the current location from react-router
   const location = useLocation();
-  const currentPage = location.pathname.split("/")[1]; // Extract the page name from the URL
+  const currentPage = location.pathname.split("/")[1];
 
   return (
-    <aside className="w-[250px] h-full bg-white shadow-2xl rounded-r-xl flex flex-col justify-between animate-slideInLeft transition-all duration-700">
+    <aside className="w-[250px] h-full bg-[#c5dbf0] shadow-md flex flex-col justify-between animate-slideInLeft transition-all duration-700">
       {/* Top Section */}
       <div>
         {/* Logo */}
@@ -60,6 +60,19 @@ const AsSideMenu = () => {
               Project Review
             </Link>
 
+            {/* Assessment Review */}
+            <Link
+              to="/assessment-review"
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-300 ${
+                currentPage === "assessment-review"
+                  ? "bg-[#f0f2ff] text-[#226CD1] shadow-md"
+                  : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
+              }`}
+            >
+              <Paperclip className="text-xl" />
+              Assessment Review
+            </Link>
+
             {/* Communication Page Link */}
             <Link
               to="/as-communication"
@@ -70,7 +83,7 @@ const AsSideMenu = () => {
               }`}
             >
               <BiMessageSquareDetail className="text-xl" />
-              Communication Page
+              Communication
             </Link>
 
             {/* Settings Link */}
@@ -91,19 +104,22 @@ const AsSideMenu = () => {
 
       {/* Bottom / Logout */}
       <div className="px-6 py-4">
-              <Link to="/" className="flex items-center gap-2 text-sm text-[#444] hover:text-red-600 transition-all hover:scale-105">
-                <svg
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  className="transition duration-300"
-                >
-                  <path d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h6a2 2 0 002-2v-4h2v4a4 4 0 01-4 4H5a4 4 0 01-4-4V5a4 4 0 014-4h6a4 4 0 014 4v4h-2V5a2 2 0 00-2-2H5z" />
-                  <path d="M13 9l4 3-4 3V9z" />
-                </svg>
-                Logout
-              </Link>
-            </div>
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-sm text-[#444] hover:text-red-600 transition-all hover:scale-105"
+        >
+          <svg
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="transition duration-300"
+          >
+            <path d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h6a2 2 0 002-2v-4h2v4a4 4 0 01-4 4H5a4 4 0 01-4-4V5a4 4 0 014-4h6a4 4 0 014 4v4h-2V5a2 2 0 00-2-2H5z" />
+            <path d="M13 9l4 3-4 3V9z" />
+          </svg>
+          Logout
+        </Link>
+      </div>
     </aside>
   );
 };
