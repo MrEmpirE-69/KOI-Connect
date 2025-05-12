@@ -32,6 +32,11 @@ const Submission = sequelize.define(
       defaultValue: DataTypes.NOW,
     },
 
+    status: {
+      type: DataTypes.ENUM("PENDING", "REVIEWED", "DELETED"),
+      defaultValue: "PENDING",
+    },
+
     grade: {
       type: DataTypes.STRING,
       allowNull: true,

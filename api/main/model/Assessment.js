@@ -31,7 +31,7 @@ const Assessment = sequelize.define(
     },
 
     status: {
-      type: DataTypes.ENUM("OPEN", "CLOSED"),
+      type: DataTypes.ENUM("OPEN", "CLOSED", "DELETED"),
       defaultValue: "OPEN",
     },
 

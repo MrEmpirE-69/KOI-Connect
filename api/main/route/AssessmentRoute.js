@@ -10,8 +10,30 @@ const router = express.Router();
 router.post(
   "/upload",
   upload.single("file"),
+  authenticate,
   verifySuperVisor,
   controller.upload.bind(controller)
+);
+
+router.get(
+  "/list",
+  authenticate,
+  verifySuperVisor,
+  controller.list.bind(controller)
+);
+
+router.post(
+  "/edit",
+  authenticate,
+  verifySuperVisor,
+  controller.edit.bind(controller)
+);
+
+router.post(
+  "/delete",
+  authenticate,
+  verifySuperVisor,
+  controller.delete.bind(controller)
 );
 
 export default router;

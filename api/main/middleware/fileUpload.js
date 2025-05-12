@@ -1,7 +1,6 @@
 import multer from "multer";
 import path from "path";
 
-// Set storage destination and filename
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/assessments/");
@@ -12,7 +11,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// File filter for PDF, DOC, DOCX, TXT
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /pdf|doc|docx|txt/;
   const extName = allowedTypes.test(

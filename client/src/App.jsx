@@ -41,6 +41,7 @@ import CreateStudent from "./pages/AdminDashboard/Student/CreateStudent";
 import ClientList from "./pages/AdminDashboard/Client/ClientList";
 import CreateClient from "./pages/AdminDashboard/Client/CreateClient";
 import AssessmentReview from "./pages/AsPage/AssessmentReview";
+import CreateAssessment from "./pages/AsPage/CreateAssessment";
 
 function App() {
   return (
@@ -106,6 +107,7 @@ function App() {
             <Route path="/as-setting" element={<AsSettingPage />} />
             <Route path="/as-settingprofile" element={<AsSettingProfile />} />
             <Route path="/as-settingaccount" element={<AsSettingAccount />} />
+            <Route path="/create-assessment" element={<CreateAssessment />} />
             <Route path="/assessment-review" element={<AssessmentReview />} />
 
             {/* Client */}

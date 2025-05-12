@@ -17,6 +17,8 @@ import SuperVisorRoute from "./main/route/SupervisorRoute.js";
 import StudentRoute from "./main/route/StudentRoute.js";
 import ClientRoute from "./main/route/ClientRoute.js";
 import swaggerDocs from "./swagger.js";
+import AssessmentRoute from "./main/route/AssessmentRoute.js";
+import SubmissionRoute from "./main/route/SubmissionRoute.js";
 
 const app = express();
 dotenv.config();
@@ -45,6 +47,8 @@ app.use("/api/user", UserRoute);
 app.use("/api/supervisor", SuperVisorRoute);
 app.use("/api/student", StudentRoute);
 app.use("/api/client", ClientRoute);
+app.use("/api/assessment", AssessmentRoute);
+app.use("/api/assessmentSubmit", SubmissionRoute);
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
