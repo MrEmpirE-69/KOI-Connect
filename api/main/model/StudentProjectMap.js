@@ -1,7 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../connection.js";
-import Student from "./Student.js";
-import Project from "./Project.js";
 
 const StudentProjectMap = sequelize.define(
   "StudentProjectMap",
@@ -13,17 +11,11 @@ const StudentProjectMap = sequelize.define(
     },
     studentId: {
       type: DataTypes.INTEGER,
-      references: {
-        model: Student,
-        key: "id",
-      },
+      field: "student_id",
     },
     projectId: {
       type: DataTypes.INTEGER,
-      references: {
-        model: Project,
-        key: "id",
-      },
+      field: "project_id",
     },
     assignedAt: {
       type: DataTypes.DATE,

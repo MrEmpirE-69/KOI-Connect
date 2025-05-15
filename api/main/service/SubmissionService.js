@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 import Assessment from "../model/Assessment.js";
 import Student from "../model/Student.js";
 import Submission from "../model/Submission.js";
+import Supervisor from "../model/Supervisor.js";
 
 export class SubmissionService {
   async submitAssessment(payload) {
@@ -66,6 +67,13 @@ export class SubmissionService {
             model: Assessment,
             as: "assessment",
             attributes: ["id", "title", "deadline", "status"],
+            include: [
+              {
+                model: Supervisor,
+                as: "supervisor",
+                attributes: ["id", "fullName"],
+              },
+            ],
           },
         ],
         order: [["submittedAt", "DESC"]],

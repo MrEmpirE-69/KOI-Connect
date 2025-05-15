@@ -59,6 +59,21 @@ export class AssessmentController {
       next(err);
     }
   }
+
+  async listAll(req, res, next) {
+    try {
+      const response = await assessmentService.listAll();
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: "Assessments fetched successfully.",
+        data: response,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
   async edit(req, res, next) {
     try {
       const assessmentId = req.body.assessmentId;

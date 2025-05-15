@@ -125,7 +125,7 @@ export class StudentService {
           [Op.in]: ["ACTIVE", "PENDING", "SUSPENDED"],
         },
       },
-      attributes: { exclude: ["id", "password"] },
+      attributes: { exclude: ["password"] },
     });
   }
 

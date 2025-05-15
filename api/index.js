@@ -13,12 +13,14 @@ import Supervisor from "./main/model/Supervisor.js";
 import "./main/model/associations.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
+import ProjectSubmission from "./main/model/ProjectSubmission.js";
 import SuperVisorRoute from "./main/route/SupervisorRoute.js";
 import StudentRoute from "./main/route/StudentRoute.js";
 import ClientRoute from "./main/route/ClientRoute.js";
 import swaggerDocs from "./swagger.js";
 import AssessmentRoute from "./main/route/AssessmentRoute.js";
 import SubmissionRoute from "./main/route/SubmissionRoute.js";
+import ProjectRoute from "./main/route/ProjectRoute.js";
 
 const app = express();
 dotenv.config();
@@ -49,6 +51,7 @@ app.use("/api/student", StudentRoute);
 app.use("/api/client", ClientRoute);
 app.use("/api/assessment", AssessmentRoute);
 app.use("/api/assessmentSubmit", SubmissionRoute);
+app.use("/api/project", ProjectRoute);
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {

@@ -2,13 +2,14 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/koi.png";
 import studentAvatar from "../../assets/student1.png";
-import { MdDashboard, MdLock, MdSettings } from "react-icons/md";
+import { MdDashboard, MdSettings } from "react-icons/md";
 import { BiMessageSquareDetail } from "react-icons/bi";
+import { BookCheck, Newspaper } from "lucide-react";
 
 const StudentsSideMenu = () => {
   const location = useLocation();
-  const currentPage = location.pathname.split("/")[1]; // Extract the page name from the URL
-  const navigate = useNavigate(); // Initialize the navigate function
+  const currentPage = location.pathname.split("/")[1];
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     sessionStorage.clear();
@@ -49,8 +50,14 @@ const StudentsSideMenu = () => {
               active: currentPage === "student-dashboard",
             },
             {
+              label: "Projects",
+              icon: <Newspaper className="text-xl" />,
+              to: "/student-projects",
+              active: currentPage === "student-projects",
+            },
+            {
               label: "Assessment",
-              icon: <MdLock className="text-xl" />,
+              icon: <BookCheck className="text-xl" />,
               to: "/student-assessment",
               active: currentPage === "student-assessment",
             },

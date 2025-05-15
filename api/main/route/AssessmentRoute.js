@@ -1,5 +1,5 @@
 import express from "express";
-import { verifySuperVisor } from "../../utils/VerifyToken.js";
+import { verifyStudent, verifySuperVisor } from "../../utils/VerifyToken.js";
 import { authenticate } from "../middleware/auth.js";
 import { AssessmentController } from "../controller/AssessmentController.js";
 const controller = new AssessmentController();
@@ -20,6 +20,13 @@ router.get(
   authenticate,
   verifySuperVisor,
   controller.list.bind(controller)
+);
+
+router.get(
+  "/listAll",
+  authenticate,
+  verifyStudent,
+  controller.listAll.bind(controller)
 );
 
 router.post(

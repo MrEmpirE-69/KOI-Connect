@@ -1,39 +1,43 @@
 import { Op } from "sequelize";
 import Assessment from "../model/Assessment.js";
+import Submission from "../model/Submission.js";
+import Supervisor from "../model/Supervisor.js";
 
 export class AssessmentService {
-  async uploadAssessment(payload) {
+  async submitAssessment(payload) {
     try {
-      const { title, description, fileUrl, deadline, supervisorId } = payload;
+      const { assessmentId, studentId, fileUrl } = payload;
 
-      if (!title) {
-        throw new Error("Title is required and must be a string.");
+      if (!assessmentId || !studentId || !fileUrl) {
+        throw new Error("All fields are required");
       }
 
-      if (!description) {
-        throw new Error("Description is required and must be a string.");
+      const assessment = await Assessment.findByPk(assessmentId);
+      if (!assessment) {
+        throw new Error("Assessment not found.");
       }
 
-      if (!deadline) {
-        throw new Error("Valid deadline is required (YYYY-MM-DD).");
+      if (assessment.status === "CLOSED") {
+        throw new Error(
+          "This assessment is closed. Please contact your supervisor."
+        );
       }
 
-      if (!fileUrl) {
-        throw new Error("File upload is required.");
-      }
-
-      if (!supervisorId) {
-        throw new Error("Supervisor ID is missing or invalid.");
-      }
-      const assessment = await Assessment.create({
-        title,
-        description,
-        fileUrl,
-        deadline,
-        supervisorId,
+      const existingSubmission = await Submission.findOne({
+        where: { assessmentId, studentId },
       });
 
-      return assessment;
+      if (existingSubmission) {
+        throw new Error("You have already submitted this assessment.");
+      }
+
+      const submission = await Submission.create({
+        assessmentId,
+        studentId,
+        fileUrl,
+      });
+
+      return submission;
     } catch (error) {
       throw error;
     }
@@ -49,6 +53,28 @@ export class AssessmentService {
           },
         },
         order: [["createdAt", "DESC"]],
+      });
+      return assessments;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async listAll() {
+    try {
+      const assessments = await Assessment.findAll({
+        where: {
+          status: {
+            [Op.in]: ["OPEN", "CLOSED"],
+          },
+        },
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: Supervisor,
+            as: "supervisor",
+            attributes: ["id", "fullName"],
+          },
+        ],
       });
       return assessments;
     } catch (error) {

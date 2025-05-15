@@ -194,9 +194,9 @@ export default function AssessmentReview() {
           </button>
         </div>
 
-        <div className="bg-white rounded-2xl shadow p-6 overflow-visible min-h-fit">
+        <div className="bg-white rounded-2xl shadow p-">
           {activeTab === "supervisor" ? (
-            <table className="w-full table-auto border-collapse">
+            <table className="w-full table-auto bg-white shadow rounded-xl overflow-auto">
               <thead>
                 <tr className="bg-gray-200 text-left">
                   <th className="p-3 text-sm font-semibold">Title</th>
@@ -274,7 +274,7 @@ export default function AssessmentReview() {
               </tbody>
             </table>
           ) : (
-            <table className="w-full table-auto border-collapse">
+            <table className="w-full table-auto bg-white shadow rounded-xl overflow-auto">
               <thead>
                 <tr className="bg-gray-200 text-left">
                   <th className="p-3 text-sm font-semibold">Title</th>

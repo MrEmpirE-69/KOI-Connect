@@ -94,7 +94,7 @@ export class ClientService {
           [Op.in]: ["ACTIVE", "PENDING", "BLOCKED"],
         },
       },
-      attributes: { exclude: ["id", "password"] },
+      attributes: { exclude: ["password"] },
     });
   }
 

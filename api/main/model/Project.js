@@ -14,6 +14,11 @@ const Project = sequelize.define(
       type: DataTypes.STRING,
       unique: true,
     },
+    clientId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      field: "client_id",
+    },
 
     title: {
       type: DataTypes.STRING,
@@ -30,6 +35,10 @@ const Project = sequelize.define(
       allowNull: true,
     },
 
+    fileUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     deadline: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -41,7 +50,8 @@ const Project = sequelize.define(
         "PUBLISHED",
         "IN_PROGRESS",
         "COMPLETED",
-        "CANCELLED"
+        "CANCELLED",
+        "DELETED"
       ),
       defaultValue: "DRAFT",
     },
@@ -50,12 +60,6 @@ const Project = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       field: "supervisor_id",
-    },
-
-    assignedTo: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      field: "student_id",
     },
   },
   {

@@ -5,41 +5,41 @@ import { BASE_URL } from "../../utils/config";
 import { adminRequest } from "../../utils/requestMethods";
 import toast, { Toaster } from "react-hot-toast";
 
-const StudentsAssessmentPage = () => {
-  const [activeTab, setActiveTab] = useState("assessments");
-  const [assessments, setAssessments] = useState([]);
-  const [submissions, setSubmissions] = useState([]);
+const StudentsProjectPage = () => {
+  const [activeTab, setActiveTab] = useState("projects");
+  const [projects, setProjects] = useState([]);
+  const [projectSubmissions, setProjectSubmissions] = useState([]);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
-  const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
 
-  const fetchAssessments = async () => {
+  const fetchProjects = async () => {
     try {
-      const response = await adminRequest.get(`${BASE_URL}/assessment/listAll`);
-      setAssessments(response.data.data);
+      const response = await adminRequest.get(`${BASE_URL}/project/listAll`);
+      setProjects(response.data.data);
     } catch (error) {
-      console.log("assessment list not found");
+      console.log("Project list not found");
     }
   };
 
-  const fetchSubmissions = async () => {
+  const fetchProjectSubmissions = async () => {
     try {
       const response = await adminRequest.get(
-        `${BASE_URL}/assessmentSubmit/listByStudent`
+        `${BASE_URL}/projectSubmit/listByStudent`
       );
-      setSubmissions(response.data.data);
+      setProjectSubmissions(response.data.data);
     } catch (error) {
-      console.log("submission list not found");
+      console.log("Project submissions not found");
     }
   };
 
   useEffect(() => {
-    fetchAssessments();
-    fetchSubmissions();
+    fetchProjects();
+    fetchProjectSubmissions();
   }, []);
 
-  const openSubmitDialog = (assessmentId) => {
-    setSelectedAssessmentId(assessmentId);
+  const openSubmitDialog = (projectId) => {
+    setSelectedProjectId(projectId);
     setShowSubmitModal(true);
   };
 
@@ -52,32 +52,27 @@ const StudentsAssessmentPage = () => {
     setUploadFile(e.target.files[0]);
   };
 
-  const handleSubmitAssessment = async () => {
+  const handleSubmitProject = async () => {
     if (!uploadFile) {
       toast.error("Please select a file to submit.");
       return;
     }
 
     const formData = new FormData();
-    formData.append(
-      "data",
-      JSON.stringify({
-        assessmentId: selectedAssessmentId,
-      })
-    );
+    formData.append("data", JSON.stringify({ projectId: selectedProjectId }));
     formData.append("file", uploadFile);
 
     const request = adminRequest.post(
-      `${BASE_URL}/assessmentSubmit/submit`,
+      `${BASE_URL}/projectSubmit/submit`,
       formData
     );
 
     toast.promise(
       request,
       {
-        loading: "Submitting assessment...",
-        success: "Assessment submitted successfully!",
-        error: "Failed to submit assessment.",
+        loading: "Submitting project...",
+        success: "Project submitted successfully!",
+        error: "Failed to submit project.",
       },
       {
         success: { duration: 1500 },
@@ -88,8 +83,8 @@ const StudentsAssessmentPage = () => {
     try {
       await request;
       closeSubmitModal();
-      fetchAssessments();
-      fetchSubmissions();
+      fetchProjects();
+      fetchProjectSubmissions();
     } catch (err) {}
   };
 
@@ -102,13 +97,13 @@ const StudentsAssessmentPage = () => {
           <div className="mb-6 flex gap-4">
             <button
               className={`px-4 py-2 rounded-lg ${
-                activeTab === "assessments"
+                activeTab === "projects"
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-700"
               }`}
-              onClick={() => setActiveTab("assessments")}
+              onClick={() => setActiveTab("projects")}
             >
-              My Assessments
+              My Projects
             </button>
             <button
               className={`px-4 py-2 rounded-lg ${
@@ -122,7 +117,7 @@ const StudentsAssessmentPage = () => {
             </button>
           </div>
 
-          {activeTab === "assessments" ? (
+          {activeTab === "projects" ? (
             <table className="w-full table-auto border-collapse bg-white shadow rounded-2xl overflow-auto">
               <thead>
                 <tr className="bg-gray-200 text-left">
@@ -136,26 +131,26 @@ const StudentsAssessmentPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {assessments.map((assessment) => (
+                {projects.map((project) => (
                   <tr
-                    key={assessment.id}
+                    key={project.id}
                     className="border-b border-b-gray-200 hover:bg-gray-100"
                   >
-                    <td className="p-3 text-sm">{assessment.title}</td>
+                    <td className="p-3 text-sm">{project.title}</td>
                     <td className="p-3 text-sm">
-                      {assessment.supervisor.fullName}
+                      {project.supervisor.fullName}
                     </td>
                     <td className="p-3 text-sm">
-                      {new Date(assessment.deadline).toLocaleDateString()}
+                      {new Date(project.deadline).toLocaleDateString()}
                     </td>
                     <td className="p-3 text-sm">
                       <span className="px-2 py-1 rounded-full text-xs font-medium">
-                        {assessment.status}
+                        {project.status}
                       </span>
                     </td>
                     <td className="p-3 text-sm text-right">
                       <button
-                        onClick={() => openSubmitDialog(assessment.id)}
+                        onClick={() => openSubmitDialog(project.id)}
                         className="px-3 py-1 rounded text-sm transition bg-blue-500 text-white cursor-pointer"
                       >
                         Submit
@@ -178,16 +173,14 @@ const StudentsAssessmentPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {submissions.map((submission) => (
+                {projectSubmissions.map((submission) => (
                   <tr
                     key={submission.id}
                     className="border-b border-b-gray-200 hover:bg-gray-100"
                   >
+                    <td className="p-3 text-sm">{submission.project.title}</td>
                     <td className="p-3 text-sm">
-                      {submission.assessment.title}
-                    </td>
-                    <td className="p-3 text-sm">
-                      {submission.assessment.supervisor.fullName}
+                      {submission.project.supervisor.fullName}
                     </td>
                     <td className="p-3 text-sm">
                       {new Date(submission.createdAt).toLocaleDateString()}
@@ -206,9 +199,7 @@ const StudentsAssessmentPage = () => {
           {showSubmitModal && (
             <div className="fixed inset-0 bg-transparent backdrop-blur flex items-center justify-center z-50">
               <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
-                <h3 className="text-xl font-semibold mb-4">
-                  Submit Assessment
-                </h3>
+                <h3 className="text-xl font-semibold mb-4">Submit Project</h3>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-600 mb-1">
                     Upload File
@@ -227,7 +218,7 @@ const StudentsAssessmentPage = () => {
                     Cancel
                   </button>
                   <button
-                    onClick={handleSubmitAssessment}
+                    onClick={handleSubmitProject}
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                   >
                     Submit
@@ -243,4 +234,4 @@ const StudentsAssessmentPage = () => {
   );
 };
 
-export default StudentsAssessmentPage;
+export default StudentsProjectPage;

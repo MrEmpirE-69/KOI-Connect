@@ -56,6 +56,9 @@ export default function LoginPage() {
         }
 
         toast.success(`Logged in as ${data.role}`);
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       } else {
         toast.error("Login failed");
       }
