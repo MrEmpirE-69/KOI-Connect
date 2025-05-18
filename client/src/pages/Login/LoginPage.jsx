@@ -46,6 +46,8 @@ export default function LoginPage() {
 
       if (data.success) {
         sessionStorage.setItem("authToken", data.token);
+        sessionStorage.setItem("userRole", data.role);
+        sessionStorage.setItem("userId", data.userId);
 
         if (data.role === "ADMIN") {
           navigate("/admin-dashboard");

@@ -2,8 +2,9 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/koi.png";
 import adminAvatar from "../../assets/admin.png";
-import { MdDashboard, MdSettings, MdLock } from "react-icons/md";
+import { MdDashboard, MdSettings } from "react-icons/md";
 import { BiMessageSquareDetail } from "react-icons/bi";
+import { Contact } from "lucide-react";
 
 const SideMenu = ({ currentPage }) => {
   const navigate = useNavigate();
@@ -48,20 +49,18 @@ const SideMenu = ({ currentPage }) => {
               Dashboard
             </Link>
 
-            {/* Project Review Link */}
+            {/* Contact Page Link */}
             <Link
-              to="/admin-projectreview"
+              to="/admin-contact"
               className={`flex items-center gap-2 py-2 px-3 rounded-lg ${
-                currentPage === "projectReview"
+                currentPage === "contact"
                   ? "bg-[#f0f2ff] text-[#226CD1] shadow-sm"
                   : "hover:bg-[#f5f7ff] hover:text-[#226CD1]"
               } transition-all duration-300`}
             >
-              <MdLock className="text-xl" />
-              Project Review
+              <Contact className="text-xl" />
+              Contact Page
             </Link>
-
-            {/* Communication Page Link */}
             <Link
               to="/admin-communication"
               className={`flex items-center gap-2 py-2 px-3 rounded-lg ${

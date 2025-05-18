@@ -84,6 +84,7 @@ export class AuthService {
         message: `Successfully logged in as ${role}`,
         token,
         role,
+        userId: user.id,
       });
     } catch (error) {
       next(error);

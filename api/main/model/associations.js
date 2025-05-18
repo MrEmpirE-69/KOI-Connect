@@ -6,6 +6,7 @@ import Assessment from "./Assessment.js";
 import Submission from "./Submission.js";
 import ProjectSubmission from "./ProjectSubmission.js";
 import Client from "./Client.js";
+import Contact from "./Contact.js";
 
 //  Project ↔ Student association
 Student.belongsToMany(Project, {
@@ -98,4 +99,9 @@ Project.hasMany(StudentProjectMap, {
 StudentProjectMap.belongsTo(Project, {
   foreignKey: "projectId",
   as: "project",
+});
+
+Contact.belongsTo(Student, {
+  foreignKey: "studentId",
+  as: "student",
 });

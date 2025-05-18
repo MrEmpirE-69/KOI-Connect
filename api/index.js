@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import http from "http";
 import { dbConnection } from "./database.js";
 import AuthRoute from "./main/auth/route/AuthRoute.js";
 import UserRoute from "./main/usermanager/route/UserRoute.js";
@@ -12,6 +13,7 @@ import StudentProjectMap from "./main/model/StudentProjectMap.js";
 import Supervisor from "./main/model/Supervisor.js";
 import "./main/model/associations.js";
 import swaggerUi from "swagger-ui-express";
+import Message from "./main/model/Message.js";
 import swaggerJsdoc from "swagger-jsdoc";
 import ProjectSubmission from "./main/model/ProjectSubmission.js";
 import SuperVisorRoute from "./main/route/SupervisorRoute.js";
@@ -21,28 +23,16 @@ import swaggerDocs from "./swagger.js";
 import AssessmentRoute from "./main/route/AssessmentRoute.js";
 import SubmissionRoute from "./main/route/SubmissionRoute.js";
 import ProjectRoute from "./main/route/ProjectRoute.js";
+import { setupSocketServer } from "./chatSocketBackend.js";
+import ChatRoute from "./main/route/ChatRoute.js";
+import ContactRoute from "./main/route/ContactRoute.js";
+dotenv.config();
 
 const app = express();
-dotenv.config();
+const server = http.createServer(app);
+
 app.use(cors());
 app.use(express.json());
-
-const swaggerOptions = {
-  swaggerDefinition: {
-    openapi: "3.0.0",
-    info: {
-      title: "KOI Connect API",
-      version: "1.0.0",
-      description: "API documentation for KOI Connect",
-    },
-    servers: [
-      {
-        url: "http://localhost:5000/api",
-      },
-    ],
-  },
-  apis: ["./main/usermanager/route/*.js", "./main/auth/route/*.js"],
-};
 
 app.use("/api", AuthRoute);
 app.use("/api/user", UserRoute);
@@ -52,11 +42,15 @@ app.use("/api/client", ClientRoute);
 app.use("/api/assessment", AssessmentRoute);
 app.use("/api/assessmentSubmit", SubmissionRoute);
 app.use("/api/project", ProjectRoute);
+app.use("/api/chat", ChatRoute);
+app.use("/api/contact", ContactRoute);
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("Welcome to KOI-Connect Server.");
 });
+
+setupSocketServer(server);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
@@ -68,8 +62,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(process.env.PORT, async () => {
+server.listen(process.env.PORT, async () => {
   await dbConnection();
-  console.log(`Server running on port ${process.env.PORT}`);
+  console.log(`Server running on http://localhost:${process.env.PORT}`);
 });
+
 swaggerDocs(app, `${process.env.PORT}`);

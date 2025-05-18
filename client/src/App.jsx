@@ -45,6 +45,11 @@ import CreateAssessment from "./pages/AsPage/CreateAssessment";
 import StudentsProjectPage from "./pages/StudentPage/StudentsProjectPage";
 import CreateProject from "./pages/AsPage/CreateProject";
 import AssignStudentsToProject from "./pages/AsPage/AssignStudentsToProject";
+import CoursesPage from "./pages/NavPages/CoursesPage";
+import NewsPage from "./pages/NavPages/NewsPage";
+import AboutPage from "./pages/NavPages/AboutPage";
+import ContactPage from "./pages/NavPages/ContactPage";
+import AdminContactPage from "./pages/AdminDashboard/AdminContactPage";
 
 function App() {
   return (
@@ -70,6 +75,7 @@ function App() {
             <Route path="/create-admin" element={<CreateAdmin />} />
             <Route path="/create-student" element={<CreateStudent />} />
             <Route path="/create-client" element={<CreateClient />} />
+            <Route path="/admin-contact" element={<AdminContactPage />} />
             <Route
               path="/admin-settingprofile"
               element={<AdminSettingProfile />}
@@ -139,6 +145,11 @@ function App() {
               element={<ClientProjectReview />}
             />
           </Route>
+
+          <Route path="/courses" element={<CoursesPage />} />
+          <Route path="/news" element={<NewsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
           <Route path="*" element={<HomePage />} />
         </Routes>

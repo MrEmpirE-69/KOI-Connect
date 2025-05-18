@@ -19,7 +19,10 @@ export const isLoggedIn = () => {
 };
 //do login
 export const performLogin = (response, next) => {
+  console.log("Login API response:", response);
   sessionStorage.setItem("authToken", JSON.stringify(response.token));
+  sessionStorage.setItem("userRole", response.role);
+  sessionStorage.setItem("userId", response.userId);
   updateAuthToken();
   next();
 };

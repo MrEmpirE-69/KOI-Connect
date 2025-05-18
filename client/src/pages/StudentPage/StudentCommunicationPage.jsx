@@ -1,183 +1,149 @@
 import React, { useState, useEffect } from "react";
 import StudentsSideMenu from "../../StudentComponents/StudentsSideMenu/StudentsSideMenu";
 import StudentTopNavbar from "../../StudentComponents/StudentTopNavbar/StudentTopNavbar";
+import { fetchChatHistory, fetchChatUsers } from "../../utils/chatApi";
+import useChatSocket from "../../hooks/useChatSocket";
 
 const StudentCommunicationPage = () => {
-  const chatGroups = [
-    {
-      id: 1,
-      title: "Admin",
-      messages: [
-        { sender: "Admin", text: "How can I assist you?", time: "2 min ago" },
-        {
-          sender: "Student",
-          text: "I need help with my project.",
-          time: "1 min ago",
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Client",
-      messages: [
-        {
-          sender: "Client",
-          text: "Let’s discuss the next steps.",
-          time: "5 min ago",
-        },
-        { sender: "Student", text: "Sure, I’m ready.", time: "3 min ago" },
-      ],
-    },
-    {
-      id: 3,
-      title: "Academic Supervisor",
-      messages: [
-        {
-          sender: "Supervisor",
-          text: "Please submit your progress report.",
-          time: "10 min ago",
-        },
-        {
-          sender: "Student",
-          text: "I’ll submit it by tomorrow.",
-          time: "7 min ago",
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: "Team Parker Verse",
-      messages: [
-        {
-          sender: "Rohan",
-          text: "Let’s get started with the project tasks.",
-          time: "10 min ago",
-        },
-        {
-          sender: "Kushal",
-          text: "I will handle the backend.",
-          time: "7 min ago",
-        },
-        { sender: "Gagan", text: "I’ll work on the UI.", time: "5 min ago" },
-        { sender: "Ankit", text: "I’m ready to start.", time: "3 min ago" },
-        { sender: "Sajeet", text: "Same here.", time: "1 min ago" },
-      ],
-    },
-  ];
+  const [message, setMessage] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [chatUsers, setChatUsers] = useState([]);
+  const [activeUserId, setActiveUserId] = useState(null);
 
-  // State for selected chat group, message, and tracking which group is highlighted
-  const [selectedGroup, setSelectedGroup] = useState(chatGroups[0]);
-  const [message, setMessage] = useState(""); // For storing the typed message
-  const [activeGroup, setActiveGroup] = useState(1); // Track active group ID for highlighting
+  const { sendMessage } = useChatSocket({
+    onReceive: (msg) => {
+      if (
+        msg.senderId === selectedUser?.id ||
+        (msg.receiverId === selectedUser?.id &&
+          msg.receiverRole === selectedUser?.role)
+      ) {
+        setMessages((prev) => [...prev, msg]);
+      }
+    },
+  });
 
   useEffect(() => {
-    // By default, set the first chat group as selected when page loads
-    setSelectedGroup(chatGroups[0]);
+    async function loadUsers() {
+      try {
+        const users = await fetchChatUsers();
+        setChatUsers(users);
+        setSelectedUser(users[0]);
+        setActiveUserId(users[0]?.id);
+      } catch (err) {
+        console.error("Failed to load chat users", err);
+      }
+    }
+    loadUsers();
   }, []);
 
-  const handleGroupClick = (groupId) => {
-    const selected = chatGroups.find((group) => group.id === groupId);
-    setSelectedGroup(selected);
-    setActiveGroup(groupId); // Highlight the clicked group
+  useEffect(() => {
+    if (selectedUser) loadMessages();
+  }, [selectedUser]);
+
+  const loadMessages = async () => {
+    try {
+      const data = await fetchChatHistory({
+        withId: selectedUser.id,
+        withRole: selectedUser.role,
+      });
+      setMessages(data);
+    } catch (error) {
+      console.error("Failed to load messages", error);
+    }
   };
 
   const handleSendMessage = () => {
-    if (message.trim() && selectedGroup) {
-      const newMessage = {
-        sender: "You", // Placeholder for the current user (can be dynamic)
-        text: message,
-        time: "Just now",
-      };
+    if (!message.trim()) return;
 
-      // Add the new message to the selected group
-      const updatedGroups = chatGroups.map((group) =>
-        group.id === selectedGroup.id
-          ? { ...group, messages: [...group.messages, newMessage] }
-          : group
-      );
+    const payload = {
+      receiverId: selectedUser.id,
+      receiverRole: selectedUser.role,
+      content: message.trim(),
+    };
 
-      // Update the state with the new message list
-      setSelectedGroup({
-        ...selectedGroup,
-        messages: [...selectedGroup.messages, newMessage],
-      });
-      setMessage(""); // Clear the input field
-    }
+    sendMessage(payload);
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        ...payload,
+        senderRole: sessionStorage.getItem("userRole") || "STUDENT",
+        senderId: parseInt(sessionStorage.getItem("userId")),
+        timestamp: new Date(),
+      },
+    ]);
+    setMessage("");
   };
 
   return (
     <div className="flex h-screen bg-[#f9f9f9]">
-      {/* Sidebar */}
       <StudentsSideMenu currentPage="communication" />
-
-      {/* Main Section */}
       <main className="flex-1 flex flex-col overflow-hidden">
         <StudentTopNavbar />
-
         <div className="flex flex-1 overflow-hidden">
-          {/* Chat Groups List */}
-          <div className="w-full md:w-1/3 lg:w-1/4 bg-white border-r p-4 overflow-y-auto animate-fade-in-left">
+          <div className="w-full md:w-1/3 lg:w-1/4 bg-white border-r p-4 overflow-y-auto">
             <h2 className="text-xl font-bold text-[#226CD1] mb-4">Chats</h2>
-            <div className="space-y-4">
-              {chatGroups.map((group) => (
+            <div className="space-y-2">
+              {chatUsers.map((user) => (
                 <div
-                  key={group.id}
-                  className={`p-3 rounded-lg shadow hover:shadow-md cursor-pointer transition flex justify-between items-start animate-fade-in-up ${
-                    activeGroup === group.id
+                  key={`${user.role}-${user.id}`}
+                  className={`p-3 rounded-lg shadow hover:shadow-md cursor-pointer transition flex justify-between items-start ${
+                    activeUserId === user.id
                       ? "bg-[#eef1ff] border-l-4 border-[#226CD1]"
                       : "bg-[#f9f9ff]"
                   }`}
-                  onClick={() => handleGroupClick(group.id)}
+                  onClick={() => {
+                    setSelectedUser(user);
+                    setActiveUserId(user.id);
+                  }}
                 >
                   <div>
-                    <p className="font-bold text-[#226CD1]">{group.title}</p>
-                    <p className="text-sm text-gray-600">
-                      {group.messages[group.messages.length - 1].text}
-                    </p>
-                  </div>
-                  <div className="text-right text-xs text-gray-500">
-                    <p>{group.messages[group.messages.length - 1].time}</p>
+                    <p className="font-bold text-[#226CD1]">{user.title}</p>
+                    <p className="text-xs text-gray-500">{user.role}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Chat Window */}
-          <div className="flex-1 p-6 animate-fade-in-up">
-            {selectedGroup ? (
-              <div className="bg-white rounded-lg p-6 shadow-md h-full flex flex-col">
-                {/* Chat Header */}
-                <div className="mb-4 border-b pb-2">
-                  <h3 className="text-xl font-semibold text-[#226CD1]">
-                    {selectedGroup.title}
+          <div className="flex-1 p-4">
+            {selectedUser ? (
+              <div className="bg-white rounded-xl p-6 shadow-md h-full flex flex-col">
+                <div className="mb-4 border-b pb-3">
+                  <h3 className="text-lg font-semibold text-[#226CD1]">
+                    {selectedUser.title} ({selectedUser.role})
                   </h3>
-                  <p className="text-sm text-gray-500">
-                    Conversation with{" "}
-                    {selectedGroup.messages.map((msg) => msg.sender).join(", ")}
-                  </p>
                 </div>
 
-                {/* Messages */}
-                <div className="flex-1 overflow-y-auto space-y-4 pr-2">
-                  {selectedGroup.messages.map((msg, index) => (
-                    <div
-                      key={index}
-                      className={`p-3 rounded-lg max-w-xs ${
-                        msg.sender === "Client"
-                          ? "bg-gray-100"
-                          : "bg-blue-500 text-white"
-                      }`}
-                    >
-                      <p>
-                        <strong>{msg.sender}:</strong> {msg.text}
-                      </p>
-                      <div className="text-xs text-right">{msg.time}</div>
-                    </div>
-                  ))}
+                <div className="flex-1 overflow-y-auto space-y-3 pr-2">
+                  {messages.map((msg, index) => {
+                    const isSender =
+                      msg.senderRole === sessionStorage.getItem("userRole");
+                    return (
+                      <div
+                        key={index}
+                        className={`flex ${
+                          isSender ? "justify-end" : "justify-start"
+                        }`}
+                      >
+                        <div
+                          className={`p-3 rounded-xl text-sm max-w-[70%] ${
+                            isSender
+                              ? "bg-blue-500 text-white rounded-br-none"
+                              : "bg-gray-200 text-gray-900 rounded-bl-none"
+                          }`}
+                        >
+                          <p>{msg.content}</p>
+                          <div className="text-[10px] text-right mt-1 opacity-70">
+                            {new Date(msg.timestamp).toLocaleTimeString()}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
 
-                {/* Input Area */}
                 <div className="mt-4 border-t pt-3 flex items-center gap-2">
                   <input
                     type="text"
@@ -186,7 +152,6 @@ const StudentCommunicationPage = () => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                   />
-
                   <button
                     className="bg-[#226CD1] text-white px-4 py-2 rounded-full hover:bg-blue-600 transition"
                     onClick={handleSendMessage}
@@ -196,8 +161,8 @@ const StudentCommunicationPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex justify-center items-center h-full text-center text-gray-500">
-                <p>Select a group to view the conversation</p>
+              <div className="flex justify-center items-center h-full w-full text-gray-500">
+                <p>Select a user to start chatting</p>
               </div>
             )}
           </div>
