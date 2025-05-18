@@ -51,25 +51,34 @@ export class ProjectService {
   }
 
   async getAssignedProjects(studentId) {
-    return await Project.findAll({
+    const student = await Student.findByPk(studentId, {
       include: [
         {
-          model: StudentProjectMap,
-          where: { studentId },
-          attributes: [],
-        },
-        {
-          model: Supervisor,
-          as: "supervisor",
-          attributes: ["id", "fullName"],
-        },
-        {
-          model: Client,
-          as: "client",
-          attributes: ["id", "name"],
+          model: Project,
+          as: "projects",
+          where: {
+            status: {
+              [Op.not]: "DELETED",
+            },
+          },
+          required: false,
+          include: [
+            {
+              model: Supervisor,
+              as: "supervisor",
+              attributes: ["id", "fullName"],
+            },
+            {
+              model: Client,
+              as: "client",
+              attributes: ["id", "fullName"],
+            },
+          ],
         },
       ],
     });
+    if (!student) throw new Error("Student not found.");
+    return student.projects;
   }
 
   async getProjectsBySupervisor(supervisorId) {
@@ -88,6 +97,19 @@ export class ProjectService {
       },
       include: [
         { model: Client, as: "client", attributes: ["id", "fullName"] },
+      ],
+    });
+  }
+  async listAll() {
+    return await Project.findAll({
+      where: {
+        status: {
+          [Op.in]: ["PUBLISHED", "IN_PROGRESS", "COMPLETED", "CANCELLED"],
+        },
+      },
+      include: [
+        { model: Client, as: "client", attributes: ["id", "fullName"] },
+        { model: Supervisor, as: "supervisor", attributes: ["id", "fullName"] },
       ],
     });
   }
@@ -150,9 +172,46 @@ export class ProjectService {
         {
           model: Student,
           as: "student",
-          attributes: ["id", "fullName", "email"],
+          attributes: ["id", "fullName", "email", "studentId"],
         },
       ],
+    });
+  }
+
+  async getSubmissionsByStudent(studentId) {
+    return await ProjectSubmission.findAll({
+      where: { studentId },
+      include: [
+        {
+          model: Project,
+          as: "project",
+          where: {
+            status: {
+              [Op.in]: [
+                "DRAFT",
+                "PUBLISHED",
+                "IN_PROGRESS",
+                "COMPLETED",
+                "CANCELLED",
+              ],
+            },
+          },
+          required: false,
+          include: [
+            {
+              model: Supervisor,
+              as: "supervisor",
+              attributes: ["id", "fullName"],
+            },
+            {
+              model: Client,
+              as: "client",
+              attributes: ["id", "fullName"],
+            },
+          ],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
     });
   }
 

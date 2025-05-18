@@ -134,7 +134,7 @@ const AssignStudentsToProject = () => {
                 return (
                   <div
                     key={id}
-                    className="p-2 mb-2 bg-green-100 rounded hover:bg-green-200"
+                    className="p-2 mb-2 bg-orange-300 rounded hover:bg-orange-400"
                   >
                     {student?.fullName} ({student?.studentId})
                   </div>

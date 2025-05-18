@@ -31,7 +31,7 @@ export class ProjectController {
         clientId: parsed.clientId,
         studentIds: parsed.studentIds || [],
         supervisorId: req.id,
-        fileUrl: `/uploads/projects/${req.file.filename}`,
+        fileUrl: `/uploads/assessments/${req.file.filename}`,
       };
 
       const response = await projectService.createProject(payload);
@@ -70,7 +70,7 @@ export class ProjectController {
       const payload = {
         projectId: parsed.projectId,
         studentId: req.id,
-        fileUrl: `/uploads/projects/${req.file.filename}`,
+        fileUrl: `/uploads/assessments/${req.file.filename}`,
       };
 
       const response = await projectService.submitProject(payload);
@@ -106,6 +106,19 @@ export class ProjectController {
         status: 200,
         success: true,
         message: "Projects fetched successfully.",
+        data: response,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+  async listAll(req, res, next) {
+    try {
+      const response = await projectService.listAll();
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: "All projects fetched successfully.",
         data: response,
       });
     } catch (err) {
@@ -179,6 +192,20 @@ export class ProjectController {
         status: 200,
         success: true,
         message: "All student submissions fetched successfully.",
+        data: response,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async submissionListByStudent(req, res, next) {
+    try {
+      const response = await projectService.getSubmissionsByStudent(req.id);
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: "Submissions fetched successfully.",
         data: response,
       });
     } catch (err) {

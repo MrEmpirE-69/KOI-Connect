@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StudentsSideMenu from "../../StudentComponents/StudentsSideMenu/StudentsSideMenu";
 import StudentTopNavbar from "../../StudentComponents/StudentTopNavbar/StudentTopNavbar";
-import { BASE_URL } from "../../utils/config";
+import { BASE_URL, FILE_BASE_URL } from "../../utils/config";
 import { adminRequest } from "../../utils/requestMethods";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -10,12 +10,14 @@ const StudentsProjectPage = () => {
   const [projects, setProjects] = useState([]);
   const [projectSubmissions, setProjectSubmissions] = useState([]);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
 
   const fetchProjects = async () => {
     try {
-      const response = await adminRequest.get(`${BASE_URL}/project/listAll`);
+      const response = await adminRequest.get(`${BASE_URL}/project/assigned`);
       setProjects(response.data.data);
     } catch (error) {
       console.log("Project list not found");
@@ -25,7 +27,7 @@ const StudentsProjectPage = () => {
   const fetchProjectSubmissions = async () => {
     try {
       const response = await adminRequest.get(
-        `${BASE_URL}/projectSubmit/listByStudent`
+        `${BASE_URL}/project/mySubmissions`
       );
       setProjectSubmissions(response.data.data);
     } catch (error) {
@@ -62,30 +64,27 @@ const StudentsProjectPage = () => {
     formData.append("data", JSON.stringify({ projectId: selectedProjectId }));
     formData.append("file", uploadFile);
 
-    const request = adminRequest.post(
-      `${BASE_URL}/projectSubmit/submit`,
-      formData
-    );
-
-    toast.promise(
-      request,
-      {
-        loading: "Submitting project...",
-        success: "Project submitted successfully!",
-        error: "Failed to submit project.",
-      },
-      {
-        success: { duration: 1500 },
-        error: { duration: 2000 },
-      }
-    );
-
     try {
-      await request;
+      toast.loading("Submitting project...");
+
+      const response = await adminRequest.post(
+        `${BASE_URL}/project/submit`,
+        formData
+      );
+
+      toast.dismiss();
+      toast.success(response.data.message || "Project submitted successfully!");
+
       closeSubmitModal();
       fetchProjects();
       fetchProjectSubmissions();
-    } catch (err) {}
+    } catch (err) {
+      toast.dismiss();
+
+      const errorMessage =
+        err?.response?.data?.message || "Failed to submit project.";
+      toast.error(errorMessage);
+    }
   };
 
   return (
@@ -143,18 +142,25 @@ const StudentsProjectPage = () => {
                     <td className="p-3 text-sm">
                       {new Date(project.deadline).toLocaleDateString()}
                     </td>
-                    <td className="p-3 text-sm">
-                      <span className="px-2 py-1 rounded-full text-xs font-medium">
-                        {project.status}
-                      </span>
-                    </td>
+                    <td className="p-3 text-sm">{project.status}</td>
                     <td className="p-3 text-sm text-right">
-                      <button
-                        onClick={() => openSubmitDialog(project.id)}
-                        className="px-3 py-1 rounded text-sm transition bg-blue-500 text-white cursor-pointer"
-                      >
-                        Submit
-                      </button>
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={() => openSubmitDialog(project.id)}
+                          className="px-3 py-1 rounded text-sm transition bg-blue-500 text-white cursor-pointer"
+                        >
+                          Submit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedProject(project);
+                            setShowViewModal(true);
+                          }}
+                          className="px-3 py-1 rounded text-sm transition bg-green-500 text-white cursor-pointer"
+                        >
+                          View
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -196,6 +202,7 @@ const StudentsProjectPage = () => {
             </table>
           )}
 
+          {/* Submit Modal */}
           {showSubmitModal && (
             <div className="fixed inset-0 bg-transparent backdrop-blur flex items-center justify-center z-50">
               <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
@@ -222,6 +229,61 @@ const StudentsProjectPage = () => {
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                   >
                     Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* View Modal */}
+          {showViewModal && selectedProject && (
+            <div className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="bg-white rounded-xl p-6 w-full max-w-xl shadow-xl">
+                <h2 className="text-xl font-semibold mb-4">Project Details</h2>
+                <div className="space-y-2 text-sm text-gray-700">
+                  <p>
+                    <strong>Title:</strong> {selectedProject.title}
+                  </p>
+                  <p>
+                    <strong>Description:</strong> {selectedProject.description}
+                  </p>
+                  <p>
+                    <strong>Category:</strong> {selectedProject.category}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {selectedProject.status}
+                  </p>
+                  <p>
+                    <strong>Deadline:</strong>{" "}
+                    {new Date(selectedProject.deadline).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Supervisor:</strong>{" "}
+                    {selectedProject.supervisor?.fullName}
+                  </p>
+                  <p>
+                    <strong>Client:</strong> {selectedProject.client?.fullName}
+                  </p>
+                  {selectedProject.fileUrl && (
+                    <p>
+                      <strong>File:</strong>{" "}
+                      <a
+                        href={`${FILE_BASE_URL}${selectedProject.fileUrl}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                      >
+                        View File
+                      </a>
+                    </p>
+                  )}
+                </div>
+                <div className="flex justify-end mt-6">
+                  <button
+                    onClick={() => setShowViewModal(false)}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                  >
+                    Close
                   </button>
                 </div>
               </div>

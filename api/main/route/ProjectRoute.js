@@ -36,6 +36,7 @@ router.get(
   verifySuperVisor,
   controller.list.bind(controller)
 );
+router.get("/listAll", authenticate, controller.listAll.bind(controller));
 
 router.post(
   "/edit",
@@ -70,6 +71,12 @@ router.post(
   authenticate,
   verifySuperVisor,
   controller.assign.bind(controller)
+);
+router.get(
+  "/mySubmissions",
+  authenticate,
+  verifyStudent,
+  controller.submissionListByStudent.bind(controller)
 );
 
 export default router;

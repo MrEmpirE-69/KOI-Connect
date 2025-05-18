@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { MoreVertical } from "lucide-react";
+import { MoreVertical, XCircle } from "lucide-react";
 import AsSideMenu from "../../AsComponents/AsSideMenu/AsSideMenu";
 import AsTopNavbar from "../../AsComponents/AsTopNavbar/AsTopNavbar";
 import { Link } from "react-router-dom";
-import { BASE_URL } from "../../utils/config";
+import { BASE_URL, FILE_BASE_URL } from "../../utils/config";
 import { adminRequest } from "../../utils/requestMethods";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
@@ -17,6 +17,8 @@ export default function AssessmentReview() {
   const [reviewData, setReviewData] = useState({ grade: "", feedback: "" });
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentEditAssessment, setCurrentEditAssessment] = useState(null);
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [showSubmissionViewModal, setShowSubmissionViewModal] = useState(false);
   const [editData, setEditData] = useState({
     title: "",
     description: "",
@@ -157,6 +159,15 @@ export default function AssessmentReview() {
     });
   };
 
+  const openSubmissionViewModal = (submission) => {
+    setSelectedSubmission(submission);
+    setShowSubmissionViewModal(true);
+  };
+
+  const closeSubmissionViewModal = () => {
+    setSelectedSubmission(null);
+    setShowSubmissionViewModal(false);
+  };
   return (
     <div className="flex h-screen bg-[#f5f6fa] overflow-hidden">
       <AsSideMenu currentPage="projectReview" />
@@ -194,9 +205,9 @@ export default function AssessmentReview() {
           </button>
         </div>
 
-        <div className="bg-white rounded-2xl shadow p-">
+        <div className=" rounded-2xl  overflow-y-scroll min-h-[300px]">
           {activeTab === "supervisor" ? (
-            <table className="w-full table-auto bg-white shadow rounded-xl overflow-auto">
+            <table className="w-full table-auto bg-white shadow rounded-xl">
               <thead>
                 <tr className="bg-gray-200 text-left">
                   <th className="p-3 text-sm font-semibold">Title</th>
@@ -274,7 +285,7 @@ export default function AssessmentReview() {
               </tbody>
             </table>
           ) : (
-            <table className="w-full table-auto bg-white shadow rounded-xl overflow-auto">
+            <table className="w-full table-auto bg-white shadow rounded-xl">
               <thead>
                 <tr className="bg-gray-200 text-left">
                   <th className="p-3 text-sm font-semibold">Title</th>
@@ -319,17 +330,25 @@ export default function AssessmentReview() {
                       </span>
                     </td>
                     <td className="p-3 text-sm text-right">
-                      <button
-                        onClick={() => openReviewDialog(submission.id)}
-                        disabled={submission.status === "REVIEWED"}
-                        className={`px-3 py-1 rounded text-sm transition ${
-                          submission.status === "REVIEWED"
-                            ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                            : "bg-blue-500 text-white hover:bg-blue-600"
-                        }`}
-                      >
-                        Review
-                      </button>
+                      <div className="inline-flex gap-2">
+                        <button
+                          onClick={() => openSubmissionViewModal(submission)}
+                          className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => openReviewDialog(submission.id)}
+                          disabled={submission.status === "REVIEWED"}
+                          className={`px-3 py-1 rounded text-sm transition ${
+                            submission.status === "REVIEWED"
+                              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                              : "bg-blue-500 text-white hover:bg-blue-600"
+                          }`}
+                        >
+                          Review
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -556,12 +575,12 @@ export default function AssessmentReview() {
               <div className="mb-3">
                 <label className="block text-sm text-gray-500">File</label>
                 <a
-                  href={viewData.fileUrl}
+                  href={`${FILE_BASE_URL}${viewData.fileUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 underline"
                 >
-                  view File
+                  View File
                 </a>
               </div>
 
@@ -569,6 +588,65 @@ export default function AssessmentReview() {
                 <button
                   onClick={closeViewModal}
                   className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {showSubmissionViewModal && selectedSubmission && (
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+            <div className="bg-white p-6 rounded-2xl w-full max-w-xl shadow-lg">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-gray-800">
+                  Submission Details
+                </h3>
+                <button onClick={closeSubmissionViewModal}>
+                  <XCircle className="w-6 h-6 text-gray-500 hover:text-red-500 transition" />
+                </button>
+              </div>
+              <div className="space-y-3 text-gray-700">
+                <p>
+                  <strong>Student ID:</strong>{" "}
+                  {selectedSubmission.student.studentId}
+                </p>
+                <p>
+                  <strong>Student:</strong>{" "}
+                  {selectedSubmission.student.fullName}
+                </p>
+                <p>
+                  <strong>Email:</strong> {selectedSubmission.student.email}
+                </p>
+                <p>
+                  <strong>Assessment:</strong>{" "}
+                  {selectedSubmission.assessment.title}
+                </p>
+                <p>
+                  <strong>Submitted At:</strong>{" "}
+                  {new Date(selectedSubmission.createdAt).toLocaleString()}
+                </p>
+                <p>
+                  <strong>Status:</strong> {selectedSubmission.status}
+                </p>
+                {selectedSubmission.fileUrl && (
+                  <p>
+                    <strong>File:</strong>{" "}
+                    <a
+                      href={`${FILE_BASE_URL}${selectedSubmission.fileUrl}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 underline"
+                    >
+                      View Submitted File
+                    </a>
+                  </p>
+                )}
+              </div>
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={closeSubmissionViewModal}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
                 >
                   Close
                 </button>

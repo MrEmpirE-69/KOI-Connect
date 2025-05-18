@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import AsSideMenu from "../../AsComponents/AsSideMenu/AsSideMenu";
 import AsTopNavbar from "../../AsComponents/AsTopNavbar/AsTopNavbar";
-import { BASE_URL } from "../../utils/config";
+import { BASE_URL, FILE_BASE_URL } from "../../utils/config";
 import { adminRequest } from "../../utils/requestMethods";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
@@ -15,6 +15,9 @@ import {
   Pencil,
   AlignLeft,
   Settings,
+  EyeIcon,
+  PencilIcon,
+  Trash2,
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
@@ -23,6 +26,8 @@ const AsProjectReviewPage = () => {
   const [activeTab, setActiveTab] = useState("projects");
   const [projects, setProjects] = useState([]);
   const [submissions, setSubmissions] = useState([]);
+  const [showSubmissionViewModal, setShowSubmissionViewModal] = useState(false);
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [currentSubmissionId, setCurrentSubmissionId] = useState(null);
   const [reviewData, setReviewData] = useState({ grade: "", feedback: "" });
@@ -41,6 +46,16 @@ const AsProjectReviewPage = () => {
     fetchProjects();
     fetchSubmissions();
   }, []);
+
+  const openSubmissionViewModal = (submission) => {
+    setSelectedSubmission(submission);
+    setShowSubmissionViewModal(true);
+  };
+
+  const closeSubmissionViewModal = () => {
+    setSelectedSubmission(null);
+    setShowSubmissionViewModal(false);
+  };
 
   const fetchProjects = async () => {
     try {
@@ -242,24 +257,24 @@ const AsProjectReviewPage = () => {
                       </span>
                     </td>
                     <td className="p-3 text-right">
-                      <div className="inline-flex gap-1">
+                      <div className="inline-flex gap-2">
                         <button
                           onClick={() => openViewDialog(project)}
                           className="text-blue-500 hover:underline"
                         >
-                          View
+                          <EyeIcon className="cursor-pointer" />
                         </button>
                         <button
                           onClick={() => openEditDialog(project)}
                           className="text-yellow-500 hover:underline"
                         >
-                          Edit
+                          <PencilIcon className="cursor-pointer" />
                         </button>
                         <button
                           onClick={() => handleDeleteProject(project.id)}
                           className="text-red-500 hover:underline"
                         >
-                          Delete
+                          <Trash2 className="cursor-pointer" />
                         </button>
                       </div>
                     </td>
@@ -288,17 +303,25 @@ const AsProjectReviewPage = () => {
                     </td>
                     <td className="p-3">{submission.grade || "-"}</td>
                     <td className="p-3 text-right">
-                      <button
-                        onClick={() => openReviewDialog(submission.id)}
-                        disabled={submission.status === "REVIEWED"}
-                        className={`px-3 py-1 rounded text-sm ${
-                          submission.status === "REVIEWED"
-                            ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                            : "bg-blue-500 text-white hover:bg-blue-600"
-                        }`}
-                      >
-                        Review
-                      </button>
+                      <div className="inline-flex gap-2">
+                        <button
+                          onClick={() => openSubmissionViewModal(submission)}
+                          className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => openReviewDialog(submission.id)}
+                          disabled={submission.status === "REVIEWED"}
+                          className={`px-3 py-1 rounded text-sm ${
+                            submission.status === "REVIEWED"
+                              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                              : "bg-blue-500 text-white hover:bg-blue-600"
+                          }`}
+                        >
+                          Review
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -403,6 +426,16 @@ const AsProjectReviewPage = () => {
                       </p>
                     </div>
                   </div>
+                  <div>
+                    <a
+                      href={`${FILE_BASE_URL}${viewData.fileUrl}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 underline"
+                    >
+                      View File
+                    </a>
+                  </div>
                 </div>
 
                 <div className="flex justify-end mt-8">
@@ -505,6 +538,64 @@ const AsProjectReviewPage = () => {
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                   >
                     Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {showSubmissionViewModal && selectedSubmission && (
+            <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+              <div className="bg-white p-6 rounded-2xl w-full max-w-xl shadow-lg">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    Submission Details
+                  </h3>
+                  <button onClick={closeSubmissionViewModal}>
+                    <XCircle className="w-6 h-6 text-gray-500 hover:text-red-500 transition" />
+                  </button>
+                </div>
+                <div className="space-y-3 text-gray-700">
+                  <p>
+                    <strong>Student ID:</strong>{" "}
+                    {selectedSubmission.student.studentId}
+                  </p>
+                  <p>
+                    <strong>Student:</strong>{" "}
+                    {selectedSubmission.student.fullName}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {selectedSubmission.student.email}
+                  </p>
+                  <p>
+                    <strong>Project:</strong> {selectedSubmission.project.title}
+                  </p>
+                  <p>
+                    <strong>Submitted At:</strong>{" "}
+                    {new Date(selectedSubmission.createdAt).toLocaleString()}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {selectedSubmission.status}
+                  </p>
+                  {selectedSubmission.fileUrl && (
+                    <p>
+                      <strong>File:</strong>{" "}
+                      <a
+                        href={`${FILE_BASE_URL}${selectedSubmission.fileUrl}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                      >
+                        View Submitted File
+                      </a>
+                    </p>
+                  )}
+                </div>
+                <div className="flex justify-end mt-6">
+                  <button
+                    onClick={closeSubmissionViewModal}
+                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
+                  >
+                    Close
                   </button>
                 </div>
               </div>

@@ -89,3 +89,13 @@ ProjectSubmission.belongsTo(Student, {
   foreignKey: "studentId",
   as: "student",
 });
+
+// Project ↔ StudentProjectMap (One-to-Many)
+Project.hasMany(StudentProjectMap, {
+  foreignKey: "projectId",
+  as: "studentProjectMaps",
+});
+StudentProjectMap.belongsTo(Project, {
+  foreignKey: "projectId",
+  as: "project",
+});

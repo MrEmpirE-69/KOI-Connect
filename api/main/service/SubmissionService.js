@@ -103,7 +103,7 @@ export class SubmissionService {
           {
             model: Student,
             as: "student",
-            attributes: ["id", "fullName", "email"],
+            attributes: ["id", "fullName", "email", "studentId"],
           },
         ],
         order: [["submittedAt", "DESC"]],

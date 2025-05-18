@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StudentsSideMenu from "../../StudentComponents/StudentsSideMenu/StudentsSideMenu";
 import StudentTopNavbar from "../../StudentComponents/StudentTopNavbar/StudentTopNavbar";
-import { BASE_URL } from "../../utils/config";
+import { BASE_URL, FILE_BASE_URL } from "../../utils/config";
 import { adminRequest } from "../../utils/requestMethods";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -12,6 +12,8 @@ const StudentsAssessmentPage = () => {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedAssessment, setSelectedAssessment] = useState(null);
 
   const fetchAssessments = async () => {
     try {
@@ -61,9 +63,7 @@ const StudentsAssessmentPage = () => {
     const formData = new FormData();
     formData.append(
       "data",
-      JSON.stringify({
-        assessmentId: selectedAssessmentId,
-      })
+      JSON.stringify({ assessmentId: selectedAssessmentId })
     );
     formData.append("file", uploadFile);
 
@@ -91,6 +91,16 @@ const StudentsAssessmentPage = () => {
       fetchAssessments();
       fetchSubmissions();
     } catch (err) {}
+  };
+
+  const openViewDialog = (assessment) => {
+    setSelectedAssessment(assessment);
+    setShowViewModal(true);
+  };
+
+  const closeViewModal = () => {
+    setShowViewModal(false);
+    setSelectedAssessment(null);
   };
 
   return (
@@ -153,12 +163,18 @@ const StudentsAssessmentPage = () => {
                         {assessment.status}
                       </span>
                     </td>
-                    <td className="p-3 text-sm text-right">
+                    <td className="p-3 text-sm text-right space-x-2">
                       <button
                         onClick={() => openSubmitDialog(assessment.id)}
-                        className="px-3 py-1 rounded text-sm transition bg-blue-500 text-white cursor-pointer"
+                        className="px-3 py-1 rounded text-sm bg-blue-500 text-white hover:bg-blue-600"
                       >
                         Submit
+                      </button>
+                      <button
+                        onClick={() => openViewDialog(assessment)}
+                        className="px-3 py-1 rounded text-sm bg-green-500 text-white hover:bg-green-600"
+                      >
+                        View
                       </button>
                     </td>
                   </tr>
@@ -231,6 +247,65 @@ const StudentsAssessmentPage = () => {
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                   >
                     Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showViewModal && selectedAssessment && (
+            <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+              <div className="bg-white p-6 rounded-2xl w-full max-w-xl shadow-lg">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    Assessment Details
+                  </h3>
+                  <button onClick={closeViewModal}>
+                    <span className="text-gray-500 hover:text-red-500 text-xl">
+                      &times;
+                    </span>
+                  </button>
+                </div>
+                <div className="space-y-3 text-gray-700">
+                  <p>
+                    <strong>Title:</strong> {selectedAssessment.title}
+                  </p>
+                  <p>
+                    <strong>Description:</strong>{" "}
+                    {selectedAssessment.description}
+                  </p>
+                  <p>
+                    <strong>Supervisor:</strong>{" "}
+                    {selectedAssessment.supervisor.fullName}
+                  </p>
+                  <p>
+                    <strong>Deadline:</strong>{" "}
+                    {new Date(selectedAssessment.deadline).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {selectedAssessment.status}
+                  </p>
+                  {selectedAssessment.fileUrl && (
+                    <p>
+                      <strong>File:</strong>{" "}
+                      <a
+                        href={`${FILE_BASE_URL}${selectedAssessment.fileUrl}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                        download
+                      >
+                        View File
+                      </a>
+                    </p>
+                  )}
+                </div>
+                <div className="flex justify-end mt-6">
+                  <button
+                    onClick={closeViewModal}
+                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
+                  >
+                    Close
                   </button>
                 </div>
               </div>
