@@ -4,6 +4,47 @@ import Submission from "../model/Submission.js";
 import Supervisor from "../model/Supervisor.js";
 
 export class AssessmentService {
+  async uploadAssessment(payload) {
+    try {
+      const { title, description, fileUrl, deadline, supervisorId } = payload;
+
+      if (!title) {
+        throw new Error("Title is required and must be a string.");
+      }
+
+      if (!description) {
+        throw new Error("Description is required and must be a string.");
+      }
+
+      if (!deadline) {
+        throw new Error("Valid deadline is required (YYYY-MM-DD).");
+      }
+
+      if (!fileUrl) {
+        throw new Error("File upload is required.");
+      }
+
+      if (!supervisorId) {
+        throw new Error("Supervisor ID is missing or invalid.");
+      }
+      const assessment = await Assessment.create({
+        title: payload.title,
+        description: payload.description,
+        fileUrl: payload.fileUrl,
+        deadline: payload.deadline,
+        supervisorId: payload.supervisorId,
+        title,
+        description,
+        fileUrl,
+        deadline,
+        supervisorId,
+      });
+
+      return assessment;
+    } catch (error) {
+      throw error;
+    }
+  }
   async submitAssessment(payload) {
     try {
       const { assessmentId, studentId, fileUrl } = payload;

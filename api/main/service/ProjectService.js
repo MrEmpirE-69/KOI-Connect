@@ -81,6 +81,37 @@ export class ProjectService {
     return student.projects;
   }
 
+  async getAssignedProjectsForClient(clientId) {
+    const client = await Client.findByPk(clientId, {
+      include: [
+        {
+          model: Project,
+          as: "projects",
+          where: {
+            status: {
+              [Op.not]: "DELETED",
+            },
+          },
+          required: false,
+          include: [
+            {
+              model: Supervisor,
+              as: "supervisor",
+              attributes: ["id", "fullName"],
+            },
+            {
+              model: Client,
+              as: "client",
+              attributes: ["id", "fullName"],
+            },
+          ],
+        },
+      ],
+    });
+    if (!client) throw new Error("Client not found.");
+    return client.projects;
+  }
+
   async getProjectsBySupervisor(supervisorId) {
     return await Project.findAll({
       where: { supervisorId },

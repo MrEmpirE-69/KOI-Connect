@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
-import { BsBell, BsDownload } from "react-icons/bs";
+import { BsDownload } from "react-icons/bs";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import Papa from "papaparse";
-import logo from "../../assets/koi.png";
-import avatar1 from "../../assets/user1.png";
+
 import ClientSideMenu from "./ClientSideMenu"; // Import the ClientSideMenu component
 import ClientTopNavbar from "./ClientTopNavbar"; // Import the ClientTopNavbar
 

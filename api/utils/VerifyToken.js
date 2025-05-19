@@ -63,3 +63,17 @@ export const verifySuperVisor = (req, res, next) => {
     }
   });
 };
+export const verifyClient = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.user.role.includes("CLIENT")) {
+      next();
+    } else {
+      return next(
+        createError(
+          403,
+          "Access denied: Only client are authorized to perform this action!"
+        )
+      );
+    }
+  });
+};

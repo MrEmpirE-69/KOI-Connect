@@ -55,6 +55,8 @@ export default function LoginPage() {
           navigate("/student-dashboard");
         } else if (data.role === "SUPERVISOR") {
           navigate("/as-dashboard");
+        } else if (data.role === "CLIENT") {
+          navigate("/client-dashboard");
         }
 
         toast.success(`Logged in as ${data.role}`);

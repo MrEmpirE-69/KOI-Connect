@@ -1,6 +1,10 @@
 import express from "express";
 import { authenticate } from "../middleware/auth.js";
-import { verifyStudent, verifySuperVisor } from "../../utils/VerifyToken.js";
+import {
+  verifyClient,
+  verifyStudent,
+  verifySuperVisor,
+} from "../../utils/VerifyToken.js";
 import upload from "../middleware/fileUpload.js";
 import { ProjectController } from "../controller/ProjectController.js";
 
@@ -28,6 +32,12 @@ router.get(
   authenticate,
   verifyStudent,
   controller.assignedList.bind(controller)
+);
+router.get(
+  "/assigned/client",
+  authenticate,
+  verifyClient,
+  controller.assignedListClient.bind(controller)
 );
 
 router.get(

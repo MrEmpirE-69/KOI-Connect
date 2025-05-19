@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../../usermanager/model/User.js";
 import Supervisor from "../../model/Supervisor.js";
 import Student from "../../model/Student.js";
+import Client from "../../model/Client.js";
 import { createError } from "../../../utils/Error.js";
 
 export class AuthService {
@@ -33,6 +34,14 @@ export class AuthService {
         if (user) {
           role = "STUDENT";
           userType = "Student";
+        }
+      }
+
+      if (!user) {
+        user = await Client.findOne({ where: { email } });
+        if (user) {
+          role = "CLIENT";
+          userType = "Client";
         }
       }
 

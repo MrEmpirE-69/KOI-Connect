@@ -98,6 +98,21 @@ export class ProjectController {
       next(err);
     }
   }
+  async assignedListClient(req, res, next) {
+    try {
+      const response = await projectService.getAssignedProjectsForClient(
+        req.id
+      );
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: "Assigned projects fetched successfully.",
+        data: response,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 
   async list(req, res, next) {
     try {

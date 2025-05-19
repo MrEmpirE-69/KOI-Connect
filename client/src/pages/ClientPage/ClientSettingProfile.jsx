@@ -1,40 +1,39 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import { FaUserCircle } from "react-icons/fa";
-import ClientSideMenu from "./ClientSideMenu"; // Import the ClientSideMenu component
-import ClientTopNavbar from "./ClientTopNavbar"; // Import the ClientTopNavbar
+import React from "react";
+import ClientSideMenu from "./ClientSideMenu";
+import ClientTopNavbar from "./ClientTopNavbar";
+import { BASE_URL } from "../../utils/config";
+import useFetch from "../../hooks/useFetch";
+import { adminRequest, updateAuthToken } from "../../utils/requestMethods";
+import { Loader } from "lucide-react";
+import clientImage from "../../assets/user2.png";
+import {
+  FaEnvelope,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+  FaCalendarAlt,
+  FaUser,
+} from "react-icons/fa";
 
 const ClientSettingProfile = () => {
-  const navigate = useNavigate(); // Initialize navigate function
+  const { data, loading } = useFetch(
+    `${BASE_URL}/client/profile`,
+    adminRequest
+  );
+  updateAuthToken();
 
-  const [formData, setFormData] = useState({
-    givenName: "Abdul ali",
-    familyName: "Khan",
-    email: "abdulali@gmail.com",
-    mobile: "0444554456",
-    confirm: false,
-  });
+  const profile = data?.data || {};
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.confirm) {
-      alert("Profile updated successfully!");
-      navigate("/client-setting");  // Navigate to the client settings page after saving
-    } else {
-      alert("Please confirm the details before saving.");
-    }
-  };
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen flex-col gap-4">
+        <Loader className="animate-spin w-12 h-12 text-blue-500" />
+        <p className="text-gray-500">Loading client profile...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex h-screen bg-[#f9f9f9] overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-r from-[#f0f4f8] to-[#dde7f0] overflow-hidden">
       {/* Sidebar */}
       <ClientSideMenu currentPage="setting" />
 
@@ -42,96 +41,78 @@ const ClientSettingProfile = () => {
       <main className="flex-1 flex flex-col overflow-hidden">
         <ClientTopNavbar />
 
-        <section className="flex-1 px-6 py-8 md:px-12 md:py-10 overflow-y-auto animate-fade-in-up duration-700">
-          <h1 className="text-4xl font-extrabold text-[#226CD1] text-center mb-10">
-            Profile
-          </h1>
-
-          {/* Form Card */}
-          <div className="bg-white shadow-md rounded-2xl p-8 max-w-4xl mx-auto">
-            <form onSubmit={handleSubmit}>
-              {/* Avatar */}
-              <div className="flex justify-center mb-6">
-                <FaUserCircle className="text-6xl text-[#226CD1]" />
+        <section className="flex-1 px-6 py-8 md:px-12 md:py-10 overflow-y-auto">
+          <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-8 animate-fade-in-up">
+            {/* Profile Summary */}
+            <div className="bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-lg flex flex-col items-center md:w-1/3 hover:shadow-2xl transition">
+              <img
+                src={clientImage}
+                alt="Client profile"
+                className="w-32 h-32 rounded-full"
+              />
+              <h2 className="text-2xl font-bold text-gray-800">
+                {profile.fullName || "N/A"}
+              </h2>
+              <div className="mt-6 bg-blue-100 text-blue-600 text-center rounded-full px-4 py-1 text-xs font-semibold tracking-wider">
+                Client ID: {profile.uuid || "N/A"}
               </div>
+            </div>
 
-              {/* Form Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Given Name
-                  </label>
-                  <input
-                    type="text"
-                    name="givenName"
-                    value={formData.givenName}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Family Name
-                  </label>
-                  <input
-                    type="text"
-                    name="familyName"
-                    value={formData.familyName}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
-                    required
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
-                    required
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mobile
-                  </label>
-                  <input
-                    type="tel"
-                    name="mobile"
-                    value={formData.mobile}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Confirmation & Button */}
-              <div className="mt-8">
-                <label className="flex items-center gap-2 mb-4 text-sm text-gray-700">
-                  <input
-                    type="checkbox"
-                    name="confirm"
-                    checked={formData.confirm}
-                    onChange={handleChange}
-                    className="accent-[#226CD1] w-4 h-4"
-                  />
-                  Do you confirm the above details
-                </label>
-
-                <button
-                  type="submit"
-                  className="bg-[#226CD1] text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-600 transition"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
+            {/* Profile Details */}
+            <div className="bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-lg flex-1 hover:shadow-2xl transition">
+              <h3 className="text-xl font-semibold text-gray-700 mb-6 border-b pb-3">
+                Account Details
+              </h3>
+              <ul className="space-y-6">
+                <li className="flex items-center gap-4">
+                  <FaEnvelope className="text-blue-600" />
+                  <div>
+                    <p className="text-xs text-gray-400">Email</p>
+                    <p className="text-base font-medium text-gray-700">
+                      {profile.email || "N/A"}
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-center gap-4">
+                  <FaPhoneAlt className="text-blue-600" />
+                  <div>
+                    <p className="text-xs text-gray-400">Phone</p>
+                    <p className="text-base font-medium text-gray-700">
+                      {profile.mobileNumber || "N/A"}
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-center gap-4">
+                  <FaMapMarkerAlt className="text-blue-600" />
+                  <div>
+                    <p className="text-xs text-gray-400">Address</p>
+                    <p className="text-base font-medium text-gray-700">
+                      {profile.address || "N/A"}
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-center gap-4">
+                  <FaCalendarAlt className="text-blue-600" />
+                  <div>
+                    <p className="text-xs text-gray-400">Joined On</p>
+                    <p className="text-base font-medium text-gray-700">
+                      {profile.createdAt
+                        ? new Date(profile.createdAt).toLocaleDateString()
+                        : "N/A"}
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-center gap-4">
+                  <FaUser className="text-blue-600" />
+                  <div>
+                    <p className="text-xs text-gray-400">Organization</p>
+                    <p className="text-base font-medium text-gray-700">
+                      {profile.organization || "N/A"}
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
       </main>
