@@ -36,5 +36,5 @@ Follow these steps to get the project up and running on your local machine.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Manzultmg7/KOI-Connect
+git clone (https://github.com/MrEmpirE-69/KOI-Connect.git)
 cd KOI-Connect
